@@ -5,7 +5,11 @@ frs5.calPfrs5 <- function(ccc){
   TUnit   <- "C"
   RUnit   <- "lb"
   calUnit <- "Pa"
-
+  resType <- "cal"
+  ## aber:
+  if(a$ct == "VG"){
+    resType <- "frs5"
+  }
   ## --   R.cal <- 2.290320
   ## --   m.cal <- 1038.867
   ## --   g.cal <- 9.812718
@@ -84,9 +88,11 @@ frs5.calPfrs5 <- function(ccc){
            calUnit,
            pres)
 
+
+
   ccc$Calibration$Analysis$Values$Pressure <-
     setCcl(ccc$Calibration$Analysis$Values$Pressure,
-           "frs5",
+           resType,
            calUnit,
            pfrs,
            msg)

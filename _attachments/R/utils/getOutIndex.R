@@ -5,9 +5,12 @@ getOutIndex <- function(ccc){
   ## es ist wichtig, dass append(outIndex, _case_)
   ## benutzt wird. Es gehen sonst Fälle verloren
 
+  ## NB:
+  ## > append(NULL, c(1,2))
+  ## [1] 1 2
+  ## >
   outIndex <- NULL
-  ## bereitet die Struktur vor:
-  ccc$Calibration$Measurement$SequenceControl$outIndex <-  checkSetList(a$cmscoi)
+
 
   ##
   ## hier können noch weitere Bedingungen form. werden,
@@ -31,7 +34,7 @@ getOutIndex <- function(ccc){
   }#CE3
 
 
-  if(a$cs =="DKM|FRS5"){
+  if(a$cs =="DKM|FRS5" | a$cs =="FRS5" ){
     if(length(a$cmv) > 0){
 
       TFRS   <- getSubList(a$cmv$Temperature, "keithley_ch110")
@@ -93,11 +96,10 @@ getOutIndex <- function(ccc){
 
   }
 
-  ccc$Calibration$Measurement$SequenceControl <-
-    checkSetList(ccc$Calibration$Measurement$SequenceControl)
-
-  ccc$Calibration$Measurement$SequenceControl$outIndex <-
-    checkSetList(ccc$Calibration$Measurement$SequenceControl$outIndex)
+  if(!is.list(ccc$Calibration$Measurement$SequenceControl)){
+    ccc$Calibration$Measurement$SequenceControl<-
+      as.list(ccc$Calibration$Measurement$SequenceControl)
+  }
 
   if(length(outIndex) > 0){
 
@@ -105,7 +107,6 @@ getOutIndex <- function(ccc){
   }else{
     ccc$Calibration$Measurement$SequenceControl$outIndex <- c(0)
   }
-
   return(ccc)
 
   }

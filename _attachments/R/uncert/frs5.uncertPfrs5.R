@@ -3,8 +3,13 @@ frs5.uncertPfrs5 <- function(ccc){
   a <- abbrevList(ccc)
 
   calUnit   <- "Pa"
+  resType <- "cal"
+  ## aber:
+  if(a$ct == "VG"){
+    resType <- "frs5"
+  }
 
-  PFRS      <- getSubList(a$cav$Pressure,    "frs5")
+  PFRS      <- getSubList(a$cav$Pressure, resType)
   convpfrs   <- getConvFactor(ccc,calUnit,PFRS$Unit)
   pfrs        <- getConstVal(NA,NA,PFRS)    * convpfrs  # ab hier Pa wenn nicht sowieso
 
@@ -22,10 +27,9 @@ frs5.uncertPfrs5 <- function(ccc){
   ufrs <- sqrt(u1*pfrs^2 + u2*pfrs + u3 + (upres*pfrsres)^2)
 
 
-
   ccc$Calibration$Analysis$Values$Uncertainty <-
     setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
-           "u_frs",
+           paste("u_", resType,sep=""),
            calUnit,
            ufrs,
            msg)
