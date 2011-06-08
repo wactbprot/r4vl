@@ -27,45 +27,44 @@ calT <- function(ccc){
   ## weil T_ptb - Tch als Korrektur benutzt wird, muss
   ## Tch + K gerechnet werden: Tch + K =   Tch + (T_ptb - Tch) = T_ptb
 
+  ## die Task zum auslesen des agilent erzeugt Typen der Form
+  ## ---> agilentChxxx mit xxx = 101 ... 110
   if(isAgilent){
 
     tRoom <-
                 (
-                 getConstVal(a$cmv,"agilentCH10") +
+                 getConstVal(a$cmv,"agilentCHh110") +
                  getConstVal(a$cmco,"agilentCorrCh110")
                  )
 
       tUhv <- (
-               (getConstVal(a$cmv,"agilentCH04") +
+               (getConstVal(a$cmv,"agilentCh104") +
                 getConstVal(a$cmco,"agilentCorrCh104")) +
 
-               (getConstVal(a$cmv,"agilentCH05") +
+               (getConstVal(a$cmv,"agilentCh105") +
                 getConstVal(a$cmco,"agilentCorrCh105")) +
 
-               (getConstVal(a$cmv,"agilentCH06") +
+               (getConstVal(a$cmv,"agilentCh106") +
                 getConstVal(a$cmco,"agilentCorrCh106")) +
 
-               (getConstVal(a$cmv,"agilentCH07") +
+               (getConstVal(a$cmv,"agilentCh107") +
                 getConstVal(a$cmco,"agilentCorrCh107"))
                ) /4
 
       tXhv <- (
-               (getConstVal(a$cmv,"agilentCH08") +
+               (getConstVal(a$cmv,"agilentCh108") +
                 getConstVal(a$cmco,"agilentCorrCh108")) +
 
-               (getConstVal(a$cmv,"agilentCH09") +
+               (getConstVal(a$cmv,"agilentCh109") +
                 getConstVal(a$cmco,"agilentCorrCh109")) +
-
-               (getConstVal(a$cmv,"agilentCH10") +
-                getConstVal(a$cmco,"agilentCorrCh110"))
-               ) /3
+               ) /2
 
       tFm <- (
-              (getConstVal(a$cmv,"agilentCH01") +
+              (getConstVal(a$cmv,"agilentCh101") +
                getConstVal(a$cmco,"agilentCorrCh101")) +
 
-              (getConstVal(a$cmv,"agilentCH02") +
-               getConstVal(a$cmco,"agilentCorrCh103"))
+              (getConstVal(a$cmv,"agilentCh102") +
+               getConstVal(a$cmco,"agilentCorrCh102"))
                ) /2
 
     } ## is Agilent
