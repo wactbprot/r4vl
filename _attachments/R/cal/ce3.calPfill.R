@@ -46,33 +46,35 @@ calPfill <- function( ccc){
     ## berechnet/korrigiert werden müssen
     ##
     ## wert ist in Standard$SequenzControl zentral def.
-    ## cdg.srg  <- 0.012 ## mbar für p > cdg.srg wird cdg für pfill benutzt
+     cdg.srg  <- 0.012 ## mbar für p > cdg.srg wird cdg für pfill benutzt
     ## --> anpassen!!
     noOfViscIter <- 5 ## Anzahl der Iterationen zu visc. Korrektur
-    srgInd   <- getSubList(a$cm, "srgFill")
-    srgOff   <- getSubList(a$cm, "srgFillOffset")
+    srgInd   <- getSubList(a$cm, c("srgFill","srg_fill"))
+    srgOff   <- getSubList(a$cm, c("srgFillOffset","srg_fill_offset"))
 
-    cdgInd   <-   getSubList(a$cm, "cdgInd")
-    cdgOff   <-   getSubList(a$cm, "cdgIndOffset")
+    cdgInd   <-   getSubList(a$cm, c("cdgInd", "cdga_fill"))
+    cdgOff   <-   getSubList(a$cm, c("cdgIndOffset","cdga_fill_offset"))
 
     ## hier können noch viele andere Gegebenheiten im
     ## Zusammenhang mit dem p_fill implementiert werden
     ## 1.)
-    if(length(srgInd$Value) > 0 & length(srgInd$Value) ==length(srgOff$Value)){
+    if(length(srgInd$Value) > 0 & length(srgInd$Value) ){
 
-      if(srgInd$Unit == "dcr"){
+      if((srgInd$Unit == "dcr") | (srgInd$Unit == "DCR")){
         ## raw srg measurement
 ### Todo: was ist wenn ein sgr kalibriert wird
 ### und ein sgr zur pfill Messung benutzt wird!!
 ### Es muss ein 
-        d            <- getConstVal(a$cmco,"d")
-        rho          <- getConstVal(a$cmco,"rho")
+        d            <- getConstVal(a$cmco,c("srgR20_d","d"))
+        rho          <- getConstVal(a$cmco,c("srgR20_rho","rho"))
         R            <- getConstVal(a$cc,"R")
-        pfill        <- srgInd$Value - srgOff$Value # in DCR
+        
 
+        pfill        <- getConstVal(NA,NA,srgInd) -
+          getConstVal(NA,NA,srgOff) # in DCR
         if(a$cmscg =="N2"){
-          sigma      <- getConstVal(a$cmco,"sigma_N2")
-          slope      <- getConstVal(a$cmco,"slope_N2")
+          sigma      <- getConstVal(a$cmco,c("srgR20_sigma_N2","sigma_N2"))
+          slope      <- getConstVal(a$cmco,c("srgR20_slope_N2","slope_N2"))
           M          <- getConstVal(a$cc,"molWeight_N2")
           visc       <- getConstVal(a$cc,"visc_N2")
         }
@@ -115,7 +117,7 @@ calPfill <- function( ccc){
     }
     ## 2.)
     ## cdga
-    if(length(cdgInd$Value) > 0 & length(cdgInd$Value) ==length(cdgOff$Value)){
+    if(length(cdgInd$Value) > 0 & length(cdgInd$Value)){
 
       if(a$cmscg =="N2"){
         A <- getConstVal(a$cmco,"cdgaCorrA_N2")
@@ -126,7 +128,8 @@ calPfill <- function( ccc){
         F <- getConstVal(a$cmco,"cdgaCorrF_N2")
       }
 
-      pfillCDGUnkorr <- cdgInd$Value - cdgOff$Value
+      pfillCDGUnkorr <- getConstVal(NA,NA,cdgInd) -
+        getConstVal(NA,NA,cdgOff)
 
       if(length(a$cmscoi) > 0){
         if(a$cmscoi[1] > 0){
