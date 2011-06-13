@@ -22,6 +22,9 @@ abbrevList <- function(ccc){
 ### ce3-spezifisch
   if(a$cs =="CE3"){
     a$cmsc   <- a$cm$SequenzControl
+    if(is.null( a$cmsc )){
+      a$cmsc   <- a$cm$SequenceControl
+    }
     a$cmscok <- a$cmsc$operationKind
     a$cmscg  <- a$cmsc$Gas
     a$cmscp  <- a$cmsc$calPort

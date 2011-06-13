@@ -17,10 +17,11 @@ getOutIndex <- function(ccc){
   ## 1.)
   if(a$cs =="CE3"){
     if(length(a$cmv) > 0){
-
-      Ldv <- getConstVal(a$cmv, "cfm3")
-      outIndex <- append(outIndex,which(Ldv < 1e-10))
-
+      if(a$cmscok  != "opK4"){
+        ## opK4 heißt es gibt keine Leitwertmessung
+        Ldv <- getConstVal(a$cmv, "cfm3")
+        outIndex <- append(outIndex,which(Ldv < 1e-10))
+      }
     }
     ## 2.)
     ## ...

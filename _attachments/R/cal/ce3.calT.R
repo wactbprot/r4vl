@@ -13,7 +13,7 @@ calT <- function(ccc){
   corrPp2Slope <- TRUE
 
   ## etwas plump ...
-  if(a$cmv$Temperature[[1]]$Type == "agilentCH01"){
+  if(a$cmv$Temperature[[1]]$Type == "agilentCh101"){
     isAgilent <- TRUE
   }
   if(a$cmv$Temperature[[1]]$Type == "pp2Ch1"){
@@ -27,46 +27,40 @@ calT <- function(ccc){
   ## weil T_ptb - Tch als Korrektur benutzt wird, muss
   ## Tch + K gerechnet werden: Tch + K =   Tch + (T_ptb - Tch) = T_ptb
 
+  ## die Task zum auslesen des agilent erzeugt Typen der Form
+  ## ---> agilentChxxx mit xxx = 101 ... 110
   if(isAgilent){
 
     tRoom <-
-                (
-                 getConstVal(a$cmv,"agilentCH10") +
+                ( getConstVal(a$cmv,"agilentCh110") +
                  getConstVal(a$cmco,"agilentCorrCh110")
                  )
 
       tUhv <- (
-               (getConstVal(a$cmv,"agilentCH04") +
+               (getConstVal(a$cmv,"agilentCh104") +
                 getConstVal(a$cmco,"agilentCorrCh104")) +
-
-               (getConstVal(a$cmv,"agilentCH05") +
+               (getConstVal(a$cmv,"agilentCh105") +
                 getConstVal(a$cmco,"agilentCorrCh105")) +
-
-               (getConstVal(a$cmv,"agilentCH06") +
+               (getConstVal(a$cmv,"agilentCh106") +
                 getConstVal(a$cmco,"agilentCorrCh106")) +
-
-               (getConstVal(a$cmv,"agilentCH07") +
+               (getConstVal(a$cmv,"agilentCh107") +
                 getConstVal(a$cmco,"agilentCorrCh107"))
                ) /4
 
-      tXhv <- (
-               (getConstVal(a$cmv,"agilentCH08") +
-                getConstVal(a$cmco,"agilentCorrCh108")) +
-
-               (getConstVal(a$cmv,"agilentCH09") +
-                getConstVal(a$cmco,"agilentCorrCh109")) +
-
-               (getConstVal(a$cmv,"agilentCH10") +
-                getConstVal(a$cmco,"agilentCorrCh110"))
-               ) /3
-
-      tFm <- (
-              (getConstVal(a$cmv,"agilentCH01") +
+    tXhv <-( (getConstVal(a$cmv,"agilentCh108") +
+              getConstVal(a$cmco,"agilentCorrCh108")) +
+            (getConstVal(a$cmv,"agilentCh109") +
+             getConstVal(a$cmco,"agilentCorrCh109")) 
+            ) /2
+    
+  tFm <- ((getConstVal(a$cmv,"agilentCh101") +
                getConstVal(a$cmco,"agilentCorrCh101")) +
-
-              (getConstVal(a$cmv,"agilentCH02") +
-               getConstVal(a$cmco,"agilentCorrCh103"))
+              (getConstVal(a$cmv,"agilentCh102") +
+               getConstVal(a$cmco,"agilentCorrCh102"))
                ) /2
+
+    tpbox <-   (getConstVal(a$cmv,"agilentCh103") +
+                getConstVal(a$cmco,"agilentCorrCh103"))
 
     } ## is Agilent
 
@@ -82,6 +76,7 @@ calT <- function(ccc){
     tch8 <- getConstVal(a$cm,"pp2Ch8")
     tch11<- getConstVal(a$cm,"pp2Ch11")
     tch1 <- getConstVal(a$cm,"pp2Ch1")
+    tch1 <- getConstVal(a$cm,"pp2Ch2")
 
     if(corrPp2Slope){
 
@@ -106,6 +101,7 @@ calT <- function(ccc){
       tch8 <- tch8  - Corr.8
       tch11<- tch11 - Corr.11
       tch1 <- tch1  - Corr.1
+      tch2 <- tch2  - Corr.2
       msg <- paste(msg, "; const. Korrekturen subtrahiert")
 
       slopeT10 <- getConstVal(a$cmco,"pp2SlopeCh10")
@@ -136,13 +132,18 @@ calT <- function(ccc){
       intT1   <- getConstVal(a$cmco,"pp2InterceptCh1")
       tch1 <- slopeT1*tch1 + intT1
 
+      slopeT2 <- getConstVal(a$cmco,"pp2SlopeCh2")
+      intT2   <- getConstVal(a$cmco,"pp2InterceptCh2")
+      tch2 <- slopeT2*tch2 + intT2
+
       msg <- paste(msg, "; Temperaturen mit slope und Intercept korrigiert")
     }
 
-    tRoom  <-  tch10
-    tUhv   <-  (tch5 + tch6 + tch7 ) / 3
-    tXhv   <-  (tch8 + tch11 ) / 2
-    tFm    <-  tch1
+    tRoom    <-  tch10
+    tUhv     <-  (tch5 + tch6 + tch7 ) / 3
+    tXhv     <-  (tch8 + tch11 ) / 2
+    tFm      <-  tch1
+    tpbox    <-  tch2
 
   } ## isPp2
 
@@ -153,22 +154,27 @@ calT <- function(ccc){
       tUhv<-tUhv[-a$cmscoi]
       tXhv<-tXhv[-a$cmscoi]
       tFm<-tFm[-a$cmscoi]
+      tpbox<-tpbox[-a$cmscoi]
 
     }
   }
 
-  if(length(ccc$Calibration$Analysis$Values) == 0 ){
-    ccc$Calibration$Analysis$Values <- list()
-  }
+  ## gibt
+  ## es Analysis_Values
+  ## schon?:
+  ccc$Calibration$Analysis$Values <- checkSetList(ccc$Calibration$Analysis$Values)
+
 
   ccc$Calibration$Analysis$Values$Temperature <-
     setCcl( ccc$Calibration$Analysis$Values$Temperature,"Tfm3","K",tFm + C2K,msg)
   ccc$Calibration$Analysis$Values$Temperature <-
     setCcl( ccc$Calibration$Analysis$Values$Temperature,"Tuhv","K",tUhv + C2K,msg)
   ccc$Calibration$Analysis$Values$Temperature <-
-    setCcl( ccc$Calibration$Analysis$Values$Temperature,"Txhv","K",tXhv + C2K,msg)
+    setCcl( ccc$Calibration$Analysis$Values$Temperature,"Txhv","K",tXhv + C2K)
   ccc$Calibration$Analysis$Values$Temperature <-
-    setCcl( ccc$Calibration$Analysis$Values$Temperature,"Troom","K",tRoom + C2K,msg)
+    setCcl( ccc$Calibration$Analysis$Values$Temperature,"Troom","K",tRoom + C2K)
+  ccc$Calibration$Analysis$Values$Temperature <-
+    setCcl( ccc$Calibration$Analysis$Values$Temperature,"Tpbox","K",tpbox + C2K)
 
   return(ccc)
 
