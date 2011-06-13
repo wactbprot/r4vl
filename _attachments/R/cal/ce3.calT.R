@@ -31,11 +31,9 @@ calT <- function(ccc){
   ## ---> agilentChxxx mit xxx = 101 ... 110
   if(isAgilent){
 
-    tRoom <-
-                ( getConstVal(a$cmv,"agilentCh110") +
-                 getConstVal(a$cmco,"agilentCorrCh110")
-                 )
-
+    tRoom <- ( getConstVal(a$cmv,"agilentCh110") +
+              getConstVal(a$cmco,"agilentCorrCh110") )
+    
       tUhv <- (
                (getConstVal(a$cmv,"agilentCh104") +
                 getConstVal(a$cmco,"agilentCorrCh104")) +
@@ -46,6 +44,7 @@ calT <- function(ccc){
                (getConstVal(a$cmv,"agilentCh107") +
                 getConstVal(a$cmco,"agilentCorrCh107"))
                ) /4
+
 
     tXhv <-( (getConstVal(a$cmv,"agilentCh108") +
               getConstVal(a$cmco,"agilentCorrCh108")) +

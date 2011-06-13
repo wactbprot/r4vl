@@ -1,7 +1,0 @@
-frs.calPfrs <- function(ccc){
-  msg <- "calculated by frs.calPfrs()"
-  a <- abbrevList(ccc)
-
-
-  return(ccc)
-}

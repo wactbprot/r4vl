@@ -9,6 +9,7 @@ library(R4CouchDB,quietly =TRUE)
 
 cdb  <- cdbIni()
 loadSrc <- TRUE
+
 cdb$DBName     <- "vaclab_db" ## DBName
 
 saveNoProxy <- Sys.getenv("no_proxy")
@@ -31,6 +32,7 @@ if(loadSrc){
 
     if(length(fn) > 0){
 
+
       srcUrl <- paste(baseSrcUrl,
                         file,
                         sep="")
@@ -46,6 +48,7 @@ cdb$id         <- "81639d04934132e766657369210f2629"
 doc <- cdbGetDoc(cdb)$res
 doc <- refreshAnalysis(cdb,doc)
 doc <- getOutIndex(doc)
+
 doc <- calT(doc)
 
 doc <- calPfill(doc)

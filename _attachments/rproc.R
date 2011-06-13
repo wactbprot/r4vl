@@ -103,8 +103,6 @@ while(goOn){
   if(qLen){
     if(length(query$script) == 1){
 
-
-
       iscript <-  grep(query$script,
                        files)
       if(length(iscript) == 1){

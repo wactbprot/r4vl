@@ -7,6 +7,7 @@ abbrevList <- function(ccc){
 
   a$c        <- ccc$Calibration
   a$cs       <- ccc$Calibration$Standard
+  a$ct       <- a$c$Type
   a$cp       <- a$c$Presettings
   a$cpt      <- a$cp$ToDo
   a$cc       <- a$c$Constants
@@ -39,11 +40,17 @@ abbrevList <- function(ccc){
   }
 
 ### VG Dkm Frs-spezifisch
-  if(a$cs =="DKM|FRS5"){
-    a$cmsc   <- a$cm$SequenceControl
+  if(a$cs =="DKM|FRS5" | a$cs == "FRS5" | a$cs == "DKM"){
+
+    if(!(length(a$cm$SequenceControl) == 0)){
+      a$cmsc   <- a$cm$SequenceControl
+    }
   }
 
-  a$cmscoi <- a$cmsc$outIndex
+  if((is.list(a$cmsc) )){
+    a$cmscoi <- a$cmsc$outIndex
+  }
+
 
   if(length(a$cmv) > 0){
     a$dataAvailable <- TRUE
