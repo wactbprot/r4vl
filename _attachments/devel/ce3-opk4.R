@@ -46,6 +46,7 @@ if(loadSrc){
 ## devel/tests/calculations from here -----------------
 cdb$id         <- "81639d04934132e766657369210f2629"
 doc <- cdbGetDoc(cdb)$res
+
 doc <- refreshAnalysis(cdb,doc)
 doc <- getOutIndex(doc)
 doc <- ce3.calT(doc)
