@@ -1,4 +1,4 @@
-calPfill <- function( ccc){
+ce3.calPfill <- function( ccc){
 ### muss noch sinnvoll mit calpfill der VACOM Kalib gemerged werden !!
   msg <- "calculated by calPfill"
 
@@ -17,7 +17,7 @@ calPfill <- function( ccc){
 
     pfill <- getConstVal(NA, NA, PFIL)
 
-    
+
 
     ##if(length(a$cmscoi) > 0){
     ##  if(a$cmscoi[1] > 0){
@@ -28,7 +28,7 @@ calPfill <- function( ccc){
     ## ersetzt
 
     ccc$Calibration$Analysis$Values<-  checkSetList(ccc$Calibration$Analysis$Values)
-    
+
     if(length(PFIL$Comment) > 0){
       msg <- paste(msg,"msg from raw data:",  PFIL$Comment)
     }
@@ -64,11 +64,11 @@ calPfill <- function( ccc){
         ## raw srg measurement
 ### Todo: was ist wenn ein sgr kalibriert wird
 ### und ein sgr zur pfill Messung benutzt wird!!
-### Es muss ein 
+### Es muss ein
         d            <- getConstVal(a$cmco,c("srgR20_d","d"))
         rho          <- getConstVal(a$cmco,c("srgR20_rho","rho"))
         R            <- getConstVal(a$cc,"R")
-        
+
 
         pfill        <- getConstVal(NA,NA,srgInd) -
           getConstVal(NA,NA,srgOff) # in DCR
@@ -93,13 +93,13 @@ calPfill <- function( ccc){
           }
         }
 
-        pfill <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/sigma/2000*pfill ## mbar 
+        pfill <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/sigma/2000*pfill ## mbar
 
         ## visc. correction
         ## s. http://a73434.berlin.ptb.de/vacLab/index.php5/
         ##            Messungen_Februar_09#Druckmessung_mit_SRG
         ##
-        
+
         panz      <- pfill
         pfillKorr <- panz
 
@@ -117,7 +117,7 @@ calPfill <- function( ccc){
     }
     ## 2.)
     ## cdga
-    if(length(cdgInd$Value) > 0 & length(cdgInd$Value)){
+    if(length(cdgInd$Value) > 0 ){
 
       if(a$cmscg =="N2"){
         A <- getConstVal(a$cmco,"cdgaCorrA_N2")
@@ -144,8 +144,8 @@ calPfill <- function( ccc){
       pfillCDG <- pfillCDGUnkorr/(relErr +1)
     }
 
-    isrg <- which(pfillSRG <= cdg.srg) # mbar
-    icdg <- which(pfillSRG > cdg.srg) # mbar
+    isrg <- which(pfillCDG <= cdg.srg) # mbar
+    icdg <- which(pfillCDG > cdg.srg) # mbar
 
     ## plot(pfillCDG, (pfillSRG/pfillCDG-1)*100 )
 
@@ -159,7 +159,7 @@ calPfill <- function( ccc){
   }## opk4
 
 
-  
+
   return( ccc )
 }
 

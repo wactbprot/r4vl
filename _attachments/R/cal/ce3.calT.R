@@ -1,4 +1,4 @@
-calT <- function(ccc){
+ce3.calT <- function(ccc){
 
   msg <- "calculated by calT"
 
@@ -33,7 +33,7 @@ calT <- function(ccc){
 
     tRoom <- ( getConstVal(a$cmv,"agilentCh110") +
               getConstVal(a$cmco,"agilentCorrCh110") )
-    
+
       tUhv <- (
                (getConstVal(a$cmv,"agilentCh104") +
                 getConstVal(a$cmco,"agilentCorrCh104")) +
@@ -49,9 +49,9 @@ calT <- function(ccc){
     tXhv <-( (getConstVal(a$cmv,"agilentCh108") +
               getConstVal(a$cmco,"agilentCorrCh108")) +
             (getConstVal(a$cmv,"agilentCh109") +
-             getConstVal(a$cmco,"agilentCorrCh109")) 
+             getConstVal(a$cmco,"agilentCorrCh109"))
             ) /2
-    
+
   tFm <- ((getConstVal(a$cmv,"agilentCh101") +
                getConstVal(a$cmco,"agilentCorrCh101")) +
               (getConstVal(a$cmv,"agilentCh102") +

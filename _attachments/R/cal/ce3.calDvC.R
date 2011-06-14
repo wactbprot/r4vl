@@ -1,4 +1,4 @@
-calDvC <- function( ccc){
+ce3.calDvC <- function( ccc){
 
   msg <- "calculated by calDvC()"
 

@@ -48,15 +48,13 @@ cdb$id         <- "81639d04934132e766657369210f2629"
 doc <- cdbGetDoc(cdb)$res
 doc <- refreshAnalysis(cdb,doc)
 doc <- getOutIndex(doc)
-
-doc <- calT(doc)
-
-doc <- calPfill(doc)
-
-doc <- calDvC(doc)
-doc <- calQ(doc)
-doc <- calMfp(doc)
-doc <- calPcal(doc)
+doc <- ce3.calT(doc)
+doc <- ce3.calPfill(doc)
+doc <- ce3.calDvC(doc)
+doc <- ce3.calQ(doc)
+doc <- ce3.calMfp(doc)
+doc <- ce3.writePind(doc)
+doc <- ce3.calPcal(doc)
 
 
 

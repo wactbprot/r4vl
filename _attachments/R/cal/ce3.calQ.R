@@ -1,4 +1,4 @@
-calQ <- function(ccc){
+ce3.calQ <- function(ccc){
   msg <- "calculated by calQ"
 
   a <-  abbrevList(ccc)

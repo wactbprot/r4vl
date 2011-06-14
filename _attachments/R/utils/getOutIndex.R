@@ -25,6 +25,18 @@ getOutIndex <- function(ccc){
         Ldv <- getConstVal(a$cmv, "cfm3")
         outIndex <- append(outIndex,which(Ldv < 1e-10))
       }
+
+      srgInd   <- getConstVal(a$cm, c("srgFill","srg_fill"))
+      srgOff   <- getConstVal(a$cm, c("srgFillOffset","srg_fill_offset"))
+
+      cdgInd   <-   getConstVal(a$cm, c("cdgInd", "cdga_fill"))
+      cdgOff   <-   getConstVal(a$cm, c("cdgIndOffset","cdga_fill_offset"))
+
+      ip0 <- which(is.na(cdgInd-cdgOff))
+
+
+      outIndex <- append(outIndex,ip0)
+
     }
     ## 2.)
     ## ...

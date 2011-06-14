@@ -1,4 +1,4 @@
-calMfp <- function(ccc){
+ce3.calMfp <- function(ccc){
   msg <- "calculated by calMfp"
 
   a <-  abbrevList(ccc)
