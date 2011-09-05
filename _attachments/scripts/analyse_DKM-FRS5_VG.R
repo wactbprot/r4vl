@@ -10,4 +10,7 @@ if(length(doc$Calibration) > 0){
   doc <- dkm.uncertPdkm(doc)
   doc <- frs5.uncertPfrs5(doc)
 
+  doc <- calEn(doc)
+
+
 }
