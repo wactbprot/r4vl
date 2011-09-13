@@ -44,7 +44,8 @@ if(loadSrc){
 cdb$id         <- "81639d04934132e766657369210f2629"
 doc <- cdbGetDoc(cdb)$res
 
-
+ if(length(ccc$Calibration) > 0){
+ }
 
 
 

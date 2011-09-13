@@ -7,7 +7,7 @@ frs5.calPfrs5 <- function(ccc){
   calUnit <- "Pa"
   resType <- "cal"
   ## aber:
-  if(a$ct == "VG"){
+  if(a$ct == "VG" |  a$ct == "IK"){
     resType <- "frs5"
   }
   ## --   R.cal <- 2.290320
@@ -22,15 +22,18 @@ frs5.calPfrs5 <- function(ccc){
   ## --   mult <- m.cal*g.cal*rho.corr/R.cal/A.0/theta.corr/10
 
   G      <- getSubList(a$cc,    "g")      ## in m/s^2
-  TFRS   <- getSubList(a$cmv$Temperature, "keithley_ch110")
 
-  RCAL   <- getSubList(a$cms,    "R_cal") ## in lb
-  MCAL   <- getSubList(a$cms,    "m_cal") ## in in kg
-  AEFF   <- getSubList(a$cms,    "A_eff") ## in in m^2
-  RHOFrs <-  getSubList(a$cms,    "rho_frs") ## in in kg/m^3
-  RHOGas <-  getSubList(a$cms,    "rho_gas") ## in in kg/m^3
-  AB     <-  getSubList(a$cms,    "alpha_beta_frs") ## in in kg/m^3
+  TFRS   <- getSubList(a$cmv$Temperature, "keithley_ch203")
 
+  RCAL   <- getSubList(a$cms$Constants,    "R_cal") ## in lb
+     
+  MCAL   <- getSubList(a$cms$Constants,    "m_cal") ## in in kg
+
+  AEFF   <- getSubList(a$cms$Constants,    "A_eff") ## in in m^2
+
+  RHOFrs <-  getSubList(a$cms$Constants,    "rho_frs") ## in in kg/m^3
+  RHOGas <-  getSubList(a$cms$Constants,    "rho_gas") ## in in kg/m^3
+  AB     <-  getSubList(a$cms$Constants,    "alpha_beta_frs") ## in in kg/m^3
   ## check der Einheiten
   g      <- getConstVal(NA,NA,G) * getConvFactor(ccc,"m/s^2",G$Unit)
 

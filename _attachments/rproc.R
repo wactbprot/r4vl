@@ -1,5 +1,5 @@
 ## --
-## wactbprot/2011-05-25
+## wactbprot/2011-09-13
 ## --
 library(methods,  quietly =TRUE)
 library(bitops,   quietly =TRUE)
@@ -41,56 +41,59 @@ while(goOn){
               quiet=TRUE,
               sep=NL)
 
-  rIn    <- fromJSON(jIn)
+  rIn    <- fromJSON(jIn,
+                     nullValue = NA,
+                     simplify=FALSE,
+                     simplifyWithNames=FALSE)
 
-  query  <- rIn$query
-  qLen   <- length(query) > 0
-
-  cdb$DBName <- rIn$path[[1]]
+     query  <- rIn$query
+     qLen   <- length(query) > 0
+##   
+     cdb$DBName <- rIn$path[[1]]
   ## at rIn$path[[2]] we have the "_rproc" part
   ##    rIn$path[[3]] is the id, we use it   -->here
 
-  if(qLen){
-    if(length(query$ctrl) == 1){
-      switch(query$ctrl,
-             "end"     = goOn    <- FALSE,
-             "reload"  = loadSrc <- TRUE
-             ## whatever ...
-             )
-    }
-  }
+       if(qLen){
+         if(length(query$ctrl) == 1){
+           switch(query$ctrl,
+                  "end"     = goOn    <- FALSE,
+                  "reload"  = loadSrc <- TRUE
+                  ## whatever ...
+                  )
+         }
+       }
   ## loads the src files from couch
   ## maybe the id of the design doc
   ## varies
-  if(loadSrc){
-    cdb$id <- paste("_design/rproc",sep="")
-    srcDoc <- cdbGetDoc(cdb)$res
-    files <- names(srcDoc$'_attachments')
-
-    baseSrcUrl <- paste(cdb$baseUrl(cdb)
-                        ,cdb$DBName,"/",
-                        cdb$id,"/",
-                        sep="")
-
-    ## in the folder R under _attachment folder
-    ## of the couchapp one can put functions
-    ## which will be available for use when the
-    ## a script execution is demanded
-    ## (via http://server:5984/db/_rproc/id?script=scriptname)
-    for(file in  files){
-      fn <- grep("^R/.*\\.R$",file)
-
-      if(length(fn) > 0){
-        srcUrl <- paste(baseSrcUrl,
-                        file,
-                        sep="")
-
-        source(srcUrl)
-
+    if(loadSrc){
+      cdb$id <- paste("_design/rproc",sep="")
+      srcDoc <- cdbGetDoc(cdb)$res
+      files <- names(srcDoc$'_attachments')
+   
+      baseSrcUrl <- paste(cdb$baseUrl(cdb)
+                          ,cdb$DBName,"/",
+                          cdb$id,"/",
+                          sep="")
+   
+      ## in the folder R under _attachment folder
+      ## of the couchapp one can put functions
+      ## which will be available for use when the
+      ## a script execution is demanded
+      ## (via http://server:5984/db/_rproc/id?script=scriptname)
+      for(file in  files){
+        fn <- grep("^R/.*\\.R$",file)
+   
+        if(length(fn) > 0){
+          srcUrl <- paste(baseSrcUrl,
+                          file,
+                          sep="")
+   
+          source(srcUrl)
+   
+        }
       }
-    }
-    loadSrc <- FALSE
-  } # load src
+      loadSrc <- FALSE
+    } # load src
 
   ## at this place the src (functions under _attachment/R/)
   ## is loaded
@@ -102,43 +105,51 @@ while(goOn){
   ## ----------- the querys
   if(qLen){
     if(length(query$script) == 1){
-
-      iscript <-  grep(query$script,
+      
+      iscript <-  grep(toString(query$script),
                        files)
+      
       if(length(iscript) == 1){
-
+        
         doc <- cdbGetDoc(cdb)$res
-        ## do stuff ----------
+        ## do stuff with doc----------
         source(paste(baseSrcUrl,
                      files[iscript],
                      sep=""))
         ## stuff done -------
         cdb$dataList <- doc
-        Result <-  cdbUpdateDoc(cdb)$res
-
+        Result <- cdbUpdateDoc(cdb)$res
+        
       }else{
-        Result <- "script name found 0 or >1 times"
-        }
+        
+        Result <- paste("script name ",
+                        query$script,
+                        " found ",
+                        length(iscript),
+                        " times", qLen, files)
       }
     }else{
-  Result <- "No query"
+      Result <- paste("no script query (give ...?script=foo) ")
+    }
+  }else{
+    Result <- "No query at all"
   }
-
+  
   rout <- list(code = 200,
                json=list(Result=Result))
-
-  jOut <- gsub(NL,"",toJSON(rout))
-
-  cat( paste(jOut,
-             NL, sep="")
-      )
-
-}
-Sys.setenv("no_proxy" = saveNoProxy)
+               
+               jOut <- gsub(NL,"",toJSON(rout))
+               
+               cat( paste(jOut,
+                          NL, sep="")
+                   )
+               
+             }
+  Sys.setenv("no_proxy" = saveNoProxy)
 ### another methode to get the src:
 ##- need to get the script path
-##- this can be found at the config api end point
-## cfg  <- cdbGetConfig(cdb)$res
+  ##- this can be found at the config api end point
+  ## cfg  <- cdbGetConfig(cdb)$res
 ##  pathspl <- unlist(strsplit(cfg$external$rproc, " "))
 ##  uPath <- sub("rproc.R",'',pathspl[length(pathspl)] )
 ##- from here:

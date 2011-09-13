@@ -17,17 +17,20 @@ getSubList <- function(ccl, typeName, cc=list()){
 gsl <- function(ccl, typeName, cc=list()){
 
   if(!(is.null(ccl)) & !(is.list(ccl))){
-
+    
     ## -keine liste
     ## -nicht NULL
-
-    if(ccl[1] == typeName){
-
+    
+    if(is.na(ccl[1])){
+    }else{
+      if(ccl[1] == typeName){
+      
       resVal <- cc
-
+      
       return( resVal )
-
+      
     }
+  }
   }else{
     ## - liste oder
     ## - NUll
