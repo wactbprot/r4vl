@@ -64,18 +64,27 @@ frs5.calPfrs5 <- function(ccc){
   ## pres
   ## das srg- Problem löse ich später
   ## hier reicht Faktor 27 an die dcr- Werte zu multiplizieren
+  srgD        <- getConstVal(a$cmco,  "d")              ## in m
+  srgRho      <- getConstVal(a$cmco,  "rho")            ## in kg/m^3
+  srgSigma    <- getConstVal(a$cmco,  "sigma_eff_N2")   ##
+  molWeightN2 <- getConstVal(a$cc,    "molWeight_N2")   ## in kg/mol
+  srgR        <- getConstVal(a$cc,    "R")              ## in Pa m^3/mol/K
 
-  pdcrOff  <- getConstVal(a$cma,"frs_res_off")
-  pdcr     <- getConstVal(a$cmv,"frs_res")
+  Tsrg        <- Tfrs + getConvFactor(ccc,"K",TFRS$Unit)
+  
+  srgK        <- (8*srgR*Tsrg/(pi*molWeightN2))^0.5*pi*srgD*srgRho/20
+  
+  pdcrOff     <- getConstVal(a$cma,"frs_res_off")
+  pdcr        <- getConstVal(a$cmv,"frs_res")
 
-  pres     <-   (pdcr - pdcrOff)*2700 ##  ~Umrechnung dcr in Pa bei 23C und N2
+  pres <- (pdcr - pdcrOff) * srgK / srgSigma ##  ~Umrechnung dcr in Pa bei 23C und N2
   ## ---------^^^--------ToDo--------
 
 
   R0        <- RfrsZc - RfrsZc
   R         <- Rfrs - R0
 
-  pfrs <- R/Rcal*mcal*g/Aeff*rhoCorr*alphaBetaCorr+pres ## liefert Pa
+  pfrs <- R/Rcal*mcal*g/Aeff*rhoCorr*alphaBetaCorr + pres ## liefert Pa
 
 
  if(length(a$cmscoi) > 0){
@@ -83,15 +92,6 @@ frs5.calPfrs5 <- function(ccc){
    pres <- checkOutIndex(a,pres)
    msg <- paste(msg, "skiped points:", a$cmscoi, "see function getOutIndex() why")
  }
-
-
-  ccc$Calibration$Analysis$Values$Pressure <-
-    setCcl(ccc$Calibration$Analysis$Values$Pressure,
-           "frs5_res",
-           calUnit,
-           pres)
-
-
 
   ccc$Calibration$Analysis$Values$Pressure <-
     setCcl(ccc$Calibration$Analysis$Values$Pressure,
@@ -101,6 +101,13 @@ frs5.calPfrs5 <- function(ccc){
            msg)
 
 
+  ccc$Calibration$Analysis$Values$Pressure <-
+    setCcl(ccc$Calibration$Analysis$Values$Pressure,
+           "frs5_res",
+           calUnit,
+           pres,
+           paste(msg,"constants:",srgD, srgRho,srgSigma,molWeightN2,srgR,Tsrg, srgK))
+ 
 
   return(ccc)
 }
