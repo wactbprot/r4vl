@@ -22,9 +22,12 @@ frs5.calPfrs5 <- function(ccc){
   ## --   mult <- m.cal*g.cal*rho.corr/R.cal/A.0/theta.corr/10
 
   G      <- getSubList(a$cc,    "g")      ## in m/s^2
-
-  TFRS   <- getSubList(a$cmv$Temperature, "keithley_ch203")
-
+  ## Temperature vvvvvvvvvvvv
+  frs5Tch <- "203"
+  TFRS      <-  getSubList(a$cmv$Temperature, paste("keithley_ch",frs5Tch,sep=""))
+  corrTFrs5 <-  getConstVal(a$cmco,paste("keithley_corr_ch",frs5Tch,sep=""))
+  Tfrs   <- getConstVal(NA,NA,TFRS)  + corrTFrs5
+  ##            ^^^^^^^^^^
   RCAL   <- getSubList(a$cms$Constants,    "R_cal") ## in lb
      
   MCAL   <- getSubList(a$cms$Constants,    "m_cal") ## in in kg
@@ -46,7 +49,7 @@ frs5.calPfrs5 <- function(ccc){
 
   alphaBeta <- getConstVal(NA,NA,AB) * getConvFactor(ccc,"1/C",AB$Unit)
 
-  Tfrs      <- getConstVal(NA,NA,TFRS)    *  getConvFactor(ccc,TUnit,TFRS$Unit)  # C
+ 
 
   RFRS    <- getSubList(a$cmv,    "frs_p") ## in lb
   RFRSZc  <- getSubList(a$cmv,    "frs_zc_p") ## in lb
@@ -108,6 +111,12 @@ frs5.calPfrs5 <- function(ccc){
            pres,
            paste(msg,"constants:",srgD, srgRho,srgSigma,molWeightN2,srgR,Tsrg, srgK))
  
-
+ ccc$Calibration$Analysis$Values$Temperature <-
+    setCcl(ccc$Calibration$Analysis$Values$Temperature,
+           "frs5",
+           "C",
+           Tfrs,
+           paste(msg,"correcteed with T_ch + ",corrTFrs5, "with ch = ", frs5Tch))
+  
   return(ccc)
 }

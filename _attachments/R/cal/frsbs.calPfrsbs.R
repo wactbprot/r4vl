@@ -7,8 +7,15 @@ frsbs.calPfrsbs <- function(ccc){
   calUnit <- "Pa"
   resType <- "frs_bs"
   
-  G       <-  getSubList( a$cc,    "g")      ## in m/s^2 <- nochmal überdenken, g in Berlin!?
-  TFRS    <-  getSubList( a$cmv$Temperature, "keithley_ch202")
+  G       <-  getSubList( a$cc,    "g")      ## in m/s^2 <- nochmal überdenken, g in Berlin!?ja!22.9.11
+  
+ 
+   ## Temperature vvvvvvvvvvvv
+  frsBSTch <- "202"
+  TFRS      <-  getSubList(a$cmv$Temperature, paste("keithley_ch",frsBSTch,sep=""))
+  corrTFrsbs <-  getConstVal(a$cmco,paste("keithley_corr_ch",frsBSTch,sep=""))
+  Tfrs   <- getConstVal(NA,NA,TFRS)  + corrTFrsbs
+  ##            ^^^^^^^^^^
   ##  Konstanten kommen _nicht_
   ##  aus dem Standard sondern aus dem 1. CalibrierObject
   RCAL    <-  getSubList( a$cmco1,    "R_cal")          ## in lb
@@ -30,7 +37,7 @@ frsbs.calPfrsbs <- function(ccc){
   
   alphaBeta  <- getConstVal(NA,NA,AB)   * getConvFactor(ccc,"1/C",AB$Unit)
   
-  Tfrs       <- getConstVal(NA,NA,TFRS) *  getConvFactor(ccc,TUnit,TFRS$Unit)  # C
+ 
   
   RFRS       <- getSubList(a$cmv,    "frs_bs")        ## in lb
   RFRSOFF    <- getSubList(a$cmv,    "frs_bs_offset") ## in lb
@@ -73,6 +80,12 @@ frsbs.calPfrsbs <- function(ccc){
            calUnit,
            pres,
            msg)
-
+  ccc$Calibration$Analysis$Values$Temperature <-
+    setCcl(ccc$Calibration$Analysis$Values$Temperature,
+           "frs_bs",
+           "C",
+           Tfrs,
+           paste(msg,"correcteed with T_ch + ",corrTFrsbs, "with ch = ", frsBSTch))
+  
   return(ccc)
 }

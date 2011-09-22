@@ -10,6 +10,7 @@ library(R4CouchDB,quietly =TRUE)
 cdb  <- cdbIni()
 loadSrc <- TRUE
 cdb$DBName     <- "vaclab_db" ## DBName
+NL <- "\n"
 
 saveNoProxy <- Sys.getenv("no_proxy")
 Sys.setenv("no_proxy" = "*")
@@ -41,7 +42,7 @@ if(loadSrc){
 }
 
 ## devel/tests/calculations from here -----------------
-cdb$id         <- "6cd06157eef6d60bce05ad2a110129f2"
+cdb$id         <- "6cd06157eef6d60bce05ad2a11086521"
 ccc <- cdbGetDoc(cdb)$res
 
  if(length(ccc$Calibration) > 0){
@@ -53,6 +54,7 @@ ccc <- cdbGetDoc(cdb)$res
    ccc <- frs5.calPfrs5(ccc)
    ccc <- frs5.uncertPfrs5(ccc)
    ccc <-  frsbs.calPfrsbs(ccc)
+   ccc <-  calDFrs5FrsBs(ccc)
    
    cdb$dataList <- ccc
  
