@@ -58,7 +58,7 @@ ccc <- cdbGetDoc(cdb)$res
    
    cdb$dataList <- ccc
  
-    res <- cdbUpdateDoc(cdb)$res
+#    res <- cdbUpdateDoc(cdb)$res
  }
 
  rout <- list(code = 200,

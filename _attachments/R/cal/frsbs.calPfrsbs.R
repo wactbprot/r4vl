@@ -38,7 +38,7 @@ frsbs.calPfrsbs <- function(ccc){
   alphaBeta  <- getConstVal(NA,NA,AB)   * getConvFactor(ccc,"1/C",AB$Unit)
   
  
-  
+ 
   RFRS       <- getSubList(a$cmv,    "frs_bs")        ## in lb
   RFRSOFF    <- getSubList(a$cmv,    "frs_bs_offset") ## in lb
   
@@ -50,10 +50,12 @@ frsbs.calPfrsbs <- function(ccc){
   
   ## ---------vvv--------Restgas--------
   
-  PRes       <- getSubList(a$cmv,    "frs_bs_res") ## in mbar
+  PRes       <- getSubList(a$cmv,    "frs_bs_res") 
   ##PResOff    <- getSubList(a$cmv,    "frs_bs_res_offset") ## in mbar
   
-  Pres       <- getConstVal(NA,NA,PRes) * getConvFactor(ccc,calUnit,PRes$Unit)
+  Pres       <- getConstVal(NA,NA,PRes) *
+    getConvFactor(ccc,calUnit,PRes$Unit)*
+      getConstVal(a$cms, "corrFaktor")
   
                                         #
   ##  Presoff    <- getConstVal(NA,NA,PResOff) * getConvFactor(ccc,calUnit,PResOff$Unit)  
