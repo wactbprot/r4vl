@@ -45,7 +45,7 @@ frsbs.calPfrsbs <- function(ccc){
   Rfrs       <- getConstVal(NA,NA,RFRS) * getConvFactor(ccc,RUnit,RFRS$Unit)
   Rfrsoff    <- getConstVal(NA,NA,RFRSOFF) * getConvFactor(ccc,RUnit,RFRSOFF$Unit)
   
-  rhoCorr       <- (1-rhoGas/rhoFrs)
+  rhoCorr       <- (1 - rhoGas/rhoFrs)
   alphaBetaCorr <- (1 + alphaBeta*(Tfrs - 20))
   
   ## ---------vvv--------Restgas--------
@@ -56,7 +56,6 @@ frsbs.calPfrsbs <- function(ccc){
   Pres       <- getConstVal(NA,NA,PRes) *
     getConvFactor(ccc,calUnit,PRes$Unit)*
       getConstVal(a$cms, "corrFaktor")
-  
                                         #
   ##  Presoff    <- getConstVal(NA,NA,PResOff) * getConvFactor(ccc,calUnit,PResOff$Unit)  
   ## "-  Presoff" weg! -> eine wirkliche Offsetmessung gibt es nicht
@@ -64,8 +63,17 @@ frsbs.calPfrsbs <- function(ccc){
                                         #
   pres     <-  Pres
   ## ---------^^^----------------
+  RunCorr  <- Rfrs - Rfrsoff
+  ## ---------vvv--------Waagenk.--------
+  ba <- getConstVal(a$cmco1,"balanceCorr_a")
+  bb <- getConstVal(a$cmco1,"balanceCorr_b")
+  bc <- getConstVal(a$cmco1,"balanceCorr_c")
+  bd <- getConstVal(a$cmco1,"balanceCorr_d")
+
+  bcorr <- (ba*RunCorr^3 + bb*RunCorr^2 + bc*RunCorr + bd) 
+  R     <- bcorr * RunCorr
+  ## ---------^^^----------------
   
-  R         <- Rfrs - Rfrsoff
   
   pfrs <- R/Rcal * mcal * g/Aeff * rhoCorr * alphaBetaCorr + pres ## liefert Pa
   
@@ -75,7 +83,7 @@ frsbs.calPfrsbs <- function(ccc){
            calUnit,
            pfrs,
            msg)
-  
+ 
   ccc$Calibration$Analysis$Values$Pressure <-
     setCcl(ccc$Calibration$Analysis$Values$Pressure,
            paste(resType,"_res",sep=""),

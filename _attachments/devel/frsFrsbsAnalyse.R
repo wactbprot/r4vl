@@ -42,23 +42,20 @@ if(loadSrc){
 }
 
 ## devel/tests/calculations from here -----------------
-cdb$id         <- "6cd06157eef6d60bce05ad2a11086521"
+cdb$id         <- "6cd06157eef6d60bce05ad2a11076063"#"6cd06157eef6d60bce05ad2a110692dd"#6cd06157eef6d60bce05ad2a11086521"
 ccc <- cdbGetDoc(cdb)$res
 
  if(length(ccc$Calibration) > 0){
  
    ccc <- refreshAnalysis(cdb,ccc)
-
- 
- 
    ccc <- frs5.calPfrs5(ccc)
    ccc <- frs5.uncertPfrs5(ccc)
    ccc <-  frsbs.calPfrsbs(ccc)
    ccc <-  calDFrs5FrsBs(ccc)
    
    cdb$dataList <- ccc
- 
-#    res <- cdbUpdateDoc(cdb)$res
+   
+    res <- cdbUpdateDoc(cdb)$res
  }
 
  rout <- list(code = 200,

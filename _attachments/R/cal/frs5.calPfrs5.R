@@ -90,12 +90,6 @@ frs5.calPfrs5 <- function(ccc){
   pfrs <- R/Rcal*mcal*g/Aeff*rhoCorr*alphaBetaCorr + pres ## liefert Pa
 
 
- if(length(a$cmscoi) > 0){
-   pfrs <- checkOutIndex(a,pfrs)
-   pres <- checkOutIndex(a,pres)
-   msg <- paste(msg, "skiped points:", a$cmscoi, "see function getOutIndex() why")
- }
-
   ccc$Calibration$Analysis$Values$Pressure <-
     setCcl(ccc$Calibration$Analysis$Values$Pressure,
            resType,
