@@ -84,7 +84,7 @@ frs5.calPfrs5 <- function(ccc){
   ## ---------^^^--------ToDo--------
 
 
-  R0        <- RfrsZc - RfrsZc
+  R0        <- RfrsZc - RfrsZc0
   R         <- Rfrs - R0
 
   pfrs <- R/Rcal*mcal*g/Aeff*rhoCorr*alphaBetaCorr + pres ## liefert Pa
