@@ -1,6 +1,6 @@
-uncertDeltat <- function(ccc){
+ce3.uncertDeltat <- function(ccc){
 
-  msg <- "Calculated by uncertDeltat()"
+  msg <- "Calculated by ce3.uncertDeltat()"
 
   tmpAn     <- ccc$Calibration$Analysis
   tmpMea    <- ccc$Calibration$Measurement

@@ -1,5 +1,5 @@
-uncertCx <- function(ccc){
-  msg <- "calculated by uncertCx()"
+ce3.uncertCx <- function(ccc){
+  msg <- "calculated by ce3.uncertCx()"
 
   tmpAn     <- ccc$Calibration$Analysis
   tmpMea    <- ccc$Calibration$Measurement

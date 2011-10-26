@@ -1,6 +1,6 @@
-uncertQsplit <- function(ccc){
+ce3.uncertQsplit <- function(ccc){
   
-  msg <- "calculated by uncertQsplit()"
+  msg <- "calculated by ce3.uncertQsplit()"
 
   a <- abbrevList(ccc)
 

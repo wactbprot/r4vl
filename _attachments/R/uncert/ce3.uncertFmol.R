@@ -1,6 +1,6 @@
-uncertFmol <- function(ccc){
+ce3.uncertFmol <- function(ccc){
 
-  msg <- "Calculated by uncertFmol()"
+  msg <- "Calculated by ce3.uncertFmol()"
 
   tmpAn     <- ccc$Calibration$Analysis
   tmpMea    <- ccc$Calibration$Measurement

@@ -1,6 +1,6 @@
-uncertqpV <- function(ccc){
+ce3.uncertqpV <- function(ccc){
 
-  msg <- "Calculated by uncertqpV()"
+  msg <- "Calculated by ce3.uncertqpV()"
 
   tmpAn     <- ccc$Calibration$Analysis
   tmpUns    <- tmpAn$Values$Uncertainty

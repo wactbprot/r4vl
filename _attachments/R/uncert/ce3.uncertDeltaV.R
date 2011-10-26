@@ -1,6 +1,6 @@
-uncertDeltaV <- function(ccc){
+ce3.uncertDeltaV <- function(ccc){
 
-  msg <- "Calculated by uncertDeltaV()"
+  msg <- "Calculated by ce3.uncertDeltaV()"
   tmpAn     <- ccc$Calibration$Analysis
 
   pfillList <- getSubList(tmpAn, "fill")

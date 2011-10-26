@@ -1,6 +1,6 @@
-uncertDPfill <- function(ccc){
+ce3.uncertDPfill <- function(ccc){
 
-  msg <- "Calculated by uncertDPfill()"
+  msg <- "Calculated by ce3.uncertDPfill()"
 
   tmpAn     <- ccc$Calibration$Analysis
   pfillList <- getSubList(tmpAn, "fill")
