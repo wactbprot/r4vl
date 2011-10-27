@@ -1,14 +1,14 @@
 ce3.uncertFmol <- function(ccc){
-
+  
   msg <- "Calculated by ce3.uncertFmol()"
-
-  tmpAn     <- ccc$Calibration$Analysis
-  tmpMea    <- ccc$Calibration$Measurement
-  tmpStrd   <- tmpMea$Standard
-  tmpCo     <- tmpMea$CalibrationObject
-
-  pfillList <- getSubList(tmpAn, "fill")
-  uncertRes <- rep(0.0, length(pfillList$Value))
+  a   <- abbrevList(ccc)
+  
+  
+  
+  PFILL  <- getSubList(a$cav, "fill")
+  pfill  <- getConstVal(NA,NA,PFILL)
+  
+  uncertRes <- rep(0.0, length(pfill))
 
   iLw1 <-  getConductIndex(ccc)$iLw1
   iLw2 <-  getConductIndex(ccc)$iLw2
@@ -16,25 +16,39 @@ ce3.uncertFmol <- function(ccc){
   ## Lw1:
   if(length(iLw1) > 0){
 
-    u1aList <-  getSubList(tmpStrd$Values,"fm3FmolLw1_u1_a")
-    iu1a <- checkUncertRange(u1aList, pfillList, iLw1)
+    u1aList <-  getSubList(a$cms,"fm3FmolLw1_u1_a")
+    iu1a    <- checkUncertRange(u1aList, PFILL, iLw1)
 
-    u1bList <-  getSubList(tmpStrd$Values,"fm3FmolLw1_u1_b")
-    iu1b <- checkUncertRange(u1bList, pfillList, iLw1)
+    u1bList <-  getSubList(a$cms,"fm3FmolLw1_u1_b")
+    iu1b    <- checkUncertRange(u1bList, PFILL, iLw1)
 
     if((length(iu1b) == length(iu1a) ) & (length(iu1a) > 0)){
 
-      uncertRes[iu1b] <- as.double(u1aList$Value) + as.double(u1bList$Value) * pfillList$Value[iu1b]
+      uncertRes[iu1b] <- getConstVal(NA,NA,u1aList) + getConstVal(NA,NA,u1bList) * pfill[iu1b]
 
-      msg <- paste(msg, "points: ",toString(iu1b)," use: ",u1aList$Type, "(LW1) and ",u1bList$Type, "(LW1)")
-
+      msg <- paste(msg,
+                   "points: ",
+                   toString(iu1b),
+                   " use: ",
+                   u1aList$Type,
+                   "(LW1) and ",
+                   u1bList$Type,
+                   "(LW1)")
     }
 
-    u2List <-  getSubList(tmpStrd$Values,"fm3FmolLw1_u2")
-    iu2 <- checkUncertRange(u2List, pfillList, iLw1)
+    u2List <-  getSubList(a$cms,"fm3FmolLw1_u2")
+    iu2    <-  checkUncertRange(u2List, PFILL, iLw1)
+    
     if(length(iu2) > 0 ){
-      uncertRes[iu2] <- as.double(u2List$Value)$Value
-      msg <- paste(msg, "points: ",toString(iu2)," use: ",u2List$Type, "(LW1)")
+      
+      uncertRes[iu2] <- getConstVal(NA,NA,u2List)
+
+      msg <- paste(msg,
+                   "points: ",
+                   toString(iu2),
+                   " use: ",
+                   u2List$Type,
+                   "(LW1)")
     }
 
   }## LW1
@@ -42,35 +56,47 @@ ce3.uncertFmol <- function(ccc){
   ## Lw1:
   if(length(iLw2) > 0){
 
-    u1aList <-  getSubList(tmpStrd$Values,"fm3FmolLw2_u1_a")
-    iu1a <- checkUncertRange(u1aList, pfillList, iLw2)
+    u1aList <-  getSubList(a$cms,"fm3FmolLw2_u1_a")
+    iu1a    <-  checkUncertRange(u1aList, PFILL, iLw2)
 
-    u1bList <-  getSubList(tmpStrd$Values,"fm3FmolLw2_u1_b")
-    iu1b <- checkUncertRange(u1bList, pfillList, iLw2)
+    u1bList <-  getSubList(a$cms,"fm3FmolLw2_u1_b")
+    iu1b    <-  checkUncertRange(u1bList, PFILL, iLw2)
 
     if((length(iu1b) == length(iu1a) )& length(iu1a) > 0){
 
-      uncertRes[iu1b] <- as.double(u1aList$Value) + as.double(u1bList$Value) * pfillList$Value[iu1b]
+      uncertRes[iu1b] <- getConstVal(NA,NA,u1aList) + getConstVal(NA,NA,u1bList) * pfill[iu1b]
 
-      msg <- paste(msg, "points: ",toString(iu1b)," use: ",u1aList$Type, "(LW2) and ",u1bList$Type, "(LW2)")
-
+      msg <- paste(msg,
+                   "points: ",
+                   toString(iu1b),
+                   " use: ",
+                   u1aList$Type,
+                   " (LW2) and ",
+                   u1bList$Type,
+                   "(LW2)")
     }
-
-    u2List <-  getSubList(tmpStrd$Values,"fm3FmolLw2_u2")
-    iu2 <- checkUncertRange(u2List, pfillList, iLw1)
+    
+    u2List <-  getSubList(a$cms,"fm3FmolLw2_u2")
+    iu2    <-  checkUncertRange(u2List, PFILL, iLw1)
 
     if(length(iu2) > 0 ){
-      uncertRes[iu2] <- as.double(u2List$Value)$Value
-      msg <- paste(msg, "points: ",toString(iu2)," use: ",u2List$Type, "(LW2)")
+      uncertRes[iu2] <- getConstVal(NA,NA,u2List)
+      msg <- paste(msg,
+                   " points: ",
+                   toString(iu2),
+                   " use: ",
+                   u2List$Type,
+                   " (LW2)")
     }
 
   }## LW2
-  ccc$Calibration$Analysis$Values$Uncertainty <- setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
-                                                        "uncertFmol",
-                                                        "1",
-                                                        uncertRes,
-                                                        msg)
-
+  ccc$Calibration$Analysis$Values$Uncertainty <-
+    setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
+           "uncertFmol",
+           "1",
+           uncertRes,
+           msg)
+  
   return(ccc)
   }
 

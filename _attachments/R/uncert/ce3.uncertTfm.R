@@ -2,23 +2,26 @@ ce3.uncertTfm <- function(ccc){
 
   msg <- "calculated by ce3.uncertTfm()"
 
+  a <- abbrevList(ccc)
+
   tmpAn     <- ccc$Calibration$Analysis
   tmpMea    <- ccc$Calibration$Measurement
   tmpStrd   <- tmpMea$Standard
   tmpCo     <- tmpMea$CalibrationObject
 
-  TfmList <- getSubList(tmpAn, "Tfm3")
-
-  noOfCo    <- length(tmpCo)
-  noOfTfm <- length(TfmList$Value)
-
+  TFM       <- getSubList(a$cav, "Tfm3")
+  Tfm       getConstVal(NA,NA,TFM)
+  
+  noOfCo    <- length( a$cmco)
+  noOfTfm   <- length(Tfm)
+  
   uncertTfmRes <- rep(NA,noOfTfm)
-
+  
   if( noOfCo < 2){
     print("No. of CalibrationObjects < 2")
     stop()
   }else{
-
+    
     for(ico in 1:noOfCo){
       currCo <- tmpCo[[ico]]
       ## Vorsicht es werden alle Calibration Objekte angesehen!!
@@ -28,7 +31,7 @@ ce3.uncertTfm <- function(ccc){
       if(length(currCo$Device$UsedFor) > 0){
         if(currCo$Device$UsedFor == "T"){
 
-          res <- quadrSumContrib(currCo, TfmList,uncertTfmRes,msg)
+          res <- quadrSumContrib(currCo, TFM,uncertTfmRes,msg)
           uncertTfmRes <- res$uncertRes
           msg <- res$msg
         }

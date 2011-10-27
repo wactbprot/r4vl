@@ -46,7 +46,7 @@ doc <- cdbGetDoc(cdb)$res
 
 doc <- uncertQsplit(doc)
 	 
-doc <- ce3.uncertCmol(doc)
+
 doc <- ce3.uncertCx(doc)
 doc <- ce3.uncertDPfill(doc)
 doc <- ce3.uncertDeltaV(doc)
@@ -56,6 +56,10 @@ doc <- ce3.uncertFmol(doc)
 doc <- ce3.uncertPfill(doc)
 doc <- ce3.uncertQsplit(doc)
 doc <- ce3.uncertTfm(doc)
+
 doc <- ce3.uncertqpV(doc)
+
+doc <- ce3.uncertCmol(doc) 
+
 ## ----------------------------------------------------
 Sys.setenv("no_proxy" = saveNoProxy)

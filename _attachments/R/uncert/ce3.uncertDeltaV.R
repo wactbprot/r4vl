@@ -1,11 +1,15 @@
 ce3.uncertDeltaV <- function(ccc){
 
   msg <- "Calculated by ce3.uncertDeltaV()"
-  tmpAn     <- ccc$Calibration$Analysis
 
-  pfillList <- getSubList(tmpAn, "fill")
-  pfill     <- pfillList$Value
-  pfillUnit <- pfillList$Unit
+  
+  a <- abbrevList(ccc)
+
+  
+  PFILL <- getSubList(a$ca, "fill")
+  
+  pfill     <- getConstVal(NA,NA,PFILL)
+  pfillUnit <- PFILL$Unit
   noOfPfill <- length(pfill)
 
   ##
@@ -14,17 +18,15 @@ ce3.uncertDeltaV <- function(ccc){
 
   uncertDeltaV <- rep(0,noOfPfill)
 
-  tmpMea    <- ccc$Calibration$Measurement
-  tmpStrd   <- tmpMea$Standard
+  
+  u2aList <-  getSubList(a$cms,"fm3DeltaV_u2_a")
+  u2aAbs <- getConstVal(NA,NA,u2aList)
 
-  u2aList <-  getSubList(tmpStrd$Values,"fm3DeltaV_u2_a")
-  u2aAbs <- as.double(u2aList$Value)
+  u2cList <-  getSubList(a$cms,"fm3DeltaV_u2_c")
+  u2cAbs <- getConstVal(NA,NA,u2cList)
 
-  u2cList <-  getSubList(tmpStrd$Values,"fm3DeltaV_u2_c")
-  u2cAbs <- as.double(u2cList$Value)
-
-  deltaGList <-  getSubList(tmpStrd$Values,"deltaG")
-  deltaG <- as.double(deltaGList$Value)
+  deltaGList <-  getSubList(a$cms,"deltaG")
+  deltaG <- getConstVal(NA,NA,deltaGList)
 
   if(u2aList$Unit ==  deltaGList$Unit){
     u2a <-  u2aAbs/deltaG
@@ -39,45 +41,45 @@ ce3.uncertDeltaV <- function(ccc){
     stop()
   }
 
-  u2bList <- getSubList(tmpStrd$Values,"fm3DeltaV_u2_b")
-  u2b <-  as.double(u2bList$Value)
-  iu2b <- checkUncertRange(u2bList, pfillList)
+  u2bList <- getSubList(a$cms,"fm3DeltaV_u2_b")
+  u2b <-  getConstVal(NA,NA,u2bList)
+  iu2b <- checkUncertRange(u2bList, PFILL)
 
-  u2dList <- getSubList(tmpStrd$Values,"fm3DeltaV_u2_d")
-  u2d <-  as.double(u2dList$Value)
-  iu2d <- checkUncertRange(u2dList, pfillList)
+  u2dList <- getSubList(a$cms,"fm3DeltaV_u2_d")
+  u2d <-  getConstVal(NA,NA,u2dList)
+  iu2d <- checkUncertRange(u2dList, PFILL)
 
-  u2eList <- getSubList(tmpStrd$Values,"fm3DeltaV_u2_e")
-  u2e <-  as.double(u2eList$Value)
-  iu2e <- checkUncertRange(u2eList, pfillList)
+  u2eList <- getSubList(a$cms,"fm3DeltaV_u2_e")
+  u2e <-  getConstVal(NA,NA,u2eList)
+  iu2e <- checkUncertRange(u2eList, PFILL)
 
-  u2fList <- getSubList(tmpStrd$Values,"fm3DeltaV_u2_f")
-  u2f <-  as.double(u2fList$Value)
-  iu2f <- checkUncertRange(u2fList, pfillList)
+  u2fList <- getSubList(a$cms,"fm3DeltaV_u2_f")
+  u2f <-  getConstVal(NA,NA,u2fList)
+  iu2f <- checkUncertRange(u2fList, PFILL)
 
-  u2gList <- getSubList(tmpStrd$Values,"fm3DeltaV_u2_g")
-  u2g <-  as.double(u2gList$Value)
-  iu2g <- checkUncertRange(u2gList, pfillList)
-
+  u2gList <- getSubList(a$cms,"fm3DeltaV_u2_g")
+  u2g <-  getConstVal(NA,NA,u2gList)
+  iu2g <- checkUncertRange(u2gList, PFILL)
+  
   if((length(iu2d) == length(iu2e)) &
      (length(iu2e) == length(iu2f)) &
      (length(iu2f) == length(iu2g))){
-  ## Gleichung 16, 17 und 18:
+    ## Gleichung 16, 17 und 18:
     uDeltaG <- sqrt(u2a^2 + u2b^2 + u2c^2)
     ## Gleichung 15
     uA      <- sqrt(uDeltaG^2 + u2d^2 + u2e^2 + u2g^2)
     ## Gleichung 13
     uncertDeltaV[iu2g] <- sqrt(uA^2 + u2e^2 + u2f^2)
-
+    
     msg <- paste(msg,"relativ Uncertainty is related to DeltaV!")
-
-    ccc$Calibration$Analysis$Values$Uncertainty <- setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
-                                                          "uncertDeltaV",
-                                                          "1",
-                                                          uncertDeltaV,
-                                                          msg)
+    
+    ccc$Calibration$Analysis$Values$Uncertainty <-
+      setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
+             "uncertDeltaV",
+             "1",
+             uncertDeltaV,
+             msg)
   }else{
-    print("uncertainties with different ranges")
     stop()
   }
   return(ccc)

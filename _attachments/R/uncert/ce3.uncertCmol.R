@@ -2,6 +2,7 @@ ce3.uncertCmol <- function(ccc){
 
   msg <- "Calculated by ce3.uncerCmol()"
 
+  
   tmpAn     <- ccc$Calibration$Analysis
   tmpUns    <- tmpAn$Values$Uncertainty
 

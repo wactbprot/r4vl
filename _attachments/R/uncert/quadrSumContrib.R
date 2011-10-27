@@ -22,23 +22,41 @@ quadrSumContrib <- function( currentCalObj, refQuantityList,uncertRes, msg ){
           ##------------------------------
           if(uncertIList$Unit =="1"){
             ## Unsicherheit ist schon relativ
-            msg <- paste(msg,"use",uncertIList$Type,"for point(s)", toString(idx))
-            varianzI <- as.double(uncertIList$Value)^2
+            varianzI <- getConstVal(NA,NA,uncertIList)^2
+            msg      <- paste(msg,
+                              "use",
+                              uncertIList$Type,
+                              "for point(s)",
+                              toString(idx))
           }## unit==1
           ##------------------------------
           if(uncertIList$Unit =="mbar"){
             ## (u_i/pfill)^2
-            varianzI <- (as.double(uncertIList$Value)/refQuantityList$Value[idx])^2
-            msg <- paste(msg,"use",uncertIList$Type,
-                         "/ ", refQuantityList$Type, " in",uncertIList$Unit, "for point(s)", toString(idx))
+            varianzI <- (getConstVal(NA,NA,uncertIList)/getConstVal(NA,NA,refQuantityList)[idx])^2
+            msg <- paste(msg,
+                         "use",
+                         uncertIList$Type,
+                         "/ ",
+                         refQuantityList$Type,
+                         " in ",
+                         uncertIList$Unit,
+                         " for point(s) ",
+                         toString(idx))
           }## unit==mbar
           ##------------------------------
           if(uncertIList$Unit =="K"){
 
             ## (u_i/pfill)^2
-            varianzI <- (as.double(uncertIList$Value)/refQuantityList$Value[idx])^2
-            msg <- paste(msg,"use",uncertIList$Type,
-                         "/ ", refQuantityList$Type," in ",uncertIList$Unit, "for point(s)", toString(idx))
+            varianzI <- (getConstVal(NA,NA,uncertIList)/getConstVal(NA,NA,refQuantityList)[idx])^2
+            msg <- paste(msg,
+                         " use ",
+                         uncertIList$Type,
+                         "/ ",
+                         refQuantityList$Type,
+                         " in ",
+                         uncertIList$Unit,
+                         " for point(s) ",
+                         toString(idx))
           }## unit==mbar
           ##------------------------------------------------------------
 
@@ -53,11 +71,11 @@ quadrSumContrib <- function( currentCalObj, refQuantityList,uncertRes, msg ){
       uncertRes[ifullCORange] <- sqrt(rowSums(varianzMat[ifullCORange, ],  na.rm=TRUE))
 
     }else{
-      print(paste( currentCalObj$Device$Name, "do not have a uncertainty definitions"))
+     msg <- paste(msg,"!->", currentCalObj$Name, "do not have a uncertainty definitions")
     }
   }else{## co hat undefinierte Range
-    print(paste( currentCalObj$Device$Name , "do not have a valid Range definition"))
+   msg <- paste(msg, "!->",currentCalObj$Name , "do not have a valid Range definition")
   }
 
-  return(res <- list(uncertRes=uncertRes, msg=msg))
+  return(res <- list(uncertRes = uncertRes, msg = msg))
 }

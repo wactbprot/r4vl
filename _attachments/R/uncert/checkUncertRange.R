@@ -1,6 +1,7 @@
 checkUncertRange <- function(uncertIList, referenceList, globalRange=NA){
 
-  referenceVal     <- referenceList$Value
+  referenceVal     <- getConstVal(NA,NA,referenceList)
+  
   ## gri: global range index
   ## lri: lokal range index
 
