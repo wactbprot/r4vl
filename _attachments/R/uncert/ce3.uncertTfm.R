@@ -4,18 +4,14 @@ ce3.uncertTfm <- function(ccc){
 
   a <- abbrevList(ccc)
 
-  tmpAn     <- ccc$Calibration$Analysis
-  tmpMea    <- ccc$Calibration$Measurement
-  tmpStrd   <- tmpMea$Standard
-  tmpCo     <- tmpMea$CalibrationObject
-
   TFM       <- getSubList(a$cav, "Tfm3")
-  Tfm       getConstVal(NA,NA,TFM)
+  Tfm       <- getConstVal(NA,NA,TFM)
+  TfmUnit   <- TFM$Unit 
   
   noOfCo    <- length( a$cmco)
   noOfTfm   <- length(Tfm)
   
-  uncertTfmRes <- rep(NA,noOfTfm)
+  uncertTSensCalib <- rep(NA,noOfTfm)
   
   if( noOfCo < 2){
     print("No. of CalibrationObjects < 2")
@@ -23,7 +19,7 @@ ce3.uncertTfm <- function(ccc){
   }else{
     
     for(ico in 1:noOfCo){
-      currCo <- tmpCo[[ico]]
+      currCo <- a$cmco[[ico]]
       ## Vorsicht es werden alle Calibration Objekte angesehen!!
       ## deshalb noch UsedFor Tag eingef.
       ## ok!
@@ -31,27 +27,52 @@ ce3.uncertTfm <- function(ccc){
       if(length(currCo$Device$UsedFor) > 0){
         if(currCo$Device$UsedFor == "T"){
 
-          res <- quadrSumContrib(currCo, TFM,uncertTfmRes,msg)
-          uncertTfmRes <- res$uncertRes
+          res <- quadrSumContrib(currCo, TFM,uncertTSensCalib,msg)
+          uncertTSensCalib <- res$uncertRes
           msg <- res$msg
         }
       }
     }
-    ## gibt es NA's in uncertTfmRes?
-    iall <- which(is.na(uncertTfmRes))
+    ## gibt es NA's in uncertTSensCalib?
+    iall <- which(is.na(uncertTSensCalib))
 
     if(length(iall) > 0){
-      print("uncertainty vector don't cover entire Tfm range")
-      print("using u=1 (100%) instead!")
-      msg <- paste(msg, "replaced uncalculated value at point(s)",iall,"with 1 (100%)")
-      uncertTfmRes[iall] <- 1.0
+      msg <- paste(msg,
+                   "uncertainty vector don't cover entire Tfm range ",
+                   "use u=1 (100%) instead! ",
+                   "replaced uncalculated value at point(s): ",
+                   iall )
+
+      uncertTSensCalib[iall] <- 1.0
 
     }
-    ccc$Calibration$Analysis$Values$Uncertainty <- setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
-                                                          "uncertTfm",
-                                                          "1",
-                                                          uncertTfmRes,
-                                                          msg)
+    
+    UNS1 <- getSubList(a$cms, "fm3Tfm_u1")
+    UNS2 <- getSubList(a$cms, "fm3Tfm_u2")
+    UNS3 <- getSubList(a$cms, "fm3Tfm_u3")
+
+    if(TfmUnit == UNS1$Unit &&
+       TfmUnit == UNS2$Unit &&
+       TfmUnit == UNS3$Unit){
+
+      u1 <- getConstVal(NA,NA, UNS1)
+      u2 <- getConstVal(NA,NA, UNS2)
+      u3 <- getConstVal(NA,NA, UNS3)
+    
+    uges <- sqrt((uncertTSensCalib*Tfm)^2 + u1^2 + u2^2 + u3^2)/Tfm
+
+  }else{
+    
+    uges <- 2/Tfm ## muss weh tun!
+    
+    msg <- paste(msg, " uncert. contrib. units dont match! use 2K as uncertainty")
+  }
+    ccc$Calibration$Analysis$Values$Uncertainty <-
+      setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
+             "uncertTfm",
+             "1",
+              uges,
+             msg)
   }## no ofCo<2
 
   return(ccc)

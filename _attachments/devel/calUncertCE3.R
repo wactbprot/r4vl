@@ -56,9 +56,7 @@ doc <- ce3.uncertFmol(doc)
 doc <- ce3.uncertPfill(doc)
 doc <- ce3.uncertQsplit(doc)
 doc <- ce3.uncertTfm(doc)
-
 doc <- ce3.uncertqpV(doc)
-
 doc <- ce3.uncertCmol(doc) 
 
 ## ----------------------------------------------------

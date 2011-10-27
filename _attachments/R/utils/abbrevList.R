@@ -24,7 +24,7 @@ abbrevList <- function(ccc){
   if(a$cs =="CE3"){
     a$cmsc   <- a$cm$SequenzControl
     if(is.null( a$cmsc )){
-      a$cmsc   <- a$cm$SequenceControl
+      a$cmsc <- a$cm$SequenceControl
     }
     a$cmscok <- a$cmsc$operationKind
     a$cmscg  <- a$cmsc$Gas
