@@ -1,6 +1,6 @@
-ce3.uncertPfill <- function(ccc){
+fm3.uncertPfill <- function(ccc){
 
-  msg <- "Calculated by ce3.uncertPfill()"
+  msg <- "Calculated by fm3.uncertPfill()"
   a   <- abbrevList(ccc)
  
   PFILL     <- getSubList(a$cav, "fill")

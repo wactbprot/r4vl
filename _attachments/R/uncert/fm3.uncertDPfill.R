@@ -1,5 +1,5 @@
-ce3.uncertDPfill <- function(ccc){
-  msg <- "Calculated by ce3.uncertDPfill()"
+fm3.uncertDPfill <- function(ccc){
+  msg <- "Calculated by fm3.uncertDPfill()"
   
   a <- abbrevList(ccc)
   

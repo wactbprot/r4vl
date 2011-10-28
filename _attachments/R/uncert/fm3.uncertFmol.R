@@ -1,6 +1,6 @@
-ce3.uncertFmol <- function(ccc){
+fm3.uncertFmol <- function(ccc){
   
-  msg <- "Calculated by ce3.uncertFmol()"
+  msg <- "Calculated by fm3.uncertFmol()"
   a   <- abbrevList(ccc)
   
   

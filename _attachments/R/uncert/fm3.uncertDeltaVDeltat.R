@@ -1,5 +1,5 @@
-ce3.uncertDeltaVDeltat <- function(ccc){
-  msg <- "Calculated by ce3.uncertDeltaVDeltat()"
+fm3.uncertDeltaVDeltat <- function(ccc){
+  msg <- "Calculated by fm3.uncertDeltaVDeltat()"
 
   
   a <- abbrevList(ccc)

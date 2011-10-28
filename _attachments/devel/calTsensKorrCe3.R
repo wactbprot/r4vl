@@ -41,25 +41,13 @@ if(loadSrc){
 }
 
 ## devel/tests/calculations from here -----------------
-cdb$id         <- "b3a62dbf073c36cd5a833ad3ee002a98"
+cdb$id         <- "1334b21a94329aeba7f19f6b61044cc9"
 doc <- cdbGetDoc(cdb)$res
-	 
+doc <- ce3.calTsensKorr(doc)
 
-doc <- fm3.uncertPfill(doc)
-doc <- fm3.uncertDPfill(doc)
-doc <- fm3.uncertDeltaV(doc)
-doc <- fm3.uncertDeltaVDeltat(doc)
-doc <- fm3.uncertDeltat(doc)
-doc <- fm3.uncertFmol(doc)
-doc <- fm3.uncertqpV(doc)
-doc <- fm3.uncertCmol(doc)
+#cdb$dataList <- doc
+#Result <-  cdbUpdateDoc(cdb)$res
 
-
-doc <- ce3.uncertCx(doc)
-doc <- ce3.uncertQsplit(doc)
-doc <- ce3.uncertTfm(doc)
-doc <- ce3.uncertTch(doc)
-doc <- ce3.uncertF(doc)
 
 
 ## ----------------------------------------------------

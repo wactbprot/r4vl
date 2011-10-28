@@ -1,11 +1,11 @@
 getConvFactor <- function(ccc,toUnit,fromUnit){
-##                     zBsp.:       ^ cal     ^ind
-  ## funktioniert nur wenn ConvFaktoren vorhanden sind und nach der Form
+  ##                     zBsp.:       ^ cal     ^ind
+  ## funktioniert nur wenn ConvFaktoren vorhanden und nach der Form
   ## mbar_2_Pa
   ## codiert sind
   a            <- abbrevList(ccc)
   conv         <- 1
-
+  
   if(is.list(fromUnit)){
     fromUnit   <- fromUnit$Unit
   }
