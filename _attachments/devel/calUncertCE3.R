@@ -60,6 +60,7 @@ doc <- ce3.uncertQsplit(doc)
 doc <- ce3.uncertTfm(doc)
 doc <- ce3.uncertTch(doc)
 doc <- ce3.uncertF(doc)
+doc <- ce3.uncertPcal(doc)
 
 
 ## ----------------------------------------------------
