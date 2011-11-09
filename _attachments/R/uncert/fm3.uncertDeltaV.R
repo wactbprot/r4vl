@@ -1,4 +1,4 @@
-function(ccc){
+fm3.uncertDeltaV <- function(ccc){
 
   msg <- "Calculated by fm3.uncertDeltaV()"
 
