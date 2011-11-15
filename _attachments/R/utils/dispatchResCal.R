@@ -12,24 +12,24 @@ dispatchResCal <- function(ccc){
       ## Antwort s. Functionsname!
       ## also vom customCo
        if(resType == "sigma"){
-       ##  print("call calSigma ")
+
          ccc <-  calSigma(ccc)
        }
 
       if(resType == "error"){
-        ## print("call calError ")
+
         ccc <-  calError(ccc)
 
        }
 
        if(resType == "ratio"){
-      ##   print("call calRatio ")
+
          ccc <-  calRatio(ccc)
 
        }
 
        if(resType == "correctionFactor"){
-      ##   print("call calCf ")
+
          ccc <-  calCf(ccc)
        }
 

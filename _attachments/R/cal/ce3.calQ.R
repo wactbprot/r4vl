@@ -1,5 +1,5 @@
 ce3.calQ <- function(ccc){
-  msg <- "calculated by calQ"
+  msg <- "calculated by ce3.calQ"
 
   a <-  abbrevList(ccc)
 
@@ -28,6 +28,7 @@ ce3.calQ <- function(ccc){
     qSplitCorrB <- getConstVal(a$cms,"qSplitCorrUhvOpk1B")
     qSplitCorrC <- getConstVal(a$cms,"qSplitCorrUhvOpk1C")
 
+    T           <- TUhv 
   }
 
   if(a$cmscok == "opK2"){
@@ -36,6 +37,7 @@ ce3.calQ <- function(ccc){
     qSplitCorrB <- getConstVal(a$cms,"qSplitCorrUhvOpk2B")
     qSplitCorrC <- getConstVal(a$cms,"qSplitCorrUhvOpk2C")
 
+    T           <- TUhv 
   }
 
   if(a$cmscok == "opK3"){
@@ -46,6 +48,7 @@ ce3.calQ <- function(ccc){
     qSplitCorrB <- getConstVal(a$cms,"qSplitCorrXhvOpk3B")
     qSplitCorrC <- getConstVal(a$cms,"qSplitCorrXhvOpk3C")
 
+    T           <- TXhv 
   }
 
   if(a$cmscok == "opK4"){
@@ -56,6 +59,7 @@ ce3.calQ <- function(ccc){
     qSplitCorrB <- getConstVal(a$cms,"qSplitCorrUhvOpk1B")
     qSplitCorrC <- getConstVal(a$cms,"qSplitCorrUhvOpk1C")
 
+    T           <- TUhv 
   }
 
 
@@ -70,7 +74,7 @@ ce3.calQ <- function(ccc){
     fdCorr[i] <-  qSplitCorrA
   }
 
-  qpVCorr <- qpVFd * fdCorr
+  qpVCorr <-  qmol * T * R * fdCorr
 
   ccc$Calibration$Analysis$Values$Flow <-
     setCcl(ccc$Calibration$Analysis$Values$Flow,
@@ -87,7 +91,6 @@ ce3.calQ <- function(ccc){
            qpVCorr,
            paste(msg," under ", a$cmscok)
            )
-
 
   return (ccc)
 
