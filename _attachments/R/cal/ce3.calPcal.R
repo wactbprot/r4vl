@@ -24,7 +24,7 @@ ce3.calPcal <- function(ccc){
     K2        <- (1 + aK2*(2* r1/mfp))
 
     ## leitwerte in m^3/s 
-    c         <- sqrt(8 * R * Tref/(pi * M)) ## m/s 
+    c         <- sqrt(8 * R * Tch/(pi * M)) ## m/s 
     C1        <- c/4 * A1 * K2 * K3
 
     p         <- qpV * mbarls2pam3s/C1 * Pa2mbar ##  [qpVUhv] = mbar l/s [C1] = m^3/s
@@ -46,7 +46,7 @@ ce3.calPcal <- function(ccc){
     Tch         <- getConstVal(a$ca, "Txhv")
     K2          <- (1 + aK2*(2* r2/mfp))
     
-    c           <- sqrt(8 * R * Tref/(pi * M)) ## m/s
+    c           <- sqrt(8 * R * Tch/(pi * M)) ## m/s
     C2          <- c/4*A2 * K2 * K3
 
     ##  [qpVUhv] = mbar l/s [C1] = m^3/s

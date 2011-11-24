@@ -15,11 +15,18 @@ calSigma <- function( ccc ){
   ## es kann so der Name erstellt werden:
   
 
-  d <- getConstVal(a$cmco1, "d")
+  d   <- getConstVal(a$cmco1, "d")
   rho <- getConstVal(a$cmco1,"rho" )
 
-  RD <- getSubList(a$cmv,  "p_ind_offset")
+  RD  <- getSubList(a$cmv,  "p_ind_offset")
+  if(is.null(RD)){
+    RD <- getSubList(a$cmv,  "offset")
+  }
+     
   IND <- getSubList(a$cmv, "p_ind" )
+  if(is.null(IND)){
+    IND <- getSubList(a$cmv,  "ind")
+  }
  
   rd <-  getConstVal(NA,NA, RD)
   ind <- getConstVal(NA,NA,IND)
@@ -29,9 +36,8 @@ calSigma <- function( ccc ){
 
   ## seit 7.2.11 gibt es in getOutIndex
   ## eine pind - off Klausel
-  rd  <- checkOutIndex(a,rd)
-  ind <- checkOutIndex(a,ind)
-  
+  ## ist seit Okt. 11 nicht mehr nötig
+ 
   CAL <- getSubList(a$cav$Pressure, "cal" )
   ## check unit of CAL
   cal <- getConstVal(NA,NA,CAL)
@@ -51,7 +57,9 @@ calSigma <- function( ccc ){
     if(a$cs == "SE1"){
       T <- getConstVal(a$cav, "after")
     }
-    
+    if(a$cs == "CE3"){
+      T <- getConstVal(a$cav, "Tuhv")
+    }
     if(  a$cmscg == "Ar"){
       M <- getConstVal(a$cc, "molWeight_Ar" )
       msg <- paste(msg, "; gas:", a$cmscg)
@@ -63,7 +71,7 @@ calSigma <- function( ccc ){
 
     
     if(CAL$Unit == "mbar"){
-      IndUnit <- "mbar"
+      IndUnit <- CAL$Unit
    
       K <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/2000
 

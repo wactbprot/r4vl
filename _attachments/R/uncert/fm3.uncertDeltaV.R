@@ -9,12 +9,9 @@ fm3.uncertDeltaV <- function(ccc){
   PFILL <- getSubList(a$ca, "fill")
   
   pfill     <- getConstVal(NA,NA,PFILL)
+
   pfillUnit <- PFILL$Unit
   noOfPfill <- length(pfill)
-
-  ##
-  ## später evtl noch range def.
-  ##
 
   uncertDeltaV <- rep(0,noOfPfill)
 
@@ -31,14 +28,12 @@ fm3.uncertDeltaV <- function(ccc){
   if(u2aList$Unit ==  deltaGList$Unit){
     u2a <-  u2aAbs/deltaG
   }else{
-    print("unit deltaG and fm3DeltaV_u2_a don't match")
-    stop()
+    stop("unit deltaG and fm3DeltaV_u2_a don't match")
   }
   if(u2cList$Unit ==  deltaGList$Unit){
     u2c <-  u2cAbs/deltaG
   }else{
-    print("unit deltaG and fm3DeltaV_u2_c don't match")
-    stop()
+    stop("unit deltaG and fm3DeltaV_u2_c don't match")
   }
 
   u2bList <- getSubList(a$cms,"fm3DeltaV_u2_b")
@@ -64,14 +59,15 @@ fm3.uncertDeltaV <- function(ccc){
   if((length(iu2d) == length(iu2e)) &
      (length(iu2e) == length(iu2f)) &
      (length(iu2f) == length(iu2g))){
-    ## Gleichung 16, 17 und 18:
+
     uDeltaG <- sqrt(u2a^2 + u2b^2 + u2c^2)
-    ## Gleichung 15
+
     uA      <- sqrt(uDeltaG^2 + u2d^2 + u2e^2 + u2g^2)
-    ## Gleichung 13
+
     uncertDeltaV[iu2g] <- sqrt(uA^2 + u2e^2 + u2f^2)
     
-    msg <- paste(msg,"relativ Uncertainty is related to DeltaV!")
+    msg <- paste(msg,
+                 "relativ Uncertainty is related to DeltaV!")
     
     ccc$Calibration$Analysis$Values$Uncertainty <-
       setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
@@ -80,7 +76,7 @@ fm3.uncertDeltaV <- function(ccc){
              uncertDeltaV,
              msg)
   }else{
-    stop()
+    stop("at least one DeltaV uncertainty contrib. has a wrong length")
   }
   return(ccc)
 }

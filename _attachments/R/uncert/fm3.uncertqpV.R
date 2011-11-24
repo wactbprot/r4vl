@@ -3,24 +3,24 @@ fm3.uncertqpV <- function(ccc){
   msg <- "Calculated by fm3.uncertqpV()"
   a   <- abbrevList(ccc)
 
-  bord       <- 0.001 ## mbar
-  bordUnit   <- "mbar"
+  bord        <- 0.01 ## mbar
+  bordUnit    <- "mbar"
   
-  PFILL      <-  getSubList(a$cav, "fill")
-  pfill      <-  getConstVal(NA,NA,PFILL)
+  PFILL       <-  getSubList(a$cav, "fill")
+  pfill       <-  getConstVal(NA,NA,PFILL)
   
-  uncertRes  <-  rep(0,length(pfill))
+  uncertRes   <-  rep(0,length(pfill))
   
-  cf         <-  getConvFactor(ccc,bordUnit,PFILL$Unit)
+  cf          <-  getConvFactor(ccc,bordUnit,PFILL$Unit)
 
-  igfu       <-  which(pfill * cf >=  bord)
-  igfl       <-  which(pfill * cf <  bord)
+  igfu        <-  which(pfill * cf >=  bord)
+  igfl        <-  which(pfill * cf <  bord)
   
   uDPfillList <- getSubList(a$cav, "uncertPfill")
-  uPfillList <- getSubList(a$cav, "uncertPfill")
-  uDVList    <- getSubList(a$cav, "uncertDeltaV")
-  uDtList    <- getSubList(a$cav, "uncertDeltat")
-  uDVDtList  <- getSubList(a$cav, "uncertDeltaVDeltat")
+  uPfillList  <- getSubList(a$cav, "uncertPfill")
+  uDVList     <- getSubList(a$cav, "uncertDeltaV")
+  uDtList     <- getSubList(a$cav, "uncertDeltat")
+  uDVDtList   <- getSubList(a$cav, "uncertDeltaVDeltat")
   #uPresList  <- getSubList(a$cav, "")
   #uPresCmol  <- getSubList(a$cav, "")
   

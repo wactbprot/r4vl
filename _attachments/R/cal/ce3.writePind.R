@@ -12,11 +12,23 @@ ce3.writePind <- function(ccc){
     }
   }
 
-
-
-  IND <- getSubList(a$cmv, "ind")
-  if(!is.null(IND)){
-    OFF <- getSubList(a$cmv, "ind_offset")
+  ## the tribut to god of schemeless design
+  IND <- getSubList(a$cm, "p_ind")
+  
+  if(is.null(IND)){
+    IND <- getSubList(a$cm, "ind")
+  }
+  
+  OFF <- getSubList(a$cm, "p_ind_offset")
+  if(is.null(OFF)){
+    OFF <- getSubList(a$cm, "ind_offset")
+  }
+  
+  if(is.null(OFF)){
+    OFF <- getSubList(a$cm, "offset")
+  }
+ 
+  if(!is.null(IND) && !is.null(OFF) && IND$Unit != "DCR"){
 
     pind <- getConstVal(NA,NA,IND) * getConvFactor(ccc,pUnit,IND$Unit)
     poff <- getConstVal(NA,NA,OFF) * getConvFactor(ccc,pUnit,OFF$Unit)
@@ -28,32 +40,10 @@ ce3.writePind <- function(ccc){
       }
     }
     ccc$Calibration$Analysis$Values$Pressure <- setCcl(ccc$Calibration$Analysis$Values$Pressure,
-                                                     "ind_corr",
+                                                     "corrind",
                                                        pUnit,
                                                        pindcorr,
                                                        msg)
   }
-
-  PNIND <- getSubList(a$cmv, "pn_ind")
-  if(!is.null(PNIND)){
-    PNOFF <- getSubList(a$cmv, "pn_ind_offset")
-
-    pnpind <- getConstVal(NA,NA,PNIND) * getConvFactor(ccc,pUnit,PNIND$Unit)
-    pnpoff <- getConstVal(NA,NA,PNOFF) * getConvFactor(ccc,pUnit,PNOFF$Unit)
-    pnpindcorr <- pnpind - pnpoff
-
-    if(length(a$cmscoi) > 0){
-      if(a$cmscoi[1] > 0){
-        pnpindcorr <- pnpindcorr[-a$cmscoi]
-      }
-    }
-    ccc$Calibration$Analysis$Values$Pressure <- setCcl(ccc$Calibration$Analysis$Values$Pressure,
-                                                     "pn_ind_corr",
-                                                       pUnit,
-                                                       pnpindcorr,
-                                                       msg)
-  }
-
-
   return(ccc)
 }

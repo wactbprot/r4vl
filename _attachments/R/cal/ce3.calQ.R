@@ -68,12 +68,6 @@ ce3.calQ <- function(ccc){
       qSplitCorrC * qpVFd^2
 
 
-  i <- which(qpVFd < 5e-4)
-
-  if(length(i) > 0){
-    fdCorr[i] <-  qSplitCorrA
-  }
-
   qpVCorr <-  qmol * T * R * fdCorr
 
   ccc$Calibration$Analysis$Values$Flow <-

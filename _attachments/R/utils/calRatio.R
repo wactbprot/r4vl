@@ -3,11 +3,25 @@ calRatio <- function(ccc){
 
   a <- abbrevList(ccc)
 
-  IND <- getSubList(a$cmv, "p_ind")
-  OFS <- getSubList(a$cmv, "p_ind_offset")
+  IND <- getSubList(a$cm, "p_ind")
+  OFS <- getSubList(a$cm, "p_ind_offset")
 
-  CAL <- getSubList(a$ca, "p_cal")
+  if(is.null(IND)){
+    IND <- getSubList(a$cm, "ind")
+  }
   
+  if(is.null(OFS)){
+    OFS <- getSubList(a$cm, "ind_offset")
+  }
+  
+  if(is.null(OFS)){
+    OFS <- getSubList(a$cm, "offset")
+  }
+
+  CAL <- getSubList(a$ca, "cal")
+  if(is.null(CAL)){
+    CAL <- getSubList(a$ca, "p_cal")
+  }
 
   convInd <- getConvFactor(ccc, CAL,IND)
   convOfs <- getConvFactor(ccc, CAL,OFS)

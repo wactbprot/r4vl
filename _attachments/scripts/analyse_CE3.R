@@ -1,7 +1,7 @@
 if(length(doc$Calibration) > 0){
   
   doc <- refreshAnalysis(cdb,doc)
-  doc <- getOutIndex(doc)
+ 
   doc <- ce3.calT(doc)
   doc <- ce3.calPfill(doc)
   doc <- ce3.calDvC(doc)
