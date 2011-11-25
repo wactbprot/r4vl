@@ -4,12 +4,12 @@ ce3.uncertTch <- function(ccc){
   
   a <- abbrevList(ccc)
   
-  TUHV       <- getSubList(a$cav, "Tuhv")
-  Tch       <- getConstVal(NA,NA,TUHV)
-  TchUnit   <- TUHV$Unit 
+  TUHV        <- getSubList(a$cav, "Tuhv")
+  Tch         <- getConstVal(NA,NA,TUHV)
+  TchUnit     <- TUHV$Unit 
   
-  noOfCo    <- length( a$cmco)
-  noOfTch   <- length(Tch)
+  noOfCo      <- length( a$cmco)
+  noOfTch     <- length(Tch)
   
   uncertTSensCalib <- rep(NA,noOfTch)
   
@@ -18,7 +18,7 @@ ce3.uncertTch <- function(ccc){
   }else{
     
     for(ico in 1:noOfCo){
-      currCo <- a$cmco[[ico]]
+      currCo  <- a$cmco[[ico]]
       ## Vorsicht es werden alle Calibration Objekte angesehen!!
       ## deshalb noch UsedFor Tag eingef.
       ## ok!
@@ -27,17 +27,17 @@ ce3.uncertTch <- function(ccc){
       if(length(currCo$Device$UsedFor) > 0){
         if(currCo$Device$UsedFor == "T"){
 
-          res <- quadrSumContrib(currCo, TUHV,uncertTSensCalib,msg)
+          res              <- quadrSumContrib(currCo, TUHV,uncertTSensCalib,msg)
           uncertTSensCalib <- res$uncertRes
-          msg <- res$msg
+          msg              <- res$msg
         }
       }
     }
     ## gibt es NA's in uncertTSensCalib?
-    iall <- which(is.na(uncertTSensCalib))
+    iall    <- which(is.na(uncertTSensCalib))
     
     if(length(iall) > 0){
-      msg <- paste(msg,
+      msg   <- paste(msg,
                    "uncertainty vector don't cover entire Tch range ",
                    "use u=1 (100%) instead! ",
                    "replaced uncalculated value at point(s): ",
