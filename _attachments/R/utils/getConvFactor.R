@@ -1,5 +1,5 @@
 getConvFactor <- function(ccc,toUnit,fromUnit){
-  ##                     zBsp.:       ^ cal     ^ind
+  ##              zBsp.:       ^ cal     ^ind
   ## funktioniert nur wenn ConvFaktoren vorhanden und nach der Form
   ## mbar_2_Pa
   ## codiert sind
