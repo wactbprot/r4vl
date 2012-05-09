@@ -1,20 +1,15 @@
 calSigma <- function( ccc ){
   
   msg <- "calculated by calSigma()"
-
-  a <- abbrevList(ccc)
-
+  a   <- abbrevList(ccc)
   
-  ## im neuen jQuery manCust müssen die values
-  ## bereits als float geschrieben werden
-
+  ## ab welchem Druck sollen die gemessenen  sigma- werte auch extrapoliert werden:
+  extrLowerValue <- 1.0e-3
+  extrLowerUnit  <- "mbar"
+  
   ## neues Problem: welches sigma soll hier gerechnet werden?
   ## Antwort: das cmco1 (also das "Customer CO")
-  ## besser ist das Einführen eines TypePrefix
-  ## unter CalibrationObject.Device
-  ## es kann so der Name erstellt werden:
   
-
   d   <- getConstVal(a$cmco1, "d")
   rho <- getConstVal(a$cmco1,"rho" )
 
@@ -78,19 +73,33 @@ calSigma <- function( ccc ){
       corrind <- K * dcr
       ind     <- K * ind
       rd      <- K * rd
-      
-      msg     <- paste(msg, "calculated with sqrt(8*R*(T)/(pi*M))*pi*d*rho/2000*(dcr-rd)")
+
+      ## sind daten zum extrapolieren des sigma da?:
+      compCal <- cal * getConvFactor(ccc,extrLowerUnit,CAL$Unit)
+      iextr   <- which(compCal > extrLowerValue ) # mbar
+      extrok  <- length(iextr) > 3
+
+    
     }else{
       stop(paste(CAL$Unit, "not implemented as unit for pcal"))
     }
   }## Unit == DCR
 
-  if(length(grep(CAL$Unit,IndUnit)) >0){
+    if(length(grep(CAL$Unit,IndUnit)) >0){
 
     sigma <- corrind/cal
     ## hier kein Out Index mehr,
     ## da alle inputs schon über oi gelaufen sind
 
+    sigma0 <- NA
+    
+    if(extrok){
+
+      sigma0 <- as.vector(coefficients(lm(sigma[iextr] ~cal[iextr])))[1]
+      
+    }
+
+    
     ccc$Calibration$Analysis$Values$Pressure <-
       setCcl(ccc$Calibration$Analysis$Values$Pressure, "ind",
              IndUnit,
@@ -107,13 +116,19 @@ calSigma <- function( ccc ){
       setCcl(ccc$Calibration$Analysis$Values$Pressure, "ind_corr",
              IndUnit,
              corrind,
-             msg)
+             paste(msg, "calculated with sqrt(8*R*(T)/(pi*M))*pi*d*rho/2000*(dcr-rd)"))
     
     ccc$Calibration$Analysis$Values$Sigma <-
       setCcl(ccc$Calibration$Analysis$Values$Sigma, "eff",
              paste(IndUnit,"/",CAL$Unit,  sep=""),
              sigma,
              msg)
+
+    ccc$Calibration$Result$Values$Sigma <-
+      setCcl(ccc$Calibration$Result$Values$Sigma, "0",
+             "1",
+             sigma0,
+             paste(msg,"points: ",toString(iextr), "used for extrapolation") )
     
   }else{
     stop("cal and ind Units dont match")
