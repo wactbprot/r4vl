@@ -45,23 +45,23 @@ if(loadSrc){
 setwd("/home/bock04/eig/map/_attachments/devel/")
 dataPath <- "/home/bock04/eig/FM1/data/FM1-leitwert.csv"
 
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ special FNs start:
-iniMeas <- function(cdb,ccc){
-  ## für die Uns. Berechnung wird eine
-  ## template Messung erzeugt
-  ccc$Calibration$Measurement <- list()
-  ccc$Calibration$Measurement$Values <- list()
-  
-  ccc$Calibration$Measurement$Maintainer <- toString(Sys.getenv("USER"))
-  ccc$Calibration$Measurement$Date   <-
-    list(
-      Type="generated",
-      Value=toString(format(Sys.time(), "%Y-%m-%d" ) )
-      )
-  
-  return( ccc )
-}
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ special FNs end
+## ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ special FNs start:
+## iniMeas <- function(cdb,ccc){
+##   ## für die Uns. Berechnung wird eine
+##   ## template Messung erzeugt
+##   ccc$Calibration$Measurement <- list()
+##   ccc$Calibration$Measurement$Values <- list()
+##   
+##   ccc$Calibration$Measurement$Maintainer <- toString(Sys.getenv("USER"))
+##   ccc$Calibration$Measurement$Date   <-
+##     list(
+##       Type="generated",
+##       Value=toString(format(Sys.time(), "%Y-%m-%d" ) )
+##       )
+##   
+##   return( ccc )
+## }
+## ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ special FNs end
 
 writeData <- TRUE
 ## daten werden für das entw. der unsicher-
@@ -74,7 +74,7 @@ if(writeData){
 
   cdb$id <- "2f63d987154f6a4896ed7016510006b0"
   ccc <-  cdbGetDoc(cdb)$res
-  ccc <-  iniMeas(cdb,ccc)
+  ##  ccc <-  iniMeas(cdb,ccc)
   ccc <-  refreshAnalysis(cdb,ccc)
 
   C2K <- getConvFactor(ccc,"K","C")
@@ -106,3 +106,9 @@ if(writeData){
            dat$p.korrigiert,
            paste("corrected fill pressure source  dat$p.korrigiert file: ",dataPath))
 }
+
+
+
+ccc <- fm1.uncertPfill(ccc)
+ccc <- fm1.uncertDPfill(ccc)
+ccc <- fm1.uncertPres(ccc)

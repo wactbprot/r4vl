@@ -21,6 +21,7 @@ fm1.uncertPfill <- function(ccc){
     ## gesteuert
     for(ico in 1:noOfCo){
       currCo <- a$cmco[[ico]]
+  
       if(length(currCo$Device$UsedFor) > 0){
         if(currCo$Device$UsedFor == "pfill"){
           ## der uncertPfillRes param muß übergeben werden, weil
@@ -34,7 +35,7 @@ fm1.uncertPfill <- function(ccc){
     }
     ## gibt es NA's in uncertPfillRes?
     iall <- which(is.na(uncertPfillRes))
-
+ 
     if(length(iall) > 0){
       
       msg <- paste(msg,
