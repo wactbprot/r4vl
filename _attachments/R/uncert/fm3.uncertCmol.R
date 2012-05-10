@@ -1,5 +1,11 @@
 fm3.uncertCmol <- function(ccc){
 
+  ## sollte eigentlich nur für die unsicherheit
+  ## des constLw sein und nicht aufaddieren
+  ##
+  ## s. fm1.uncertCmol !
+  ##
+  
   msg <- "Calculated by fm3.uncerCmol()"
   a   <- abbrevList(ccc)
 

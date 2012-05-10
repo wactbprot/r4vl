@@ -7,16 +7,25 @@ fm1.uncertPres <- function(ccc){
   pfill  <- getConstVal(NA,NA,PFILL)
   
   ## wird mit 1 initialisiert
-  ## um auf bereich pfill  < 1Pa
+  ## um auf Bereich pfill  < 1Pa
   ## aufmerksam zu werden
   ## ist hier noch nichtbearb.
-  uncertPres  <- rep(1,length(pfill))
-  UPRES       <-  getSubList(a$cms,"fm1Pres_u1")
-  ipfill      <- checkUncertRange(UPRES, PFILL)
+  upres <- rep(1,length(pfill))
   
-  if((length(ipfill) > 0) && (!(ipfill[1] == 0))){
-    k        <- getConvFactor(ccc,UPRES, PFILL)
-    upres    <- getConstVal(NA,NA,UPRES)/(pfill*k) 
+  UPRESA       <-  getSubList(a$cms,"fm1Pres_u1_a")
+  il           <- checkUncertRange(UPRESA, PFILL)
+  
+  if((length(il) > 0) && (!(il[1] == 0))){
+    k            <- getConvFactor(ccc,UPRESA, PFILL)
+    upres[il]    <- getConstVal(NA,NA,UPRESA)/(pfill[il]*k) 
+  }
+  
+  UPRESB       <-  getSubList(a$cms,"fm1Pres_u1_b")
+  ih           <- checkUncertRange(UPRESB, PFILL)
+  
+  if((length(ih) > 0) && (!(ih[1] == 0))){
+    k            <- getConvFactor(ccc,UPRESB, PFILL)
+    upres[ih]    <- getConstVal(NA,NA,UPRESB)/(pfill[ih]*k) 
   }
   
   ccc$Calibration$Analysis$Values$Uncertainty <-

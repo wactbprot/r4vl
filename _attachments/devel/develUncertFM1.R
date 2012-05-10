@@ -1,5 +1,5 @@
 ## --
-## wactbprot/2011-05-25
+## wactbprot/2012-05-10
 ## --
 library(methods,  quietly =TRUE)
 library(bitops,   quietly =TRUE)
@@ -78,6 +78,22 @@ if(writeData){
   ccc <-  refreshAnalysis(cdb,ccc)
 
   C2K <- getConvFactor(ccc,"K","C")
+
+  mm2m <- getConvFactor(ccc,"m","mm")
+
+  ccc$Calibration$Analysis$Values$Length <-
+    setCcl(ccc$Calibration$Analysis$Values$Length,
+           "dl",
+           "m",
+           dat$distance * mm2m,
+           "Verfahrweg pro SZ")
+  
+   ccc$Calibration$Analysis$Values$Length <-
+    setCcl(ccc$Calibration$Analysis$Values$Length,
+           "l",
+           "m",
+           (dat$distance * mm2m)*(dat$i.SZ +1),
+           "Verfahrweg insgesammt (dat$distance * mm2m)*(dat$i.SZ +1)")
   
   ccc$Calibration$Analysis$Values$Temperature <-
     setCcl(ccc$Calibration$Analysis$Values$Temperature,
@@ -99,6 +115,7 @@ if(writeData){
            "l/s",
            dat$L,
            paste("conductance source dat$L file: ",dataPath) )
+  
   ccc$Calibration$Analysis$Values$Pressure <- 
     setCcl(ccc$Calibration$Analysis$Values$Pressure,
            "fill",
@@ -112,3 +129,70 @@ if(writeData){
 ccc <- fm1.uncertPfill(ccc)
 ccc <- fm1.uncertDPfill(ccc)
 ccc <- fm1.uncertPres(ccc)
+ccc <- fm1.uncertDeltaV(ccc)
+ccc <- fm1.uncertDeltat(ccc)
+
+ccc <- fm1.uncertTfm(ccc)
+ccc <- fm1.uncertCmol(ccc)
+
+ccc <- fm1.uncertqpV(ccc)
+
+#cdb$dataList <- doc
+#Result <-  cdbUpdateDoc(cdb)$res
+
+plot(dat$p.korrigiert,
+     getConstVal(ccc$Calibration$Analysis$Values,"uncertqpV"),
+     log="xy",
+     ylim=c(1e-5, 1e-2),
+     type="b")
+
+points(dat$p.korrigiert,
+       getConstVal(ccc$Calibration$Analysis$Values,"uncertCmol"),
+       col=2,
+     type="b")
+
+points(dat$p.korrigiert,
+       getConstVal(ccc$Calibration$Analysis$Values,"uncertTfm"),
+       col=3,
+     type="b")
+
+points(dat$p.korrigiert,
+       getConstVal(ccc$Calibration$Analysis$Values,"uncertDeltat"),
+       col=4,
+     type="b")
+
+points(dat$p.korrigiert,
+       getConstVal(ccc$Calibration$Analysis$Values,"uncertDeltaV"),
+       col=5,
+     type="b")
+
+points(dat$p.korrigiert,
+       getConstVal(ccc$Calibration$Analysis$Values,"uncertPres"),
+       col=6,
+     type="b")
+
+points(dat$p.korrigiert,
+       getConstVal(ccc$Calibration$Analysis$Values,"uncertDPfill"),
+       col=7,
+     type="b")
+
+points(dat$p.korrigiert,
+       getConstVal(ccc$Calibration$Analysis$Values,"uncertPfill"),
+       col=8,
+     type="b")
+
+legend(mean(dat$p.korrigiert),
+       5e-4,
+       c(
+         "uncertqpV",
+         "uncertCmol",
+         "uncertTfm",
+         "uncertDeltat",
+         "uncertDeltaV",
+         "uncertPres",
+         "uncertDPfill",
+         "uncertPfill"
+         ),
+       col=1:8,
+       lwd=rep(1,8))
+grid(col=1)
