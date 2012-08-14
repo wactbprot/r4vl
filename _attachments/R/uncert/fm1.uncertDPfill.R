@@ -27,9 +27,9 @@ fm1.uncertDPfill <- function(ccc){
     
     msg <- paste(msg,
                  ", therm. transp. corr. at point(s)",
-                 ipfill,
-                 "with DT= abs(Tfm1 - Troom) = ",
-                 abs(Tfm1 - Troom))
+                 length(ipfill),
+                 "with DT= mean(abs(Tfm1 - Troom)) = ",
+                 mean(abs(Tfm1 - Troom)))
     
   }
   

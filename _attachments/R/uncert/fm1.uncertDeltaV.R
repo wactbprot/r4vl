@@ -1,10 +1,8 @@
 fm1.uncertDeltaV <- function(ccc){
 
   msg <- "Calculated by fm1.uncertDeltaV()"
-
   
   a <- abbrevList(ccc)
-
   
   PFILL     <- getSubList(a$ca, "fill")
   pfill     <- getConstVal(NA,NA,PFILL)
@@ -16,7 +14,7 @@ fm1.uncertDeltaV <- function(ccc){
 
   noOfPfill <- length(pfill)
   ## Ergebnissvektor mit 1 initialisieren
-  uncertDeltaV <- rep(1,noOfPfill)
+  uncertDeltaV <- rep(NA,noOfPfill)
   ## bezugsmenge Wasser
   deltaGList <-  getSubList(a$cms,"deltaG")
   deltaG <- getConstVal(NA,NA,deltaGList)
@@ -39,7 +37,6 @@ fm1.uncertDeltaV <- function(ccc){
     stop("unit deltaG and fm1DeltaV_u1_c don't match")
   }
 
-  
   u1bList <- getSubList(a$cms,"fm1DeltaV_u1_b")
   u1b <-  getConstVal(NA,NA,u1bList)
   iu1b <- checkUncertRange(u1bList, PFILL)
@@ -73,22 +70,27 @@ fm1.uncertDeltaV <- function(ccc){
   u1h <-  getConstVal(NA,NA,u1hList)
   iu1h <- checkUncertRange(u1hList, PFILL)
   
+  ## Unsicherheit macht nur bei constP Sinn
+  CONSTP <- getSubList(a$cms,"useConstP")
+  ip <- checkUncertRange(CONSTP, PFILL)
+  
   if((length(iu1d) == length(iu1e)) &
      (length(iu1e) == length(iu1f)) &
      (length(iu1f) == length(iu1g)) &
-     (length(iu1g) == length(iu1h))){
+     (length(iu1g) == length(iu1h)) &
+     length(ip) > 0 && ip[1] != 0){
 
-       uncertDeltaV[iu1h] <- sqrt(u1a^2+
-                                  u1c^2+
-                                  u1b^2+
-                                  u1d^2+
-                                  u1e^2+
-                                  u1f^2+
-                                  u1g^2+
-                                  u1h^2)
-
-       
-       ccc$Calibration$Analysis$Values$Uncertainty <-
+        
+    uncertDeltaV[ip] <- sqrt(u1a^2+
+                              u1c^2+
+                              u1b^2+
+                              u1d^2+
+                              u1e^2+
+                              u1f^2+
+                              u1g^2+
+                              u1h^2)[ip]
+    
+    ccc$Calibration$Analysis$Values$Uncertainty <-
          setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
                 "uncertDeltaV",
                 "1",

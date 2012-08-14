@@ -9,7 +9,7 @@ fm1.uncertDeltat <- function(ccc){
   pfillUnit <- PFILL$Unit
   noOfPfill <- length(pfill)
 
-  uncertRes <- rep(1,length(pfill))
+  uncertRes <- rep(NA,length(pfill))
 
   u1List <- getSubList(a$cms,"fm1Deltat_u1")
   u1     <- getConstVal(NA,NA,u1List)
@@ -22,12 +22,18 @@ fm1.uncertDeltat <- function(ccc){
   u3List <- getSubList(a$cms,"fm1Deltat_u3")
   u3     <- getConstVal(NA,NA,u3List)
   iu3    <- checkUncertRange(u3List, PFILL)
-  
+
+
+  ## Unsicherheit macht nur bei constP Sinn
+  CONSTP <- getSubList(a$cms,"useConstP")
+  ip <- checkUncertRange(CONSTP, PFILL)
+    
   if((length(iu1) == length(iu2)) &
-     (length(iu1) == length(iu3))){
-    uncertRes[iu1] <- sqrt(u1^2+u2^2+u3^2)
+     (length(iu1) == length(iu3)) &
+     length(ip) > 0 && ip[1] != 0){
     
-    
+    uncertRes[ip] <- sqrt(u1^2+u2^2+u3^2)
+
     ccc$Calibration$Analysis$Values$Uncertainty <-
     setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
            "uncertDeltat",

@@ -43,7 +43,7 @@ if(loadSrc){
 ## devel/tests/calculations from here -----------------
 
 setwd("/home/bock04/eig/map/_attachments/devel/")
-dataPath <- "/home/bock04/eig/FM1/data/FM1-leitwert.csv"
+dataPath <- "/home/bock04/eig/FM1/data/FM1-leitwert-2.csv"
 
 ## ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ special FNs start:
 ## iniMeas <- function(cdb,ccc){
@@ -122,6 +122,13 @@ if(writeData){
            "mbar",
            dat$p.korrigiert,
            paste("corrected fill pressure source  dat$p.korrigiert file: ",dataPath))
+
+  ccc$Calibration$Analysis$Values$Flow <- 
+    setCcl(ccc$Calibration$Analysis$Values$Flow,
+           "qpV",
+           "mbarl/s",
+           dat$p.korrigiert * dat$L,
+           paste("corrected fill pressure source  dat$p.korrigiert file: ",dataPath))
 }
 
 
@@ -136,52 +143,52 @@ ccc <- fm1.uncertTfm(ccc)
 ccc <- fm1.uncertCmol(ccc)
 
 ccc <- fm1.uncertqpV(ccc)
-
+ccc <- fm1.uncertqmol(ccc)
 #cdb$dataList <- doc
 #Result <-  cdbUpdateDoc(cdb)$res
 
-plot(dat$p.korrigiert,
+plot(getConstVal(ccc$Calibration$Analysis$Values,"qpV"),
      getConstVal(ccc$Calibration$Analysis$Values,"uncertqpV"),
      log="xy",
-     ylim=c(1e-5, 1e-2),
+     ylim=c(1e-5, 1e-1),
      type="b")
 
-points(dat$p.korrigiert,
+points(getConstVal(ccc$Calibration$Analysis$Values,"qpV"),
        getConstVal(ccc$Calibration$Analysis$Values,"uncertCmol"),
        col=2,
      type="b")
 
-points(dat$p.korrigiert,
+points(getConstVal(ccc$Calibration$Analysis$Values,"qpV"),
        getConstVal(ccc$Calibration$Analysis$Values,"uncertTfm"),
        col=3,
      type="b")
 
-points(dat$p.korrigiert,
+points(getConstVal(ccc$Calibration$Analysis$Values,"qpV"),
        getConstVal(ccc$Calibration$Analysis$Values,"uncertDeltat"),
        col=4,
      type="b")
 
-points(dat$p.korrigiert,
+points(getConstVal(ccc$Calibration$Analysis$Values,"qpV"),
        getConstVal(ccc$Calibration$Analysis$Values,"uncertDeltaV"),
        col=5,
      type="b")
 
-points(dat$p.korrigiert,
+points(getConstVal(ccc$Calibration$Analysis$Values,"qpV"),
        getConstVal(ccc$Calibration$Analysis$Values,"uncertPres"),
        col=6,
      type="b")
 
-points(dat$p.korrigiert,
+points(getConstVal(ccc$Calibration$Analysis$Values,"qpV"),
        getConstVal(ccc$Calibration$Analysis$Values,"uncertDPfill"),
        col=7,
      type="b")
 
-points(dat$p.korrigiert,
+points(getConstVal(ccc$Calibration$Analysis$Values,"qpV"),
        getConstVal(ccc$Calibration$Analysis$Values,"uncertPfill"),
        col=8,
      type="b")
 
-legend(mean(dat$p.korrigiert),
+legend(1e-5,
        5e-4,
        c(
          "uncertqpV",

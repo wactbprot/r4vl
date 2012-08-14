@@ -7,11 +7,15 @@ fm1.uncertTfm <- function(ccc){
   TFM       <- getSubList(a$cav$Temperature, "fm1")
   Tfm       <- getConstVal(NA,NA,TFM)
   TfmUnit   <- TFM$Unit 
+
+  PFILL     <- getSubList(a$cav, "fill")
+  pfill     <- getConstVal(NA,NA,PFILL)
   
   noOfCo    <- length( a$cmco)
   noOfTfm   <- length(Tfm)
   
   uncertTSensCalib <- rep(NA,noOfTfm)
+  uges             <- rep(NA,noOfTfm)
   
   if( noOfCo < 2){
     print("No. of CalibrationObjects < 2")
@@ -50,11 +54,12 @@ fm1.uncertTfm <- function(ccc){
     UNS1 <- getSubList(a$cms, "fm1Tfm_u1")
     UNS2 <- getSubList(a$cms, "fm1Tfm_u2")
     UNS3 <- getSubList(a$cms, "fm1Tfm_u3")
-
+    
     if(TfmUnit == UNS1$Unit &&
        TfmUnit == UNS2$Unit &&
-       TfmUnit == UNS3$Unit){
-
+       TfmUnit == UNS3$Unit 
+       ){
+ 
       u1 <- getConstVal(NA,NA, UNS1)
       u2 <- getConstVal(NA,NA, UNS2)
       u3 <- getConstVal(NA,NA, UNS3)
