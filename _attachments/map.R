@@ -40,4 +40,4 @@ for (k in 1:length(fn)){
 }
 
 
-toJSON(infList)
+cat(toJSON(infList))
