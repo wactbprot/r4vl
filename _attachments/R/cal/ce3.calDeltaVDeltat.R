@@ -47,10 +47,13 @@ ce3.calDeltaVDeltat <- function(ccc){
     ## delta V
     turntype   <- paste("turn_",i,sep="")
     h          <-  abs(getConstVal(a$cm, turntype)) * t2mm
+    n          <- length(h)
     
     ## f(x) = ax^3/3+a*b*x^2+x*(a*b^2+c)
     ## A(f(x[2] - f(x1))/(x[2] - x[1]
-    
+    i1 <- 1:(n-1)
+    i2 <- i1 + 1
+    A  <- (f(h[i2]) - f(h[i1]))/(h[i2] - h[i1]) #<<---testen 
     
   }
   
