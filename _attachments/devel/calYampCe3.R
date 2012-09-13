@@ -17,7 +17,7 @@ Sys.setenv("no_proxy" = "*")
 
 if(loadSrc){
 
-  cdb$id <- paste("_design/rproc",sep="")
+  cdb$id <- paste("_design/map",sep="")
   srcDoc <- cdbGetDoc(cdb)$res
   files <- names(srcDoc$'_attachments')
 
@@ -41,10 +41,12 @@ if(loadSrc){
 }
 
 ## devel/tests/calculations from here -----------------
-cdb$id     <- "1f72ec47286b685511b3cc38f0020fd4"
+cdb$id     <- "1f72ec47286b685511b3cc38f00358fb"
 doc <- cdbGetDoc(cdb)$res
-	 
 
+doc <- ce3.calDeltaVDeltat(doc)
 
+#cdb$dataList <- doc
+#cdbUpdateDoc(cdb)
 ## ----------------------------------------------------
 Sys.setenv("no_proxy" = saveNoProxy)

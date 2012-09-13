@@ -17,7 +17,7 @@ Sys.setenv("no_proxy" = "*")
 
 if(loadSrc){
 
-  cdb$id <- paste("_design/rproc",sep="")
+  cdb$id <- paste("_design/map",sep="")
   srcDoc <- cdbGetDoc(cdb)$res
   files <- names(srcDoc$'_attachments')
 
@@ -148,7 +148,7 @@ ccc <- fm1.uncertqmol(ccc)
 #Result <-  cdbUpdateDoc(cdb)$res
 
 plot(getConstVal(ccc$Calibration$Analysis$Values,"qpV"),
-     getConstVal(ccc$Calibration$Analysis$Values,"uncertqpV"),
+     getConstVal(ccc$Calibration$Analysis$Values,"uncertqpV_rel"),
      log="xy",
      ylim=c(1e-5, 1e-1),
      type="b")
@@ -203,3 +203,8 @@ legend(1e-5,
        col=1:8,
        lwd=rep(1,8))
 grid(col=1)
+
+
+
+
+
