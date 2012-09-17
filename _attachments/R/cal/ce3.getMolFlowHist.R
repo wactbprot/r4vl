@@ -1,6 +1,6 @@
 ce3.getMolFlowHist <- function(cdb){
   
-  cdb$design <- "rproc"
+  cdb$design <- "map"
   cdb$view   <- "ce3_flow_hist"
   gas        <- "N2"
   res        <- cdbGetView(cdb)$res

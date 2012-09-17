@@ -17,7 +17,7 @@ Sys.setenv("no_proxy" = "*")
 
 if(loadSrc){
 
-  cdb$id <- paste("_design/rproc",sep="")
+  cdb$id <- paste("_design/map",sep="")
   srcDoc <- cdbGetDoc(cdb)$res
   files <- names(srcDoc$'_attachments')
 
