@@ -63,7 +63,7 @@ i1 <- which(igrLw %in% iN2)
 cp <- C[igrLw[i1]]
 pp <- P[igrLw[i1]]
 
-lm(cp ~ poly(pp, 4)/poly(pp, 4))
+lm(cp ~ poly(pp, 5))
 
 
 

@@ -44,7 +44,10 @@ if(loadSrc){
 cdb$id     <- "1f72ec47286b685511b3cc38f00358fb"
 doc <- cdbGetDoc(cdb)$res
 
+doc <- refreshAnalysis(cdb,doc)
+
 doc <- ce3.calDeltaVDeltat(doc)
+doc <- ce3.extrapC(doc)
 
 #cdb$dataList <- doc
 #cdbUpdateDoc(cdb)
