@@ -6,7 +6,7 @@ ce3.getConductanceHist <- function(cdb){
   ## Zeitraum ist:
   ## vom 2009-12-08 bis zum 2012-01-25
   ##
-  cdb$queryParam <- "startkey=%222009-12-08%22&endkey=%222012-01-25%22"
+  cdb$queryParam <- "startkey=%222009-12-16%22&endkey=%222012-01-25%22"
   
   res        <- cdbGetView(cdb)$res
 

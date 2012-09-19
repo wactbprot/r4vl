@@ -63,16 +63,16 @@ iN2    <- which(gas == "N2")
 iAr    <- which(gas == "Ar")
 
 ## edit --------------------
-i1 <- which(igrLw %in% iN2)
+i1 <- which(igrLw %in% iAr)
 
 cp <- C[igrLw[i1]]
 pp <- P[igrLw[i1]]
 dd <- D[igrLw[i1]]
 xlab  <- "p in mbar"
 ylab  <- "C in l/s"
-main  <- "N2/gr. LW"
+main  <- "Ar/gr. LW"
 
-baseName <- "grLwN2"
+baseName <- "grLwAr"
 pdfname <- paste(baseName,".pdf", sep="")
 datname <-  paste(baseName,".dat", sep="")
 ## -------------------------
