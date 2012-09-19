@@ -102,4 +102,3 @@ write(rbind(
         unlist(resGas[m])),
       datname,
       ncol=5)
-
