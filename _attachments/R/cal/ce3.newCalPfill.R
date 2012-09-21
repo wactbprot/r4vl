@@ -40,12 +40,12 @@ ce3.newCalPfill <- function(ccc){
   bdf <- getConstVal(a$cmv, "before_drift_fill")
   adf <- getConstVal(a$cmv, "after_drift_fill")
   
-  pdrift <-mean(c(mean(bdf),mean(adf)))
+  pdrift <- (bdf + adf)/2
 
   icdga <- which(pdrift <= cdgax1border)
   icdgb <- which(pdrift > cdgbx001border) 
 
-  if(length(icdga > 0){
+  if(length(icdga > 0)){
 
     pda <- pdrift[icdga]
     pfa <- pfill[icdga]
@@ -71,7 +71,7 @@ ce3.newCalPfill <- function(ccc){
     pfill[icdga]  <- pfa
   }# cdga
 
-  if(length(icdgb > 0){
+  if(length(icdgb > 0)){
 
     pdb <- pdrift[icdgb]
     pfb <- pfill[icdgb]

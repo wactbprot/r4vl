@@ -31,12 +31,12 @@ ce3.extrapC <- function(ccc){
     }
   }
     
-  ccc$Calibration$Analysis$Values$Conductance <-
-    setCcl(ccc$Calibration$Analysis$Values$Conductance,
-           "cfm3",
-           "l/s",
-           L,
-           msg)
-  
+##   ccc$Calibration$Analysis$Values$Conductance <-
+##     setCcl(ccc$Calibration$Analysis$Values$Conductance,
+##            "cfm3",
+##            "l/s",
+##            L,
+##            msg)
+##   
   return(ccc)
 }

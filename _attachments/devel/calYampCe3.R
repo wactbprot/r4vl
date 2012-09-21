@@ -41,12 +41,14 @@ if(loadSrc){
 }
 
 ## devel/tests/calculations from here -----------------
-cdb$id     <- "1f72ec47286b685511b3cc38f00358fb"
+cdb$id     <- "aeeb98402d18d122fde902dbc3005c95"
 doc <- cdbGetDoc(cdb)$res
 
 doc <- refreshAnalysis(cdb,doc)
 
+doc <- ce3.newCalPfill(doc)
 doc <- ce3.calDeltaVDeltat(doc)
+
 doc <- ce3.extrapC(doc)
 
 #cdb$dataList <- doc
