@@ -7,16 +7,10 @@ ce3.extrapC <- function(ccc){
   ##                  iLw2 = iLw2))  ## kleiner LW
   ##  
   ilw   <-  getConductIndex(ccc)
-
-  ## s. wiki (todo)
-  f <- function(cf, x){
-    r <- cf$a + cf$b*x + cf$c*log(x) + cf$d*exp(x) 
-    return(r)
-  }
-
+  
   cf <- list()
   
-   ## andere Gase kommen noch
+  ## andere Gase kommen noch
   if(a$cmscg == "N2" || a$cmscg == "Ar"){
 
     gas <- a$cmscg
