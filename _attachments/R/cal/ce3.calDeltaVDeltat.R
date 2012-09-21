@@ -6,14 +6,10 @@ ce3.calDeltaVDeltat <- function(ccc){
   a       <-  abbrevList(ccc)
   DRIFT   <-  getSubList(a$cm,"drift_slope_x")
   drift   <-  getConstVal(NA,NA,DRIFT)
-
-  A       <-  getConstVal(a$cms, "fbv_A")
-  B       <-  getConstVal(a$cms, "fbv_B")
-  C       <-  getConstVal(a$cms, "fbv_C")
-
-  f <- function(x){
-    return(A*x^3/3 + A*B*x^2 + x*(A*B^2 + C))
-  }
+  cf      <- list()
+  cf$A    <-  getConstVal(a$cms, "fbv_A")
+  cf$B    <-  getConstVal(a$cms, "fbv_B")
+  cf$C    <-  getConstVal(a$cms, "fbv_C")
 
   L       <-  NULL
   sdL     <-  NULL
@@ -49,6 +45,7 @@ ce3.calDeltaVDeltat <- function(ccc){
     t0         <- -ci/corrSlope
     tconv      <- getConvFactor(ccc,tUnit, MT$Unit)
     nt         <- length(t0)
+    
     j1         <- 1:(nt-1)
     j2         <- j1 + 1
 
@@ -64,9 +61,12 @@ ce3.calDeltaVDeltat <- function(ccc){
     i1 <- 1:(nv-1)
     i2 <- i1 + 1
 
-    deltaV <- abs(f(h[i2]) - f(h[i1]))
-    A      <- deltaV/abs(h[i2] - h[i1])
+    A <- (fn.lfit(cf,h[i2]) - fn.lfit(cf,h[i1]))/(h[i2] - h[i1])
+    deltaV <- A*(h[i2] - h[i1])
+    
     vconv  <- getConvFactor(ccc,vUnit, "mm^3")
+
+    print( h)
 
 
     L      <- append(L,mean(deltaV * vconv/ deltat))
