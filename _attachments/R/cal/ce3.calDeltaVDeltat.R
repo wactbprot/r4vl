@@ -15,6 +15,7 @@ ce3.calDeltaVDeltat <- function(ccc){
   L       <-  NULL
   sdL     <-  NULL
   lL      <-  NULL
+  Mp      <-  NULL
   meanMp  <-  NULL
   sdMeanMp<-  NULL
 
@@ -24,6 +25,17 @@ ce3.calDeltaVDeltat <- function(ccc){
 
   noOfSZ  <-  length(drift)
 
+  ## nicht nach p=0 extrap.
+  ## sondern t bei p_mean
+  
+  for(k in 0:(noOfSZ - 1)){
+    mt         <- paste("mean_p_", k,sep="")
+    mp         <- getConstVal(a$cm, mt)
+    Mp         <- append(Mp, mean(mp))
+  }
+
+  pMean <- mean(Mp)
+ 
   for(i in 0:(noOfSZ - 1)){
 
     stype      <- paste("slope_x_",i,sep="")
@@ -46,20 +58,20 @@ ce3.calDeltaVDeltat <- function(ccc){
     SLOPE      <- getSubList(a$cm,stype)
     slope      <- getConstVal(NA,NA,SLOPE)
 
-    pconv      <- getConvFactor(ccc,SLOPE$Unit, DRIFT$Unit)
     tconv      <- getConvFactor(ccc,tUnit, MT$Unit)
     
-    corrSlope  <- slope - drift[i+1] * pconv
+    corrSlope  <- slope - drift[i+1]
       
-    ci         <- mp -  corrSlope * (te - mt)
-    t0         <- -ci/corrSlope
+    ci         <- mp -  corrSlope *  mt
+  
+    t0         <- (pMean-ci)/corrSlope
     
     nt         <- length(t0)
     j1         <- 1:(nt-1)
     j2         <- j1 + 1
-
-    deltat     <- t0[j2] - t0[j1] * tconv 
-
+    
+    deltat     <- (t0[j2] - t0[j1]) * tconv 
+    print(deltat)
     ## delta V
     h          <- abs(getConstVal(a$cm, turntype)) * t2mm
     nv         <- length(h)
@@ -78,6 +90,7 @@ ce3.calDeltaVDeltat <- function(ccc){
     A          <- (fn.lfit(cf,h[i2]) - fn.lfit(cf,h[i1]))/(h[i2] - h[i1])
     deltaV     <- A * (h[i2] - h[i1]) * vconv
 
+    
     ## Leitwert = dV/dt
     L          <- append(L,    mean(deltaV / deltat))
     sdL        <- append(sdL,    sd(deltaV / deltat))

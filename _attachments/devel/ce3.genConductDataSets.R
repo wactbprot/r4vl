@@ -74,7 +74,7 @@ for(i in 1:length(res$rows)){
     resGas   <- append(resGas,tmpGas)
   }
 }
-
+ 
 dvSep <- 9e-6
 
 igrLw  <- which(resCond > dvSep)
@@ -102,3 +102,5 @@ write(rbind(
         unlist(resGas[m])),
       datname,
       ncol=5)
+
+
