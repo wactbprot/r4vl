@@ -1,5 +1,7 @@
 ce3.newCalPfill <- function(ccc){
   msg   <- "calculated by ce3.newCalPfill"
+  
+  a     <- abbrevList(ccc)
   pUnit <- "mbar"
 
   ## muss noch aus db kommen
@@ -16,9 +18,6 @@ ce3.newCalPfill <- function(ccc){
   ## nach analyse kommt (offset korr. ...)
   ## muss evtl nochmal überarb. werden
   ## todo!
-  
-  a     <- abbrevList(ccc)
-
   apre <- "cdga_"
   bpre <- "cdgb_"
   cpre <- "cdgc_"
@@ -111,8 +110,6 @@ ce3.newCalPfill <- function(ccc){
            PF$Unit,
            pfill,
            msg)
-
-
   
   return(ccc)
 }

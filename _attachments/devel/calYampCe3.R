@@ -41,7 +41,7 @@ if(loadSrc){
 }
 
 ## devel/tests/calculations from here -----------------
-cdb$id     <- "aeeb98402d18d122fde902dbc3005c95"
+cdb$id     <- "6f9efbc2c556711153e5c70d8e000b81"#"aeeb98402d18d122fde902dbc3005c95"
 doc <- cdbGetDoc(cdb)$res
 
 doc <- refreshAnalysis(cdb,doc)
