@@ -27,13 +27,15 @@ ce3.calDeltaVDeltat <- function(ccc){
 
   ## nicht nach p=0 extrap.
   ## sondern t bei p_mean
-  
-  for(k in 0:(noOfSZ - 1)){
+  ## ermitteln ...
+    for(k in 0:(noOfSZ - 1)){
     mt         <- paste("mean_p_", k,sep="")
     mp         <- getConstVal(a$cm, mt)
     Mp         <- append(Mp, mean(mp))
   }
-
+  ## ... sonst wird der Hebel
+  ## der extrapolation zu groß
+  ## und damit die Streuung
   pMean <- mean(Mp)
  
   for(i in 0:(noOfSZ - 1)){
@@ -48,53 +50,48 @@ ce3.calDeltaVDeltat <- function(ccc){
     mp         <- getConstVal(a$cm, mptype)
     meanMp     <- append(meanMp, mean(mp))
     sdMeanMp   <- append(sdMeanMp, sd(mp))
-
     MT         <- getSubList(a$cm, mttype)
     mt         <- getConstVal(NA,NA,MT)
-
     TE         <- getSubList(a$cm, ttype)
     te         <- getConstVal(NA,NA,TE)
-
     SLOPE      <- getSubList(a$cm,stype)
     slope      <- getConstVal(NA,NA,SLOPE)
-
     tconv      <- getConvFactor(ccc,tUnit, MT$Unit)
     
+    ## ------------------------------------##
     corrSlope  <- slope - drift[i+1]
-      
     ci         <- mp -  corrSlope *  mt
-  
     t0         <- (pMean-ci)/corrSlope
+    ## ------------------------------------##
     
     nt         <- length(t0)
     j1         <- 1:(nt-1)
     j2         <- j1 + 1
     
     deltat     <- (t0[j2] - t0[j1]) * tconv 
-    print(deltat)
     ## delta V
     h          <- abs(getConstVal(a$cm, turntype)) * t2mm
     nv         <- length(h)
-
     i1         <- 1:(nv-1)
     i2         <- i1 + 1
     
-    ## fn.lfit:
+    ## fn.Afit:
     ##
     ## f(x) = ax^3/3+a*b*x^2+x*(a*b^2+c)
     ##
     ## ist definiert in /map/_attachments/R/utils
     ##
     ## A(f(x[2] - f(x1))/(x[2] - x[1]
-   
-    A          <- (fn.lfit(cf,h[i2]) - fn.lfit(cf,h[i1]))/(h[i2] - h[i1])
-    deltaV     <- A * (h[i2] - h[i1]) * vconv
-
     
+    ## ------------------------------------##   
+    A          <- (fn.Afit(cf,h[i2]) - fn.Afit(cf,h[i1]))/(h[i2] - h[i1])
+    deltaV     <- A * (h[i2] - h[i1]) * vconv
     ## Leitwert = dV/dt
     L          <- append(L,    mean(deltaV / deltat))
     sdL        <- append(sdL,    sd(deltaV / deltat))
     lL         <- append(lL, length(deltaV / deltat))
+    ## ------------------------------------##
+
   }
 
   

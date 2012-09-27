@@ -68,10 +68,10 @@ cf$d  <-  getConstVal(a$cms, paste(lwName,"_",gas,"_D", sep=""))
 
 pg <- seq(min(pp),max(pp), min(pp))
 
-setwd("/home/bock04/eig/map/_attachments/diag")
+##setwd("/home/bock04/eig/map/_attachments/diag")
 pdf(pdfname)
 plot(pp,cp, log="x", xlab=xlab, ylab=ylab, main=main)
 points(pg,fn.2162(cf,pg), type="l", col=2)
        grid(col=1)
-dev.off()
+##dev.off()
        
