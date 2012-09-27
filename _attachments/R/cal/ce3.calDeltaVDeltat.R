@@ -116,19 +116,5 @@ ce3.calDeltaVDeltat <- function(ccc){
            lL,
            msg)
 
-  ccc$Calibration$Analysis$Values$Pressure <-
-    setCcl(ccc$Calibration$Analysis$Values$Pressure,
-           "lw_mea",
-           "mbar",
-           meanMp,
-           msg)
-
-  ccc$Calibration$Analysis$Values$Pressure <-
-    setCcl(ccc$Calibration$Analysis$Values$Pressure,
-           "sd_lw_mea",
-           "mbar",
-           sdMeanMp,
-           msg)
-
    return(ccc)
 }
