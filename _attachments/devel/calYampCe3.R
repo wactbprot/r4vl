@@ -41,15 +41,18 @@ if(loadSrc){
 }
 
 ## devel/tests/calculations from here -----------------
-cdb$id     <- "1f72ec47286b685511b3cc38f0094533"#"1f72ec47286b685511b3cc38f009ceeb"
+#"1f72ec47286b685511b3cc38f0094533"#"1f72ec47286b685511b3cc38f009ceeb"
+cdb$id     <- "1f72ec47286b685511b3cc38f00a90a2"#
 doc <- cdbGetDoc(cdb)$res
 
 doc <- refreshAnalysis(cdb,doc)
 
 doc <- ce3.newCalPfill(doc)
 doc <- ce3.calDeltaVDeltat(doc)
-
 doc <- ce3.extrapC(doc)
+## testen: die Korrekturen der letzten Kalib
+## gelangen beim UP nicht in das CD ...
+doc <- ce3.newCalT(doc)
 
 #cdb$dataList <- doc
 #cdbUpdateDoc(cdb)
