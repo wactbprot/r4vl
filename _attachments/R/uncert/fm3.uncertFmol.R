@@ -22,7 +22,7 @@ fm3.uncertFmol <- function(ccc){
     u1bList <-  getSubList(a$cms,"fm3FmolLw1_u1_b")
     iu1b    <- checkUncertRange(u1bList, PFILL, iLw1)
 
-    if((length(iu1b) == length(iu1a) ) & (length(iu1a) > 0)){
+    if((length(iu1b) == length(iu1a) ) && (length(iu1a) > 0)){
 
       uncertRes[iu1b] <- getConstVal(NA,NA,u1aList) + getConstVal(NA,NA,u1bList) * pfill[iu1b]
 
@@ -53,7 +53,7 @@ fm3.uncertFmol <- function(ccc){
 
   }## LW1
 
-  ## Lw1:
+  ## Lw2:
   if(length(iLw2) > 0){
 
     u1aList <-  getSubList(a$cms,"fm3FmolLw2_u1_a")
@@ -77,7 +77,7 @@ fm3.uncertFmol <- function(ccc){
     }
     
     u2List <-  getSubList(a$cms,"fm3FmolLw2_u2")
-    iu2    <-  checkUncertRange(u2List, PFILL, iLw1)
+    iu2    <-  checkUncertRange(u2List, PFILL, iLw2)
 
     if(length(iu2) > 0 ){
       uncertRes[iu2] <- getConstVal(NA,NA,u2List)
@@ -88,8 +88,8 @@ fm3.uncertFmol <- function(ccc){
                    u2List$Type,
                    " (LW2)")
     }
-
   }## LW2
+  
   ccc$Calibration$Analysis$Values$Uncertainty <-
     setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
            "uncertFmol",

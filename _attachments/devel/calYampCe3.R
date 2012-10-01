@@ -44,17 +44,33 @@ if(loadSrc){
 #"1f72ec47286b685511b3cc38f0094533"#"1f72ec47286b685511b3cc38f009ceeb"
 cdb$id     <- "1f72ec47286b685511b3cc38f00a90a2"#
 doc <- cdbGetDoc(cdb)$res
-
 doc <- refreshAnalysis(cdb,doc)
 
 doc <- ce3.newCalPfill(doc)
 doc <- ce3.calDeltaVDeltat(doc)
 doc <- ce3.extrapC(doc)
-## testen: die Korrekturen der letzten Kalib
-## gelangen beim UP nicht in das CD ...
 doc <- ce3.newCalT(doc)
+doc <- ce3.calQ(doc)
+doc <- ce3.calMfp(doc)
+doc <- ce3.writePind(doc)
+doc <- ce3.calPcal(doc)
+doc <- dispatchResCal(doc)
+doc <- fm3.uncertPfill(doc)
+doc <- fm3.uncertDPfill(doc)
+doc <- fm3.uncertDeltaV(doc)
+doc <- fm3.uncertDeltaVDeltat(doc)
+doc <- fm3.uncertDeltat(doc)
+doc <- fm3.uncertFmol(doc)
+doc <- fm3.uncertqpV(doc)
+doc <- fm3.uncertCmol(doc)
+doc <- ce3.uncertCx(doc)
+doc <- ce3.uncertQsplit(doc)
+doc <- ce3.uncertTfm(doc)
+doc <- ce3.uncertTch(doc)
+doc <- ce3.uncertF(doc)
+doc <- ce3.uncertPcal(doc)
 
-#cdb$dataList <- doc
-#cdbUpdateDoc(cdb)
+                                        #cdb$dataList <- doc
+                                        #cdbUpdateDoc(cdb)
 ## ----------------------------------------------------
 Sys.setenv("no_proxy" = saveNoProxy)
