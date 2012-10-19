@@ -11,12 +11,7 @@ infList             <- list()
 
 infList$args        <- commandArgs(TRUE) 
 
-
-
-
-
-## ~~~~~~~~~~~~~~~~~~~~ load map env ~~~~~~~~~~~~~~~~~~~~
-
+## load map env 
 infList$srcPath     <- infList$args[1]
 infList$callScript  <- infList$args[2]
 
@@ -41,14 +36,18 @@ fn <- list.files(infList$uncertPath, pattern=infList$srcPat)
 for (k in 1:length(fn)){
   source(paste(infList$uncertPath,fn[k],sep=""))
 }
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## 
 
 cdb             <- cdbIni()
 cdb$serverName  <- infList$args[3]
 cdb$DBName      <- infList$args[4]
 cdb$id          <- infList$args[5]
 
-doc <- cdbGetDoc(cdb)$res
+## try:
+doc             <- cdbGetDoc(cdb)$res
+
 source(infList$callScript)
 
-cat(toJSON(doc))
+cdb$dataList    <- doc
+
+cat(toJSON(cdbUpdateDoc(cdb)$res))
