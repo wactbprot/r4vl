@@ -17,7 +17,7 @@ Sys.setenv("no_proxy" = "*")
 
 if(loadSrc){
 
-  cdb$id <- paste("_design/rproc",sep="")
+  cdb$id <- paste("_design/map",sep="")
   srcDoc <- cdbGetDoc(cdb)$res
   files <- names(srcDoc$'_attachments')
 
@@ -44,3 +44,26 @@ if(loadSrc){
 
 
 data <- ce3.getMolFlowHist(cdb)
+
+dvSep <- 9e-6
+P <- unlist(data$pfill)
+C <- unlist(data$conductance)
+
+gas   <- unlist(data$gas)
+
+igrLw  <- which(C > dvSep)
+iklLw  <- which(C < dvSep)
+
+iN2    <- which(gas == "N2")
+iAr    <- which(gas == "Ar")
+
+
+i1 <- which(igrLw %in% iN2)
+
+cp <- C[igrLw[i1]]
+pp <- P[igrLw[i1]]
+
+lm(cp ~ poly(pp, 5))
+
+
+
