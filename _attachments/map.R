@@ -7,22 +7,25 @@ library(RJSONIO,  quietly =TRUE)
 library(RCurl,    quietly =TRUE)
 library(R4CouchDB,quietly =TRUE) 
 
-infList          <- list()
+infList             <- list()
 
-infList$args     <- commandArgs(TRUE) 
+infList$args        <- commandArgs(TRUE) 
 
-infList$srcPath  <- infList$args[1]
+
+
+
+
+## ~~~~~~~~~~~~~~~~~~~~ load map env ~~~~~~~~~~~~~~~~~~~~
+
+infList$srcPath     <- infList$args[1]
+infList$callScript  <- infList$args[2]
 
 setwd(infList$srcPath)
-
 infList$utilsPath     <- "./R/utils/"
 infList$calPath       <- "./R/cal/"
 infList$uncertPath    <- "./R/uncert/"
-
 infList$scriptPath    <- "./scripts/"
-
-infList$srcPat   <- "R$"
-
+infList$srcPat        <- "R$"
 
 fn <- list.files(infList$utilsPath, pattern=infList$srcPat)
 for (k in 1:length(fn)){
@@ -38,6 +41,14 @@ fn <- list.files(infList$uncertPath, pattern=infList$srcPat)
 for (k in 1:length(fn)){
   source(paste(infList$uncertPath,fn[k],sep=""))
 }
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+cdb             <- cdbIni()
+cdb$serverName  <- infList$args[3]
+cdb$DBName      <- infList$args[4]
+cdb$id          <- infList$args[5]
 
-cat(toJSON(infList))
+doc <- cdbGetDoc(cdb)$res
+source(infList$callScript)
+
+cat(toJSON(doc))
