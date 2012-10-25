@@ -26,16 +26,19 @@ getConductIndex <- function(ccc){
     CFM3       <- getSubList(a$cav, "cnom")
   }
 
+
   
   lwUnit     <- "l/s"
   ## --- Lw2
   lw2List    <- getSubList(a$cms, "useLw2")
+
 
   if(length(CFM3$Unit) == 1 && CFM3$Unit == lwUnit){
     if(lw2List$RangeUnit ==  lwUnit){
       if(CFM3$Unit == lw2List$RangeUnit){
         iLw2 <- which((getConstVal(NA,NA,CFM3) > as.double(lw2List$From)) &
                       (getConstVal(NA,NA,CFM3) < as.double(lw2List$To)))
+        
       }else{
         print("getConductIndex: Units (useLW1$RangeUnit and cfm3$Unit) dont match")
         stop()

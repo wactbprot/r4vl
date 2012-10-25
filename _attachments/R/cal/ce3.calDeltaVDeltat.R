@@ -4,8 +4,11 @@ ce3.calDeltaVDeltat <- function(ccc){
   tUnit   <- "s"
   vUnit   <- "l"
   a       <-  abbrevList(ccc)
-  DRIFT   <-  getSubList(a$cm,"drift_slope_x")
+  DRIFT   <-  getSubList(a$cmv,"drift_slope_x")
   drift   <-  getConstVal(NA,NA,DRIFT)
+
+  LWSTART   <-  getSubList(a$cma,"start_lw")
+  lwstart   <-  getConstVal(NA,NA,LWSTART)
 
   cf      <- list()
   cf$A    <-  getConstVal(a$cms, "fbv_A")
@@ -15,6 +18,7 @@ ce3.calDeltaVDeltat <- function(ccc){
   L       <-  NULL
   sdL     <-  NULL
   lL      <-  NULL
+  gamma   <-  NULL
   Mp      <-  NULL
   meanMp  <-  NULL
   sdMeanMp<-  NULL
@@ -23,23 +27,25 @@ ce3.calDeltaVDeltat <- function(ccc){
   ms2s    <- getConstVal(a$cc,"ms_2_s")
   vconv   <- getConvFactor(ccc,vUnit, "mm^3")
 
-  noOfSZ  <-  length(drift)
+  noOfSZ  <-  length(lwstart)
 
   ## nicht nach p=0 extrap.
   ## sondern t bei p_mean
   ## ermitteln ...
-    for(k in 0:(noOfSZ - 1)){
+    for(k in lwstart){
     mt         <- paste("mean_p_", k,sep="")
     mp         <- getConstVal(a$cm, mt)
     Mp         <- append(Mp, mean(mp))
+  
   }
   ## ... sonst wird der Hebel
   ## der extrapolation zu groß
   ## und damit die Streuung
-  pMean <- mean(Mp)
+  pMean   <- mean(Mp)
  
-  for(i in 0:(noOfSZ - 1)){
-
+  j <- 0
+  for(i in lwstart){
+    j <- j+1
     stype      <- paste("slope_x_",i,sep="")
     mptype     <- paste("mean_p_", i,sep="")
     mttype     <- paste("mean_t_", i,sep="")
@@ -57,9 +63,13 @@ ce3.calDeltaVDeltat <- function(ccc){
     SLOPE      <- getSubList(a$cm,stype)
     slope      <- getConstVal(NA,NA,SLOPE)
     tconv      <- getConvFactor(ccc,tUnit, MT$Unit)
-    
+
+    ## zur Beurteilung der "Schräge" der SZ
+    startMp    <- mp[1]
+    endMp      <- mp[length(mp)]
+  
     ## ------------------------------------##
-    corrSlope  <- slope - drift[i+1]
+    corrSlope  <- slope - drift[j]
     ci         <- mp -  corrSlope *  mt
     t0         <- (pMean-ci)/corrSlope
     ## ------------------------------------##
@@ -90,10 +100,10 @@ ce3.calDeltaVDeltat <- function(ccc){
     L          <- append(L,    mean(deltaV / deltat))
     sdL        <- append(sdL,    sd(deltaV / deltat))
     lL         <- append(lL, length(deltaV / deltat))
+    gamma      <- append(gamma, startMp/endMp)
     ## ------------------------------------##
 
   }
-
   
   ccc$Calibration$Analysis$Values$Conductance <-
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
@@ -115,6 +125,13 @@ ce3.calDeltaVDeltat <- function(ccc){
            "l/s",
            lL,
            msg)
+
+  ccc$Calibration$Analysis$Values$Conductance <-
+    setCcl(ccc$Calibration$Analysis$Values$Conductance,
+           "gamma",
+           "1",
+           gamma,
+           paste(msg, "gamma =def.= pressure_diff_mean_start/pressure_diff_mean_end"))
 
    return(ccc)
 }

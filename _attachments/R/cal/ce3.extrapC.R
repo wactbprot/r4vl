@@ -1,25 +1,29 @@
 ce3.extrapC <- function(ccc){
-  msg   <- "calculated by ce3.extrapC"
-  a     <-  abbrevList(ccc)
+  
+  msg       <- "calculated by ce3.extrapC"
+  a         <-  abbrevList(ccc)
 
   ## andere Gase kommen noch
   if(a$cmscg == "N2" || a$cmscg == "Ar"){
 
     ilw    <- getConductIndex(ccc)
-    cf     <- list()
-    plw    <- getConstVal(a$cav, "lw")
-    pfill  <- getConstVal(a$cav, "fill")
-    cnom   <- getConstVal(a$cav, "cnom")
-    cfm3   <- rep(NA, length(pfill))
-    gas    <- a$cmscg
-
+  
+    cf        <- list()
+    plw       <- getConstVal(a$cav, "lw")
+    pfill     <- getConstVal(a$cav, "fill")
+    cnom      <- getConstVal(a$cav, "cnom")
+    cfm3      <- rep(NA, length(pfill))
+    dh        <- rep(NA, length(pfill))
+    gas       <- a$cmscg
+   
     if(length(ilw$iLw2) > 0){
-      cf$a  <-  getConstVal(a$cms, paste("klLw_",gas,"_A", sep=""))
-      cf$b  <-  getConstVal(a$cms, paste("klLw_",gas,"_B", sep=""))
-      cf$c  <-  getConstVal(a$cms, paste("klLw_",gas,"_C", sep=""))
-      cf$d  <-  getConstVal(a$cms, paste("klLw_",gas,"_D", sep=""))
+      cf$a   <-  getConstVal(a$cms, paste("klLw_",gas,"_A", sep=""))
+      cf$b   <-  getConstVal(a$cms, paste("klLw_",gas,"_B", sep=""))
+      cf$c   <-  getConstVal(a$cms, paste("klLw_",gas,"_C", sep=""))
+      cf$d   <-  getConstVal(a$cms, paste("klLw_",gas,"_D", sep=""))
 
-      cfm3[ilw$iLw2] <- cnom[ilw$iLw2]*fn.2162(cf,pfill[ilw$iLw2])/fn.2162(cf,plw[ilw$iLw2])
+      cfm3[ilw$iLw2]  <- cnom[ilw$iLw2]*fn.2162(cf,pfill[ilw$iLw2])/fn.2162(cf,plw[ilw$iLw2])
+      dh[ilw$iLw2]    <- cnom[ilw$iLw2]/fn.2162(cf,plw[ilw$iLw2]) - 1   
     }
 
     if(length(ilw$iLw1) > 0){
@@ -28,8 +32,8 @@ ce3.extrapC <- function(ccc){
       cf$c  <-  getConstVal(a$cms, paste("grLw_",gas,"_C", sep=""))
       cf$d  <-  getConstVal(a$cms, paste("grLw_",gas,"_D", sep=""))
 
-
-      cfm3[ilw$iLw1] <- cnom[ilw$iLw1]*fn.2162(cf,pfill[ilw$iLw1])/fn.2162(cf,plw[ilw$iLw1])
+      cfm3[ilw$iLw1]  <- cnom[ilw$iLw1]*fn.2162(cf,pfill[ilw$iLw1])/fn.2162(cf,plw[ilw$iLw1])
+      dh[ilw$iLw1]    <- cnom[ilw$iLw1]/fn.2162(cf,plw[ilw$iLw1]) - 1 
     }
   }
 
@@ -39,6 +43,13 @@ ce3.extrapC <- function(ccc){
            "l/s",
            cfm3,
            msg)
-
+  
+  ccc$Calibration$Analysis$Values$Conductance <-
+    setCcl(ccc$Calibration$Analysis$Values$Conductance,
+           "diff_hist",
+           "1",
+           dh,
+           paste(msg, "relative differenz to historical values (fit curve fn.2162)"))
+  
   return(ccc)
 }

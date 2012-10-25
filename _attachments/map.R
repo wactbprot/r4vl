@@ -49,5 +49,5 @@ doc             <- cdbGetDoc(cdb)$res
 source(infList$callScript)
 
 cdb$dataList    <- doc
-
+##cat(toJSON(doc$Calibration$Analysis$Values$Conductance))
 cat(toJSON(cdbUpdateDoc(cdb)$res))
