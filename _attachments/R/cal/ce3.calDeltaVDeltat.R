@@ -100,7 +100,7 @@ ce3.calDeltaVDeltat <- function(ccc){
     L          <- append(L,    mean(deltaV / deltat))
     sdL        <- append(sdL,    sd(deltaV / deltat))
     lL         <- append(lL, length(deltaV / deltat))
-    gamma      <- append(gamma, startMp/endMp)
+    gamma      <- append(gamma, startMp/endMp -1)
     ## ------------------------------------##
 
   }
@@ -131,7 +131,7 @@ ce3.calDeltaVDeltat <- function(ccc){
            "gamma",
            "1",
            gamma,
-           paste(msg, "gamma =def.= pressure_diff_mean_start/pressure_diff_mean_end"))
+           paste(msg, "gamma =def.= pressure_diff_mean_start/pressure_diff_mean_end - 1"))
 
    return(ccc)
 }

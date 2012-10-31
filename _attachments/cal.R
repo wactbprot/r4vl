@@ -22,6 +22,3 @@ cdb$id          <- infList$args[noOfArgs]
 doc             <- cdbGetDoc(cdb)$res
 
 source(infList$callScript)
-
-cdb$dataList    <- doc
-cat(toJSON(cdbUpdateDoc(cdb)$res))
