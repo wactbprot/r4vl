@@ -7,7 +7,7 @@ if((a$cmscg == "N2" || a$cmscg == "Ar") && is.numeric(pfill)){
   gas <- a$cmscg
   cf  <- list()
  
-  tc  <- 4e-3  ## call offset 2ms
+  tc  <- 1.8e-3  ## call offset 2ms
 
   
   if(lw == "lw0" ){ ## kl.LW
@@ -31,8 +31,8 @@ if((a$cmscg == "N2" || a$cmscg == "Ar") && is.numeric(pfill)){
     V     <- 0.2808 ## l aus AA
   }
   
-  T       <-  V/fn.2162(cf,pfill) * E ## gesamtmesszeit pro SZ
-  tm      <- (T/ noMp - tc)*1000
+  T       <-  V/fn.2162(cf,pfill) * E - noMp * tc ## gesamtmesszeit pro SZ
+  tm      <- (T/noMp) * 1000
 
   cat(toJSON(list("sz_time"=tm, "mp_repeat"= noMp)))
 
