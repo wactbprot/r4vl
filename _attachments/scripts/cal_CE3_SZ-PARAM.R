@@ -6,8 +6,8 @@ a       <-  abbrevList(doc)
 if((a$cmscg == "N2" || a$cmscg == "Ar") && is.numeric(pfill)){
   gas <- a$cmscg
   cf  <- list()
-  E   <- 0.002 ## war 0.001 (mehr zeit bei 350 mbar) 
-  tc  <- 2e-3  ## call offset 2ms
+ 
+  tc  <- 4e-3  ## call offset 2ms
 
   
   if(lw == "lw0" ){ ## kl.LW
@@ -15,9 +15,8 @@ if((a$cmscg == "N2" || a$cmscg == "Ar") && is.numeric(pfill)){
     cf$b   <-  getConstVal(a$cms, paste("klLw_",gas,"_B", sep=""))
     cf$c   <-  getConstVal(a$cms, paste("klLw_",gas,"_C", sep=""))
     cf$d   <-  getConstVal(a$cms, paste("klLw_",gas,"_D", sep=""))
-  
-
-    noMp   <- 200
+    E      <- 0.001 ## wie vorher
+    noMp   <- 100
     V      <- 0.07673 ## l aus AA
    
   }
@@ -27,7 +26,7 @@ if((a$cmscg == "N2" || a$cmscg == "Ar") && is.numeric(pfill)){
     cf$b  <-  getConstVal(a$cms, paste("grLw_",gas,"_B", sep=""))
     cf$c  <-  getConstVal(a$cms, paste("grLw_",gas,"_C", sep=""))
     cf$d  <-  getConstVal(a$cms, paste("grLw_",gas,"_D", sep=""))
-    
+    E     <- 0.002 ## war 0.001 (mehr zeit bei 350 mbar) 
     noMp  <- 100
     V     <- 0.2808 ## l aus AA
   }
