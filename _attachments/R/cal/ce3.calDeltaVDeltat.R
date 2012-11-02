@@ -26,36 +26,26 @@ ce3.calDeltaVDeltat <- function(ccc){
   t2mm    <- getConstVal(a$cms,"turn_2_mm")
   ms2s    <- getConstVal(a$cc,"ms_2_s")
   vconv   <- getConvFactor(ccc,vUnit, "mm^3")
-
+  j       <- 0
   noOfSZ  <-  length(lwstart)
 
   ## nicht nach p=0 extrap.
   ## sondern t bei p_mean
-  ## ermitteln ...
-    for(k in lwstart){
-    mt         <- paste("mean_p_", k,sep="")
-    mp         <- getConstVal(a$cm, mt)
-    Mp         <- append(Mp, mean(mp))
-  
-  }
-  ## ... sonst wird der Hebel
-  ## der extrapolation zu groß
-  ## und damit die Streuung
-  pMean   <- mean(Mp)
+  ## ermitteln weil
+  ## sonst der Hebel
+  ## der Extrapolation und damit die 
+  ## Streuung zu groß  wird
  
-  j <- 0
   for(i in lwstart){
     j <- j+1
     stype      <- paste("slope_x_",i,sep="")
-    mptype     <- paste("mean_p_", i,sep="")
     mttype     <- paste("mean_t_", i,sep="")
     ttype      <- paste("t_N_",    i,sep="")
     turntype   <- paste("turn_",   i,sep="")
+    mt         <- paste("mean_p_", i,sep="")
 
-    ## delta t 
-    mp         <- getConstVal(a$cm, mptype)
-    meanMp     <- append(meanMp, mean(mp))
-    sdMeanMp   <- append(sdMeanMp, sd(mp))
+    ## delta t
+    mp         <- getConstVal(a$cm, mt)    
     MT         <- getSubList(a$cm, mttype)
     mt         <- getConstVal(NA,NA,MT)
     TE         <- getSubList(a$cm, ttype)
@@ -63,15 +53,15 @@ ce3.calDeltaVDeltat <- function(ccc){
     SLOPE      <- getSubList(a$cm,stype)
     slope      <- getConstVal(NA,NA,SLOPE)
     tconv      <- getConvFactor(ccc,tUnit, MT$Unit)
-
-    ## zur Beurteilung der "Schräge" der SZ
-    startMp    <- mp[1]
-    endMp      <- mp[length(mp)]
-  
+    ##
+    ## die Extrapolation erfolgt zu mean(mp)
+    ## das ist der mittelwert der mittleren
+    ## sz-Drücke; die "Extrapolationslänge"
+    ## wird so minimal.
     ## ------------------------------------##
-    corrSlope  <- slope - drift[j]
-    ci         <- mp -  corrSlope *  mt
-    t0         <- (pMean-ci)/corrSlope
+    corrSlope  <- slope  - drift[j]
+    ci         <- mp     - corrSlope *  mt
+    t0         <- (mean(mp) - ci) / corrSlope
     ## ------------------------------------##
     
     nt         <- length(t0)
@@ -100,7 +90,6 @@ ce3.calDeltaVDeltat <- function(ccc){
     L          <- append(L,    mean(deltaV / deltat))
     sdL        <- append(sdL,    sd(deltaV / deltat))
     lL         <- append(lL, length(deltaV / deltat))
-    gamma      <- append(gamma, startMp/endMp -1)
     ## ------------------------------------##
 
   }
@@ -126,12 +115,6 @@ ce3.calDeltaVDeltat <- function(ccc){
            lL,
            msg)
 
-  ccc$Calibration$Analysis$Values$Conductance <-
-    setCcl(ccc$Calibration$Analysis$Values$Conductance,
-           "gamma",
-           "1",
-           gamma,
-           paste(msg, "gamma =def.= pressure_diff_mean_start/pressure_diff_mean_end - 1"))
 
    return(ccc)
 }

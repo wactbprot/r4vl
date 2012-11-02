@@ -9,8 +9,8 @@ ce3.extrapC <- function(ccc){
     ilw    <- getConductIndex(ccc)
   
     cf        <- list()
-    plw       <- getConstVal(a$cav, "lw")
-    pfill     <- getConstVal(a$cav, "fill")
+    plw       <- getConstVal(a$cav, "lw")   ## zum Zeitpunkt der LW- Messung: p_l
+    pfill     <- getConstVal(a$cav, "fill") ## zum Zeitpunkt der Auslese: p_a
     cnom      <- getConstVal(a$cav, "cnom")
     cfm3      <- rep(NA, length(pfill))
     dh        <- rep(NA, length(pfill))
@@ -21,8 +21,14 @@ ce3.extrapC <- function(ccc){
       cf$b   <-  getConstVal(a$cms, paste("klLw_",gas,"_B", sep=""))
       cf$c   <-  getConstVal(a$cms, paste("klLw_",gas,"_C", sep=""))
       cf$d   <-  getConstVal(a$cms, paste("klLw_",gas,"_D", sep=""))
-
-      cfm3[ilw$iLw2]  <- cnom[ilw$iLw2]*fn.2162(cf,pfill[ilw$iLw2])/fn.2162(cf,plw[ilw$iLw2])
+      ##
+      ## Verhältniss
+      ## C(p_a)/C(p_l) = fn(p_a)/fn(pl)
+      ## d.h.
+      ## C(p_a) = C(p_l) * fn(p_a)/fn(pl)
+      ##
+      cfm3[ilw$iLw2]  <- cnom[ilw$iLw2] * fn.2162(cf,pfill[ilw$iLw2])/fn.2162(cf,plw[ilw$iLw2])
+      ## ^^C(p_a)^^       ^^C(p_l)^^      ^^fn(p_a)^^                 ^^fn(pl)^^
       dh[ilw$iLw2]    <- cnom[ilw$iLw2]/fn.2162(cf,plw[ilw$iLw2]) - 1   
     }
 
@@ -31,7 +37,7 @@ ce3.extrapC <- function(ccc){
       cf$b  <-  getConstVal(a$cms, paste("grLw_",gas,"_B", sep=""))
       cf$c  <-  getConstVal(a$cms, paste("grLw_",gas,"_C", sep=""))
       cf$d  <-  getConstVal(a$cms, paste("grLw_",gas,"_D", sep=""))
-
+      ## wie oben
       cfm3[ilw$iLw1]  <- cnom[ilw$iLw1]*fn.2162(cf,pfill[ilw$iLw1])/fn.2162(cf,plw[ilw$iLw1])
       dh[ilw$iLw1]    <- cnom[ilw$iLw1]/fn.2162(cf,plw[ilw$iLw1]) - 1 
     }
