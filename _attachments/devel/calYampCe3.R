@@ -8,41 +8,21 @@ library(RCurl,    quietly =TRUE)
 library(R4CouchDB,quietly =TRUE)
 
 cdb  <- cdbIni()
-loadSrc <- TRUE
+
+
 cdb$DBName     <- "vaclab_db" ## DBName
 
-saveNoProxy <- Sys.getenv("no_proxy")
-Sys.setenv("no_proxy" = "*")
+infList <- list()
+infList$srcPath     <-  "/usr/local/src/map/_attachments/"
 
+setwd(infList$srcPath)
 
-if(loadSrc){
+source("load.R")
 
-  cdb$id <- paste("_design/map",sep="")
-  srcDoc <- cdbGetDoc(cdb)$res
-  files <- names(srcDoc$'_attachments')
-
-  baseSrcUrl <- paste(cdb$baseUrl(cdb),
-                      cdb$DBName,"/",
-                      cdb$id,"/",
-                      sep="")
-
-  for(file in  files){
-    fn <- grep("^R/.*\\.R$",file)
-
-    if(length(fn) > 0){
-        srcUrl <- paste(baseSrcUrl,
-                        file,
-                        sep="")
-
-        source(srcUrl)
-
-      }
-  }
-}
 
 ## devel/tests/calculations from here -----------------
 #"1f72ec47286b685511b3cc38f0094533"#"1f72ec47286b685511b3cc38f009ceeb"
-cdb$id     <- "1f72ec47286b685511b3cc38f00a90a2"#
+cdb$id     <- "171d3f673527b2564691cad26e0235e7"#
 doc <- cdbGetDoc(cdb)$res
 doc <- refreshAnalysis(cdb,doc)
 

@@ -7,11 +7,12 @@ quadrSumContrib <- function( currentCalObj, refQuantityList,uncertRes, msg ){
 
   if(length(currCORangeList) > 0){
     currentCalObjUncert <- currentCalObj$Uncertainty
-    noOfUncertContrib <- length(currentCalObjUncert)
+    noOfUncertContrib   <- length(currentCalObjUncert)
+
     if(noOfUncertContrib > 0){
-
+      
       varianzMat <- matrix(ncol=noOfUncertContrib, nrow=noOfRefQuantity, NA)
-
+      
       for(iUncert in 1:noOfUncertContrib){
         uncertIList <- currentCalObjUncert[[iUncert]]
         idx<- checkUncertRange(uncertIList, refQuantityList, currCORangeList)
@@ -20,7 +21,7 @@ quadrSumContrib <- function( currentCalObj, refQuantityList,uncertRes, msg ){
           ## die eigentlichen Rechnungen
           ## neue Units hier impl.
           ##------------------------------
-          if(uncertIList$Unit =="1"){
+          if(uncertIList$Unit == "1"){
             ## Unsicherheit ist schon relativ
             varianzI <- getConstVal(NA,NA,uncertIList)^2
             msg      <- paste(msg,
@@ -67,8 +68,8 @@ quadrSumContrib <- function( currentCalObj, refQuantityList,uncertRes, msg ){
 
       ifullCORange <- checkUncertRange(list(), refQuantityList , currCORangeList)
       ## quadratisches aufsumieren allen Beiträge:
-
-      uncertRes[ifullCORange] <- sqrt(rowSums(varianzMat[ifullCORange, ],  na.rm=TRUE))
+  
+      uncertRes[ifullCORange] <- sqrt(rowSums(varianzMat,  na.rm=TRUE)[ifullCORange])
 
     }else{
      msg <- paste(msg,"!->", currentCalObj$Name, "do not have a uncertainty definitions")
