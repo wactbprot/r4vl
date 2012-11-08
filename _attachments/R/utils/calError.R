@@ -1,21 +1,21 @@
 calError <- function(ccc){
   msg <- "calculated by calError()"
-
+  
   a <- abbrevList(ccc)
 
-  IND <- getSubList(a$cm, "p_ind")
-  OFS <- getSubList(a$cm, "p_ind_offset")
+  IND <- getSubList(a$cmv, "p_ind")
+  OFS <- getSubList(a$cmv, "p_ind_offset")
 
   if(is.null(IND)){
-    IND <- getSubList(a$cm, "ind")
+    IND <- getSubList(a$cmv, "ind")
   }
   
   if(is.null(OFS)){
-    OFS <- getSubList(a$cm, "ind_offset")
+    OFS <- getSubList(a$cmv, "ind_offset")
   }
   
   if(is.null(OFS)){
-    OFS <- getSubList(a$cm, "offset")
+    OFS <- getSubList(a$cmv, "offset")
   }
   
   ofs <-  getConstVal(NA,NA,OFS)
