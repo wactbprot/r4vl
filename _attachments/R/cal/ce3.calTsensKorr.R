@@ -26,10 +26,16 @@ ce3.calTsensKorr <- function(ccc){
       cmplName <- paste(baseName, chVec[idx], sep="")
 
       iVal     <-  getConstVal(a$cmv,cmplName)
+    
       iout     <-  which(is.na(iVal))      
-      iVal     <-  iVal[-c(nout,iout)]
-       
-      kVal     <- nVal[-c(nout,iout)] - iVal
+      ## wenn alles funk. hat, also  nout und iout die Länge 0 
+      ## (integer(0)) haben, funk.   [-c(nout,iout)] nicht.
+      if(length(nout) > 0 || length(iout) > 0 ){
+        kVal     <- nVal[-c(nout,iout)] - iVal[-c(nout,iout)]
+      }else{
+        kVal     <- nVal - iVal
+      }
+      
       k        <- mean(kVal)
       sdK      <- sd(kVal)
       
