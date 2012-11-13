@@ -47,8 +47,8 @@ ce3.extrapC <- function(ccc){
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
            "cfm3",
            "l/s",
-           cfm3,
-           msg)
+           cnom,
+           "ist testweise cnom")
   
   ccc$Calibration$Analysis$Values$Conductance <-
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
