@@ -19,8 +19,15 @@ ce3.calTsensKorr <- function(ccc){
     normName <- "f250"
  
     nVal <-  getConstVal(a$cmv,normName)
+    ## Die Auslese des F250 funktioniert nicht stabil
+    ## deshalb die folgende Reihe von Kriterien zum
+    ## aussondern:
     nout <- which(is.na(nVal))
-
+    nout <- append(nout, which(nVal > 24))
+    nout <- append(nout, which(nVal < 22))
+    nout <- append(nout, which(nVal == 23))
+   
+   
     for(idx in 1:length(chVec)){
 
       cmplName <- paste(baseName, chVec[idx], sep="")
