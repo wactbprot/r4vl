@@ -1,19 +1,14 @@
 if(length(doc$Calibration) > 0){
-  ccc <- refreshAnalysis(cdb,ccc)
+  doc <- refreshAnalysis(cdb,doc)
+  doc <- refreshResult(cdb,doc)   
+  doc <- getOutIndex(doc)
+  doc <- se1.calTime(doc)
+  doc <- se1.calT(doc)
+  doc <- se1.calPfill(doc)
+  doc <- se1.calf(doc)
+  doc <- se1.calRGC(doc)
+  doc <- se1.calPcal(doc)
 
-  
-  ccc <- getOutIndex(ccc)
-  
-  ccc <- se1.calTime(ccc)
-  
-  ccc <- se1.calT(ccc)
-  
-  ccc <- se1.calPfill(ccc)
-  
-  ccc <- se1.calf(ccc)
-  ccc <- se1.calRGC(ccc)
-  ccc <- se1.calPcal(ccc)
-
-  ccc <- dispatchResCal( ccc )
+  doc <- dispatchResCal( doc )
 
 }
