@@ -19,17 +19,30 @@ ce3.calTsensKorr <- function(ccc){
     normName <- "f250"
  
     nVal <-  getConstVal(a$cmv,normName)
+    ## Die Auslese des F250 funktioniert nicht stabil
+    ## deshalb die folgende Reihe von Kriterien zum
+    ## aussondern:
     nout <- which(is.na(nVal))
-
+    nout <- append(nout, which(nVal > 24))
+    nout <- append(nout, which(nVal < 22))
+    nout <- append(nout, which(nVal == 23))
+   
+   
     for(idx in 1:length(chVec)){
 
       cmplName <- paste(baseName, chVec[idx], sep="")
 
       iVal     <-  getConstVal(a$cmv,cmplName)
+    
       iout     <-  which(is.na(iVal))      
-      iVal     <-  iVal[-c(nout,iout)]
-       
-      kVal     <- nVal[-c(nout,iout)] - iVal
+      ## wenn alles funk. hat, also  nout und iout die Länge 0 
+      ## (integer(0)) haben, funk.   [-c(nout,iout)] nicht.
+      if(length(nout) > 0 || length(iout) > 0 ){
+        kVal     <- nVal[-c(nout,iout)] - iVal[-c(nout,iout)]
+      }else{
+        kVal     <- nVal - iVal
+      }
+      
       k        <- mean(kVal)
       sdK      <- sd(kVal)
       
