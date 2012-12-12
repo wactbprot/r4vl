@@ -9,7 +9,7 @@ ce3.newCalPfill <- function(ccc){
   cdgax01border  <- 1.33
   cdgax1border   <- 13.3
   
-  cdgbx001border <- 13.3
+  cdgbx001border <- cdgax1border
   cdgbx01border  <- 133
   cdgbx1border   <- 1330
     
@@ -39,55 +39,53 @@ ce3.newCalPfill <- function(ccc){
   PF    <- getSubList(a$cmv, "fill")
   pfill <- getConstVal(NA, NA, PF)
 
+  pfilloffset <- rep(NA,length(pfill))
+  
   ## zur Korr. der Druckdiff. beim Schließen des V22
-  ## (dpC wird nur in X.1 Range gemessen
-  dpC <- getConstVal(a$cmv,"drift_mean_p") - pocx01
+  ## (dpC wird nur in X1 Range gemessen
+  dpC <- getConstVal(a$cmv,"drift_mean_p") - pocx1
 
   ## haben die gleiche Unit wie pfill
-  bdf <- getConstVal(a$cmv, "before_drift_fill")
-  adf <- getConstVal(a$cmv, "after_drift_fill")
+  bdf        <- getConstVal(a$cmv, "before_drift_fill")
+  adf        <- getConstVal(a$cmv, "after_drift_fill")
+  pdriftfill <- (bdf + adf)/2
   
-  pdrift <- (bdf + adf)/2
-
-  icdga <- which(pdrift <= cdgax1border)
-  icdgb <- which(pdrift > cdgbx001border) 
+  icdga      <- which( pdriftfill <= cdgax1border)
+  icdgb      <- which( pdriftfill >  cdgax1border) 
 
   if(length(icdga > 0)){
-    msg <- paste(msg,"assume cdga for points:", toString(icdga))
+    msg      <- paste(msg,"assume cdga for points:", toString(icdga))
     
-    ix001 <- which(pdrift < cdgax001border)
-    ix01  <- which(pdrift < cdgax01border && pdrift > cdgax001border)
-    ix1   <- which(pdrift < cdgax1border  && pdrift > cdgax01border)
-    
-    if(length(ix1)>0){
-      pdrift[ix1]       <- pdrift[ix1]   -  poax1
-      pfill[ix1]        <- pfill[ix1]    -  poax1  
+    ix001    <- which(pdriftfill < cdgax001border)
+    ix01     <- which((pdriftfill < cdgax01border) & (pdriftfill > cdgax001border))
+    ix1      <- which((pdriftfill < cdgax1border ) & (pdriftfill > cdgax01border))
 
-      msg <- paste(msg,
-                   "offset:",
-                   poax1,
-                   "subtracted from points:",
-                   toString(ix1))
+    print("ll")
+    print(ix001)
+    print(ix01)
+    print(ix1)
+    
+    if(length(ix1) > 0){
+      
+      pdriftfill[ix1]       <- pdriftfill[ix1]   -  poax1
+      pfill[ix1]            <- pfill[ix1]        -  poax1  
+     
+      pfilloffset[ix1]      <- poax1
+
     }
     if(length(ix01)>0){
-      pdrift[ix01]       <- pdrift[ix01] -  poax01
-      pfill[ix01]        <- pfill[ix01]  -  poax01
+      pdriftfill[ix01]      <- pdriftfill[ix01] -  poax01
+      pfill[ix01]           <- pfill[ix01]      -  poax01
 
-      msg <- paste(msg,
-                   "offset:",
-                   poax01,
-                   "subtracted from points:",
-                   toString(ix01))
+      pfilloffset[ix01]     <- poax01
+
     }
     if(length(ix001)>0){
-      pdrift[ix001]      <- pdrift[ix001]-  poax001
-      pfill[ix001]       <- pfill[ix001] -  poax001
-
-      msg <- paste(msg,
-                   "offset:",
-                   poax001,
-                   "subtracted from points:",
-                   toString(ix001))
+      pdriftfill[ix001]     <- pdriftfill[ix001]-  poax001
+      pfill[ix001]          <- pfill[ix001]     -  poax001
+      
+      pfilloffset[ix001]    <- poax001
+      
     }
     ## Fehlerkorrekturen:
     ## cdga
@@ -101,46 +99,33 @@ ce3.newCalPfill <- function(ccc){
     cfcdga$e  <- getConstVal(  a$cmco, paste("cdgaCorrE_",gas,sep=""))
     cfcdga$f  <- getConstVal(  a$cmco, paste("cdgaCorrF_",gas,sep=""))
        
-    pdrift[icdga] <- pdrift[icdga]/(fn.7904(cfcdga,pdrift[icdga]) + 1)
-    pfill[icdga]  <- pfill[icdga]/(fn.7904(cfcdga,pfill[icdga]) + 1)
+    pdriftfill[icdga] <- pdriftfill[icdga]/(fn.7904(cfcdga,pdriftfill[icdga]) + 1)
+    pfill[icdga]      <- pfill[icdga]/(fn.7904(cfcdga,pfill[icdga]) + 1)
 
   }# cdga
 
   if(length(icdgb > 0)){
     msg <- paste(msg,"assume cdgb for points:", toString(icdgb))
-    ix001 <- which(pdrift < cdgbx001border)
-    ix01  <- which(pdrift < cdgbx01border && pdrift > cdgbx001border)
-    ix1   <- which(pdrift < cdgbx1border  && pdrift > cdgbx01border)
+  
+    ix01  <- which((pdriftfill < cdgbx01border) & (pdriftfill > cdgbx001border))
+    ix1   <- which((pdriftfill < cdgbx1border)  & (pdriftfill > cdgbx01border))
     
     if(length(ix1)>0){
-      pdrift[ix1]     <- pdrift[ix1]   -  pobx1
-      pfill[ix1]      <- pfill[ix1]    -  pobx1
-      msg <- paste(msg,
-                   "offset:",
-                   pobx1,
-                   "subtracted from points:",
-                   toString(ix1))
-    }
-    if(length(ix01)>0){
-      pdrift[ix01]   <- pdrift[ix01]   -  pobx01
-      pfill[ix01]    <- pfill[ix01]    -  pobx01
-      msg <- paste(msg,
-                   "offset:",
-                   pobx01,
-                   "subtracted from points:",
-                   toString(ix01))
+      pdriftfill[ix1]     <- pdriftfill[ix1]   -  pobx1
+      pfill[ix1]          <- pfill[ix1]        -  pobx1
+
+      pfilloffset[ix1]    <- pobx1
+   
     }
     
-    if(length(ix001)>0){
-      pdrift[ix001] <- pdrift[ix001]   -  pobx001
-      pfill[ix001]  <- pfill[ix001]    -  pobx001  
-      msg <- paste(msg,
-                   "offset:",
-                   pobx001,
-                   "subtracted from points:",
-                   toString(ix001))
+    if(length(ix01)>0){
+      pdriftfill[ix01]    <- pdriftfill[ix01]  -  pobx01
+      pfill[ix01]         <- pfill[ix01]       -  pobx01
+      
+      pfilloffset[ix01]   <- pobx01
     }
-
+    
+  
     ## Fehlerkorrekturen:
     ## cdgb
     ## gasartunabh.
@@ -153,8 +138,8 @@ ce3.newCalPfill <- function(ccc){
     cfcdgb$e  <- getConstVal(  a$cmco, "cdgbCorrE")
     cfcdgb$f  <- getConstVal(  a$cmco, "cdgbCorrF")
         
-    pdrift[icdgb] <- pdrift[icdgb]/(fn.7904(cfcdgb,pdrift[icdgb]) + 1) 
-    pfill[icdgb]  <- pfill[icdgb]/(fn.7904(cfcdgb,pfill[icdgb]) + 1)
+    pdriftfill[icdgb] <- pdriftfill[icdgb]/(fn.7904(cfcdgb,pdriftfill[icdgb]) + 1) 
+    pfill[icdgb]      <- pfill[icdgb]/(fn.7904(cfcdgb,pfill[icdgb]) + 1)
     
   }# cdgb
 
@@ -163,14 +148,14 @@ ce3.newCalPfill <- function(ccc){
   ## durch das Schließen des V22
   ## bei pfill ist das nicht dabei,
   ## weil hier V22 offen ist
-  pdrift <- pdrift + dpC
+  pdriftfill <- pdriftfill + dpC
 
   
   ccc$Calibration$Analysis$Values$Pressure <-
     setCcl(ccc$Calibration$Analysis$Values$Pressure,
            "lw",
            PF$Unit,
-           pdrift,
+           pdriftfill,
            msg)
     
   ccc$Calibration$Analysis$Values$Pressure <-
@@ -179,6 +164,13 @@ ce3.newCalPfill <- function(ccc){
            PF$Unit,
            pfill,
            msg)
+  
+  ccc$Calibration$Analysis$Values$Pressure <-
+    setCcl(ccc$Calibration$Analysis$Values$Pressure,
+           "fill_offset",
+           PF$Unit,
+           pfilloffset,
+           "wird nur aus Kontrollgründen gespeichert; bei pfill ist der Offset schon subtrahiert")
   
   ccc$Calibration$Analysis$Values$Pressure <-
     setCcl(ccc$Calibration$Analysis$Values$Pressure,
