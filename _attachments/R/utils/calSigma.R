@@ -43,7 +43,7 @@ calSigma <- function( ccc ){
     corrind <- ind - rd
   }
 
-  if((IND$Unit == "DCR") && (CAL$Unit == "mbar")){
+  if((IND$Unit == "DCR") & (CAL$Unit == "mbar")){
     dcr <- ind - rd
     R <- getConstVal(a$cc, "R" )
     if(a$cs == "SE1"){

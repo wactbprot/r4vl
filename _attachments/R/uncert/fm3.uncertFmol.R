@@ -3,8 +3,6 @@ fm3.uncertFmol <- function(ccc){
   msg <- "Calculated by fm3.uncertFmol()"
   a   <- abbrevList(ccc)
   
-  
-  
   PFILL  <- getSubList(a$cav, "fill")
   pfill  <- getConstVal(NA,NA,PFILL)
   
@@ -22,7 +20,7 @@ fm3.uncertFmol <- function(ccc){
     u1bList <-  getSubList(a$cms,"fm3FmolLw1_u1_b")
     iu1b    <- checkUncertRange(u1bList, PFILL, iLw1)
 
-    if((length(iu1b) == length(iu1a) ) && (length(iu1a) > 0)){
+    if((length(iu1b) == length(iu1a) ) & (length(iu1a) > 0)){
 
       uncertRes[iu1b] <- getConstVal(NA,NA,u1aList) + getConstVal(NA,NA,u1bList) * pfill[iu1b]
 

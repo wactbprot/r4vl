@@ -19,7 +19,7 @@ fm3.uncertDPfill <- function(ccc){
   
   ipfill           <- checkUncertRange(UTHERMTRANS, PFILL)
   
-  if((length(ipfill) > 0) && (!(ipfill[1] == 0))){
+  if((length(ipfill) > 0) & (!(ipfill[1] == 0))){
     
     
     

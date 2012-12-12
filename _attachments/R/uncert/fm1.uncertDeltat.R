@@ -30,7 +30,7 @@ fm1.uncertDeltat <- function(ccc){
     
   if((length(iu1) == length(iu2)) &
      (length(iu1) == length(iu3)) &
-     length(ip) > 0 && ip[1] != 0){
+     length(ip) > 0 & ip[1] != 0){
     
     uncertRes[ip] <- sqrt(u1^2+u2^2+u3^2)
 

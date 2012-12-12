@@ -55,8 +55,8 @@ fm1.uncertTfm <- function(ccc){
     UNS2 <- getSubList(a$cms, "fm1Tfm_u2")
     UNS3 <- getSubList(a$cms, "fm1Tfm_u3")
     
-    if(TfmUnit == UNS1$Unit &&
-       TfmUnit == UNS2$Unit &&
+    if(TfmUnit == UNS1$Unit &
+       TfmUnit == UNS2$Unit &
        TfmUnit == UNS3$Unit 
        ){
  

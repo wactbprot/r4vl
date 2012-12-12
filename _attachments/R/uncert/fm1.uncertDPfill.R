@@ -13,10 +13,10 @@ fm1.uncertDPfill <- function(ccc){
   ## haben die Unsicherheit durch term Transp. nicht
   ## d.h. der result vektor kann mit 0en initialisiert werden:
   uncertDPfillTherm  <- rep(0,length(pfill))
-  UTHERMTRANS      <-  getSubList(a$cms,"fm1ThermTrans_u1")
-  ipfill           <- checkUncertRange(UTHERMTRANS, PFILL)
+  UTHERMTRANS        <-  getSubList(a$cms,"fm1ThermTrans_u1")
+  ipfill             <- checkUncertRange(UTHERMTRANS, PFILL)
   
-  if((length(ipfill) > 0) && (!(ipfill[1] == 0))){
+  if((length(ipfill) > 0) & (!(ipfill[1] == 0))){
     
     
     

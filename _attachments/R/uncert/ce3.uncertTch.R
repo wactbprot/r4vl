@@ -50,8 +50,7 @@ ce3.uncertTch <- function(ccc){
     UNS1   <- getSubList(a$cms, "ce3Tch_u1")
     UNS2   <- getSubList(a$cms, "ce3Tch_u2")
     
-    if(TchUnit == UNS1$Unit &&
-       TchUnit == UNS2$Unit ){
+    if(TchUnit == UNS1$Unit & TchUnit == UNS2$Unit ){
       
       u1   <- getConstVal(NA,NA, UNS1)
       u2   <- getConstVal(NA,NA, UNS2)

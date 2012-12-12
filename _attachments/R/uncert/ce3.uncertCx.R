@@ -14,8 +14,8 @@ ce3.uncertCx <- function(ccc){
     u1aList <-  getSubList(a$cms, "ce3C1_u1_a")
     u1bList <-  getSubList(a$cms, "ce3C1_u1_b")
 
-    if(PCAL$Unit == "mbar"        &&
-       (u1aList$Unit == "1")      &&
+    if(PCAL$Unit == "mbar"        &
+       (u1aList$Unit == "1")      &
        (u1bList$Unit == "1/mbar")  ){
 
       uncertRes[1:noOfPcal] <-

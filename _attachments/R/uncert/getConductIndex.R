@@ -33,7 +33,7 @@ getConductIndex <- function(ccc){
   lw2List    <- getSubList(a$cms, "useLw2")
 
 
-  if(length(CFM3$Unit) == 1 && CFM3$Unit == lwUnit){
+  if(length(CFM3$Unit) == 1 & CFM3$Unit == lwUnit){
     if(lw2List$RangeUnit ==  lwUnit){
       if(CFM3$Unit == lw2List$RangeUnit){
         iLw2 <- which((getConstVal(NA,NA,CFM3) > as.double(lw2List$From)) &
@@ -47,7 +47,7 @@ getConductIndex <- function(ccc){
     ## --- Lw1
     lw1List <- getSubList(a$cms, "useLw1")
     if(lw1List$RangeUnit ==  lwUnit){
-      if(CFM3$Unit == lw1List$RangeUnit){
+      if(CFM3$Unit       == lw1List$RangeUnit){
         iLw1 <- which((getConstVal(NA,NA,CFM3) > as.double(lw1List$From)) &
                       (getConstVal(NA,NA,CFM3) < as.double(lw1List$To)))
       }else{

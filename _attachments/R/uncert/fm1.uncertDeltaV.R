@@ -78,7 +78,7 @@ fm1.uncertDeltaV <- function(ccc){
      (length(iu1e) == length(iu1f)) &
      (length(iu1f) == length(iu1g)) &
      (length(iu1g) == length(iu1h)) &
-     length(ip) > 0 && ip[1] != 0){
+     length(ip) > 0 & ip[1] != 0){
 
         
     uncertDeltaV[ip] <- sqrt(u1a^2+

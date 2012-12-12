@@ -3,7 +3,7 @@ lw      <- infList$args[4]
 a       <-  abbrevList(doc)
 
 ## andere Gase kommen noch
-if((a$cmscg == "N2" || a$cmscg == "Ar") && is.numeric(pfill)){
+if((a$cmscg == "N2" || a$cmscg == "Ar") & is.numeric(pfill)){
   gas <- a$cmscg
   cf  <- list()
  

@@ -15,7 +15,7 @@ fm1.uncertPres <- function(ccc){
   UPRESA       <-  getSubList(a$cms,"fm1Pres_u1_a")
   il           <- checkUncertRange(UPRESA, PFILL)
   
-  if((length(il) > 0) && (!(il[1] == 0))){
+  if((length(il) > 0) & (!(il[1] == 0))){
     k            <- getConvFactor(ccc,UPRESA, PFILL)
     upres[il]    <- getConstVal(NA,NA,UPRESA)/(pfill[il]*k) 
   }
@@ -23,7 +23,7 @@ fm1.uncertPres <- function(ccc){
   UPRESB       <-  getSubList(a$cms,"fm1Pres_u1_b")
   ih           <- checkUncertRange(UPRESB, PFILL)
   
-  if((length(ih) > 0) && (!(ih[1] == 0))){
+  if((length(ih) > 0) & (!(ih[1] == 0))){
     k            <- getConvFactor(ccc,UPRESB, PFILL)
     upres[ih]    <- getConstVal(NA,NA,UPRESB)/(pfill[ih]*k) 
   }

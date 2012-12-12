@@ -25,7 +25,7 @@ calError <- function(ccc){
   cal <- getConstVal(NA,NA,CAL)
   
   ## soll auch an SE1 für SRG-Fehler funktionieren
-  if(IND$Unit == "DCR" && OFS$Unit == "DCR"){
+  if(IND$Unit == "DCR" & OFS$Unit == "DCR"){
 
     d   <- getConstVal(a$cmco1, "d")
     rho <- getConstVal(a$cmco1,"rho" )
@@ -81,10 +81,6 @@ calError <- function(ccc){
                  "offset conversion factor was:",convOfs )
     
   }
-    
-
-
-
 
   error <- corrind/cal - 1
 

@@ -13,11 +13,11 @@ ce3.uncertPcal <- function(ccc){
   UCx   <- getSubList(a$cav,  "uncertCx"     )
   
 
-  if(UQPV$Unit      == "1" &&
-     UQsp$Unit      == "1" &&
-     UF$Unit        == "1" &&
-     UTch$Unit      == "1" &&
-     UTfm$Unit      == "1" &&
+  if(UQPV$Unit      == "1" &
+     UQsp$Unit      == "1" &
+     UF$Unit        == "1" &
+     UTch$Unit      == "1" &
+     UTfm$Unit      == "1" &
      UCx$Unit       == "1"   ){
 
     pcal  <- getConstVal( NA,NA,  PCAL )
