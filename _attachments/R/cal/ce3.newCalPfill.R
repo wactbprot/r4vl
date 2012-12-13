@@ -60,11 +60,6 @@ ce3.newCalPfill <- function(ccc){
     ix01     <- which((pdriftfill < cdgax01border) & (pdriftfill > cdgax001border))
     ix1      <- which((pdriftfill < cdgax1border ) & (pdriftfill > cdgax01border))
 
-    print("ll")
-    print(ix001)
-    print(ix01)
-    print(ix1)
-    
     if(length(ix1) > 0){
       
       pdriftfill[ix1]       <- pdriftfill[ix1]   -  poax1
