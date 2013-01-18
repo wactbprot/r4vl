@@ -10,7 +10,15 @@ ce3.extrapC <- function(ccc){
   
     cf        <- list()
     plw       <- getConstVal(a$cav, "lw")   ## zum Zeitpunkt der LW- Messung: p_l
-    pfill     <- getConstVal(a$cav, "fill") ## zum Zeitpunkt der Auslese: p_a
+    pfe       <- getConstVal(a$cav, "fill") ## zum Zeitpunkt Ende der Auslese: p_a
+    pfill     <- (plw + pfe)/2              ## bei einem SRG ist das hier so:
+
+    ## |--------------------------------------------->
+    ##   ^tlw start         ^tlw end         ^t auslese
+    ## |--------------------------------------------->
+    ##              ^t lw
+    ## |--------------------------------------------->
+    ##                            ^t srgmv
     cnom      <- getConstVal(a$cav, "cnom")
     cfm3      <- rep(NA, length(pfill))
     dh        <- rep(NA, length(pfill))
@@ -47,7 +55,7 @@ ce3.extrapC <- function(ccc){
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
            "cfm3",
            "l/s",
-           cnom,
+           cfm3,
            "ist testweise cnom")
   
   ccc$Calibration$Analysis$Values$Conductance <-

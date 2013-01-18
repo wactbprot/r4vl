@@ -1,6 +1,10 @@
-## --
-## wactbprot/2012-10-31
-## --
+#'
+#' Function mediates between the callScript and yamp
+#'
+#' @author wactbprot (thsteinbock@web.de)
+#' @export
+#' @keywords yamp
+#'
 
 infList             <- list()
 infList$args        <- commandArgs(TRUE) 

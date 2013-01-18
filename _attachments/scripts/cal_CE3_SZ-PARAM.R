@@ -1,3 +1,12 @@
+#'
+#' Function calculates the CE3 saw tooth params which will be written
+#' to the provided textboxes by YAMP.
+#'
+#' @author wactbprot (thsteinbock@web.de)
+#' @export
+#' @keywords yamp
+#'
+
 pfill   <- as.numeric(infList$args[3])
 lw      <- infList$args[4]
 a       <-  abbrevList(doc)

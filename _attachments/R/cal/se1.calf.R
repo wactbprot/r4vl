@@ -11,7 +11,10 @@ se1.calf <- function(ccc){
       fromUnit <- a$cmsc$Volume[[i]]$Unit
       conv     <- getConvFactor(ccc,volUnit, fromUnit)
       msg      <- paste(msg, "used", conv, "to convert from",fromUnit, "to", volUnit)
-      
+
+      ## ---> ToDo: testen
+      ##  Vz   <- Vz + a$cmsc$Volume[[i]]$Value[length(a$cmsc$Volume[[i]]$Value)]
+      ##
       Vz       <- Vz + getConstVal(NA,NA,a$cmsc$Volume[[i]]) * conv
     }
     
