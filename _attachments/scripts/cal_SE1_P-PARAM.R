@@ -15,31 +15,46 @@ if(is.numeric(targetpcal)){
   conv   <- getConvFactor(doc,toUnit, unit)
   pcal   <- targetpcal * conv
   a      <-  abbrevList(doc)
-  f      <- c(
-           "Expansion_A",
-           "Expansion_B",
-           "Expansion_C",
-           "Expansion_D",
-           "Expansion_E")
+  exName      <- c(
+                   "Expansion_A",
+                   "Expansion_B",
+                   "Expansion_E")
   
-  N <- length(f)
-
-  p <- rep(NA,N) 
+  N        <- length(exName)
+  p        <- rep(NA,N) 
+  startVol <- rep(NA,N)
+  funcorr  <- rep(NA,N)
   
   for( i in 1:N){
-    p[i] <- targetpcal/as.numeric(getSubList(a$cms,f[i])$Value)
+
+    fStruct     <- getSubList(a$cms,exName[i])
+
+    startVol[i] <- getConstVal(a$cms,fStruct$StartVol)
+    funcorr[i]  <- as.numeric(fStruct$Value)
+    p[i]        <- targetpcal/funcorr
   }
   
-  i1 <- which( p > 10 & p < 1000)
-  if(length(i1) > 0){
+  iOk <- which( p > 10 & p < 1000)
+  if(length(iOk) > 0){
     
-    p1 <- p[i1]
-    f1 <- f[i1]
-    i2 <- which.max(p1)
+    pSel      <- p[iOk]
+    exNameSel <- exName[iOk]
+    fSel      <- funcorr[iOk]
+    VSel      <- startVol[iOk]
+    iSel      <- which.max(pSel)
     
   }
-    
-  cat(toJSON(list("expansion"=f[i2], "p_fill_mbar"= p[i2], "p_fill_V"= p[i2]*10/1000)))
+
+  cat(toJSON(list("expansion"   = exNameSel[iSel],
+                  "p_fill_mbar" = pSel[iSel],
+                  "p_fill_V"    = pSel[iSel]*10/1000,
+                  "f_uncorr"    = fSel[iSel],
+                  "start_vol"   = VSel[iSel]
+                  )))
 }else{
-  cat(toJSON(list("expansion"="~", "p_fill_mbar"= "~", "p_fill_V"= "~")))
+  cat(toJSON(list("expansion"   = "~",
+                  "p_fill_mbar" = "~",
+                  "p_fill_V"    = "~",
+                  "f_uncorr"    = "~",
+                  "start_vol"   = "~")))
 }
