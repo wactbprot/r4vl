@@ -9,7 +9,10 @@
 targetpcal   <- as.numeric(infList$args[3])
 unit         <- infList$args[4]
 
-if(is.numeric(targetpcal)){
+
+if(length(doc$Calibration) > 0 &
+   doc$Calibration$Standard == "SE1" &
+   is.numeric(targetpcal)){
 
   toUnit <- "mbar"
   conv   <- getConvFactor(doc,toUnit, unit)
@@ -28,10 +31,11 @@ if(is.numeric(targetpcal)){
   for( i in 1:N){
 
     fStruct     <- getSubList(a$cms,exName[i])
-
-    startVol[i] <- getConstVal(a$cms,fStruct$StartVol)
+    
+    startVol[i] <- as.numeric(getConstVal(a$cms,fStruct$StartVolume))
     funcorr[i]  <- as.numeric(fStruct$Value)
-    p[i]        <- targetpcal/funcorr
+   
+    p[i]        <- targetpcal/funcorr[i]
   }
   
   iOk <- which( p > 10 & p < 1000)
@@ -41,6 +45,8 @@ if(is.numeric(targetpcal)){
     exNameSel <- exName[iOk]
     fSel      <- funcorr[iOk]
     VSel      <- startVol[iOk]
+    ## der größte Fülldruck hat die
+    ## geringste Unsicherheit
     iSel      <- which.max(pSel)
     
   }
