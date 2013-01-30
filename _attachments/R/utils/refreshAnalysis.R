@@ -6,9 +6,10 @@ refreshAnalysis <- function(cdb,ccc){
   ccc$Calibration$Analysis$Values <- list()
 
   ccc$Calibration$Analysis$Maintainer <- toString(Sys.getenv("USER"))
-  ## demnächst über eine Sys.--- function
-  ## done!
 
+  ## aktuelle map version
+  ccc$Calibration$Analysis$GitHash    <- system("git rev-parse HEAD", intern=TRUE)
+ 
     ccc$Calibration$Analysis$Date   <-
       list(
            Type="calculated",

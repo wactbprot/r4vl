@@ -6,9 +6,10 @@ se1.yamp.calPfill <- function(ccc){
     
     ## -------------------- ruska--------------------------v
     PFILL       <- getSubList(a$cmv, "ruska_p_fill")
-    PFILLOFFSET <- getSubList(a$cmv, "ruska_p_fill_offset")
+    PFILLOFFSET <- getSubList(a$cma, "ruska_p_fill_offset")
     
-    omt         <- getConstVal(a$cma, "amt_offset")
+    omt         <- getSubList(a$cma, "amt_offset")
+    bmt         <- getSubList(a$cma, "amt_before")
     
     if((PFILL$Unit == PFILLOFFSET$Unit) & (PFILL$Unit =="V")){
       
@@ -23,20 +24,49 @@ se1.yamp.calPfill <- function(ccc){
         pfillVolt     <-  getConstVal(NA, NA, PFILL)
         pfillOffVolt  <-  getConstVal(NA, NA, PFILLOFFSET)
 
-        if(length(omt) > 1){
+        if(!is.null(omt) & !is.null(bmt) & 
+           (length(omt) > 1) & (length(bmt) > 1)){
+          
+          offsetVolt <- rep(NA,length(bmt))
+          
+          for(i in 1:length(omt)){
+            
+            k <- which(bmt > omt[i])
+            
+            offsetVolt[k] <- pfillOffVolt[i] 
 
-
-
+          }
+        }else{
+          offsetVolt <- pfillOffVolt
         }
-
-
-
-
         
-        pfill <- convA  *  (pfillVolt - pfillOffVolt) + convB
+        pfill <- convA  *  pfillVolt  + convB
+        offs  <- convA  *  offsetVolt + convB
         
-        msg   <- paste(msg, "calculated with:", convA, "* (pfill - pfillOffs) +",convB)
+        msg   <- paste(msg, "calculated with convA: ", convA, "and convB: ",convB)
         pUnit <- "mbar"
+
+        ccc$Calibration$Analysis$Values$Pressure <-
+          setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                 "fill",
+                 pUnit,
+                 pfill - offs,
+                 msg)
+        
+        ccc$Calibration$Analysis$Values$Pressure <-
+          setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                 "fill_uncorr",
+                 pUnit,
+                 pfill,
+                 msg)
+        
+        ccc$Calibration$Analysis$Values$Pressure <-
+          setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                 "fill_offset",
+                 pUnit,
+                 offs,
+                 msg)
+        
         
       }else{
         stop("conversion of demanded units not implemented (maybe only a typo?)!")
@@ -45,17 +75,6 @@ se1.yamp.calPfill <- function(ccc){
       stop("pfill Units dont match")
     }
     ## -------------------- ruska--------------------------^
-
-    pfill <- pfill
-
-    ccc$Calibration$Analysis$Values$Pressure <-
-      setCcl(ccc$Calibration$Analysis$Values$Pressure,
-             "fill",
-             pUnit,
-             pfill,
-             paste(msg, "p_fill = pfill"))
-
-        
     return(ccc)
   }
 }

@@ -11,9 +11,7 @@ se1.calTime <- function(ccc){
     if(rmtBEFORE$Unit == "s"){
       
       rmtBefA.h <- getConstVal(NA,NA,rmtBEFORE)/3600
-      
-      rmtBefA.h  <- checkOutIndex(a,rmtBefA.h)
-      
+
       ccc$Calibration$Analysis$Values$Time <-
         setCcl(ccc$Calibration$Analysis$Values$Time, "rmt_before",
                "h",
@@ -23,11 +21,9 @@ se1.calTime <- function(ccc){
     }
     
     if(rmtAFTER$Unit == "s"){
-
+      
       rmtAfterA.h <- getConstVal(NA,NA,rmtAFTER)/3600
-
-      rmtAfterA.h  <- checkOutIndex(a,rmtAfterA.h)
-
+      
       ccc$Calibration$Analysis$Values$Time <-
         setCcl(ccc$Calibration$Analysis$Values$Time, "rmt_after",
                "h",
@@ -38,8 +34,8 @@ se1.calTime <- function(ccc){
   }
 
 
-  amtBEFORE       <- getConstVal(a$cmv, "amt_before")
-  amtAFTER        <- getConstVal(a$cmv, "amt_after")
+  amtBEFORE       <- getSubList(a$cmv, "amt_before")
+  amtAFTER        <- getSubList(a$cmv, "amt_after")
   ## todo:
   ## aus measurement date anfangszeit ber.
   ## dann rmt in min nach Analysis

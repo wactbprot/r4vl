@@ -13,7 +13,9 @@ se1.yamp.calT <- function(ccc) {
     ## abwickeln
     
     ## a$cmscex steht für SequenceControll/Expansion
-    N <- length(getConstVal(a$cmv, "amt_before"))
+    exNames <- getSubList(a$cmv, "name")$Value
+    
+    N <- length(exNames)
     
     baseCorrName        <- "keithley_corr_ch" 
     baseTNameAfter      <- "keithley_T_after_ch"
@@ -33,7 +35,6 @@ se1.yamp.calT <- function(ccc) {
     ## T_after ---------------------------------^
     
     ## T_before ---------------------------------v
-    exNames <- getSubList(a$cmv, "name")$Value
 
     iA <- which(exNames == paste(expansionBaseName, "A", sep=""))
     iB <- which(exNames == paste(expansionBaseName, "B", sep=""))
