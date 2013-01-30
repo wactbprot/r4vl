@@ -33,10 +33,10 @@ abbrevList <- function(ccc){
 
 ### se1-spezifisch
   if(a$cs =="SE1"){
-
-    a$cmsc   <- a$cm$SequenceControl
     a$cmscex <- a$cmsc$Expansion
+    a$cmsc   <- a$cm$SequenceControl
     a$cmscg  <- a$cpt$Gas
+
   }
 
 ### VG Dkm Frs-spezifisch
