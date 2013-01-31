@@ -31,13 +31,6 @@ abbrevList <- function(ccc){
     a$cmscp  <- a$cmsc$calPort
   }
 
-### se1-spezifisch
-  if(a$cs =="SE1"){
-    a$cmscex <- a$cmsc$Expansion
-    a$cmsc   <- a$cm$SequenceControl
-    a$cmscg  <- a$cpt$Gas
-
-  }
 
 ### VG Dkm Frs-spezifisch
   if(a$cs =="DKM|FRS5" | a$cs == "FRS5" | a$cs == "DKM"){
