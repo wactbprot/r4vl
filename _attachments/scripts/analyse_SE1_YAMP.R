@@ -9,6 +9,6 @@ if(length(doc$Calibration) > 0){
   doc <- se1.calRGC(doc)
   doc <- se1.calPcal(doc)
   
-                                        #doc <- dispatchResCal( doc )
+  doc <- dispatchResCal( doc )
   
 }

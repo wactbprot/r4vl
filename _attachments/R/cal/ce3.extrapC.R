@@ -1,4 +1,5 @@
 ce3.extrapC <- function(ccc){
+
   
   msg       <- "calculated by ce3.extrapC"
   a         <-  abbrevList(ccc)
