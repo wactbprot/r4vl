@@ -1,8 +1,7 @@
 calError <- function(ccc){
   msg <- "calculated by calError()"
-  
   a <- abbrevList(ccc)
-
+  
   IND <- getSubList(a$cmv, "p_ind")
   OFS <- getSubList(a$cmv, "p_ind_offset")
 
@@ -27,9 +26,10 @@ calError <- function(ccc){
   ## soll auch an SE1 für SRG-Fehler funktionieren
   if(IND$Unit == "DCR" & OFS$Unit == "DCR"){
 
-    d   <- getConstVal(a$cmco1, "d")
-    rho <- getConstVal(a$cmco1,"rho" )
+    d     <- getConstVal(a$cmco1, "d")
+    rho   <- getConstVal(a$cmco1,"rho" )
     sigma <- getConstVal(a$cmco1,"sigma" )
+    gas   <- a$cma$Gas$Gas
     
     dcr <- ind - ofs
     
@@ -41,13 +41,13 @@ calError <- function(ccc){
     if(a$cs == "CE3"){
       T <- getConstVal(a$cav, "Tuhv")
     }
-    if(  a$cmscg == "Ar"){
+    if(  gas == "Ar"){
       M <- getConstVal(a$cc, "molWeight_Ar" )
-      msg <- paste(msg, "; gas:", a$cmscg)
+      msg <- paste(msg, "; gas:", gas)
     }
-    if(  a$cmscg == "N2"){
+    if(  gas == "N2"){
       M <- getConstVal(a$cc, "molWeight_N2" )
-      msg <- paste(msg, "; gas:", a$cmscg)
+      msg <- paste(msg, "; gas:", gas)
     }
 
     

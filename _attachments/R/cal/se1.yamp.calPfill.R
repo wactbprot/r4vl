@@ -30,11 +30,8 @@ se1.yamp.calPfill <- function(ccc){
           offsetVolt <- rep(NA,length(bmt))
           
           for(i in 1:length(omt)){
-            
-            k <- which(bmt > omt[i])
-            
+            k             <- which(bmt > omt[i])
             offsetVolt[k] <- pfillOffVolt[i] 
-
           }
         }else{
           offsetVolt <- pfillOffVolt

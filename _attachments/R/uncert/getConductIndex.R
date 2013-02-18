@@ -55,16 +55,16 @@ getConductIndex <- function(ccc){
         stop()
       }
     }
-    
-    if(length(iLw1) + length(iLw2) == length(getConstVal(NA,NA,CFM3))){
-      
 
     res$iLw1 <- iLw1   ## grosser LW
     res$iLw2 <- iLw2    ## kleiner LW
-      
-    }else{
+
+    ## ein stop() macht wegen des gelösten NAN Problems
+    ## hier keinen Sinn mehr
+
+    if(!(length(iLw1) + length(iLw2) == length(getConstVal(NA,NA,CFM3)))){
       print("index do not cover entire value range")
-      stop()
+     
     }
   }
 

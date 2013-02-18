@@ -22,10 +22,6 @@ se1.calRGC <- function(ccc){
     sv   <- getConstVal(NA,NA,SV)
     vc   <- getConstVal(NA,NA,VC)
     
-    ## der outIndex muss nicht kontrolliert werden,
-    ## weil nur pfill vector ist und dieser aus Analysis kommt,
-    ## also schon über getOutIndex() gelaufen ist
-    
     rgc  <-  (vc/(sv * sp) *  pfill)
 
     msg  <- paste(msg,"1- Correction_rg") 
