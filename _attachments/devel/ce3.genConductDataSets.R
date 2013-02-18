@@ -44,7 +44,7 @@ cdb$view   <- "ce3-get_flow_by_date"
 ## Zeitraum ist:
 ## vom 2009-12-08 bis zum 2012-01-25
 ##
-cdb$queryParam <- "startkey=%222009-12-16%22&endkey=%222012-01-25%22"
+cdb$queryParam <- 'startkey="2009-12-16"&endkey="2013-01-25"'
 res            <- cdbGetView(cdb)$res
 
 resPfill <- NULL
@@ -80,14 +80,16 @@ dvSep <- 9e-6
 igrLw  <- which(resCond > dvSep)
 iklLw  <- which(resCond < dvSep)
 
-iN2    <- which(gas == "N2")
-iAr    <- which(gas == "Ar")
+iN2    <- which(resGas == "N2")
+iAr    <- which(resGas == "Ar")
+iD2    <- which(resGas == "D2")
+
 
 ## edit --------------------
-i1 <- which(iklLw %in% iAr)
-m  <- iklLw[i1]
+i1 <- which(igrLw %in% iD2)
+m  <- igrLw[i1]
 
-baseName <- "klLwAr"
+baseName <- "grLwD2"
 
 ## -------------------------
 

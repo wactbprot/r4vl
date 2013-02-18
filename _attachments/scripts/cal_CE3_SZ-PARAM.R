@@ -15,9 +15,6 @@ a       <-  abbrevList(doc)
 if((a$cmscg == "N2" || a$cmscg == "Ar") & is.numeric(pfill)){
   gas <- a$cmscg
   cf  <- list()
- 
- 
-
   
   if(lw == "lw0" ){ ## kl.LW
     cf$a   <-  getConstVal(a$cms, paste("klLw_",gas,"_A", sep=""))
@@ -38,7 +35,7 @@ if((a$cmscg == "N2" || a$cmscg == "Ar") & is.numeric(pfill)){
     E     <- 0.0015 ## war 0.001 (mehr zeit bei 350 mbar) 
     noMp  <- 85
     V     <- 0.2808 ## l aus AA
-    tc     <- 2.1e-3  ## call offset 2ms 
+    tc    <- 2.1e-3  ## call offset 2ms 
   }
   
   T       <-  V/fn.2162(cf,pfill) * E - noMp * tc ## gesamtmesszeit pro SZ
