@@ -74,7 +74,8 @@ for(i in 1:length(res$rows)){
     resGas   <- append(resGas,tmpGas)
   }
 }
- 
+
+
 dvSep <- 9e-6
 
 igrLw  <- which(resCond > dvSep)
@@ -83,6 +84,8 @@ iklLw  <- which(resCond < dvSep)
 iN2    <- which(resGas == "N2")
 iAr    <- which(resGas == "Ar")
 iD2    <- which(resGas == "D2")
+
+plot(resPfill[iD2], resCond[iD2])
 
 
 ## edit --------------------
