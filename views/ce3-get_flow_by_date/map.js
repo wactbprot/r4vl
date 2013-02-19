@@ -10,24 +10,25 @@ function(doc) {
                 var cmv = cm.Values,
                 cav     = ca.Values,
                 cmd     = cm.Date || ca.Date,
+		cmdv    = cmd ? (cmd.Value || cmd[0].Value): "2011-01-01",
                 cms     = cm.SequenzControl|| cm.SequenceControl;
             
-		if( cmd && cms && cav){
+		if(cms && cav){
                     var cmvc = cmv.Conductance,
                     cmvp     = cmv.Pressure,
                     cavt     = cav.Temperature,
                     cmsg     = cms.Gas;
                 
 		    if(cmvc && cmvp && cmsg){
-                        var dd =  cmd.Value || cmd[0].Value,
-                        ddd    = dd.split(" ")[0],
-                        retKey = ddd,
-                        retObj = {"Date":ddd,
-                                  "Gas": cmsg,
-                                  "Conductance":cmvc,
-                                  "Pressure": cmvp,
-                                  "Temperature":cavt};
-
+			
+                        var ddd = cmdv.split(" ")[0],
+                        retKey  = ddd,
+                        retObj  = {"Date":ddd,
+                                   "Gas": cmsg,
+                                   "Conductance":cmvc,
+                                   "Pressure": cmvp,
+                                   "Temperature":cavt};
+			
                         emit(retKey, retObj);
                     }
                 }
