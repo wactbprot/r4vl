@@ -86,11 +86,11 @@ ce3.newCalPfill <- function(ccc){
     ## cdga
     ## gasartabh.
     ## F(relativ)=(a+c*pind+e*pind^2)/(1+b*pind+d*pind^2+f*pind^3)
-    if(gas == "Ar" || gas = "N2"){
+    if(gas == "Ar" || gas == "N2"){
       g <- gas
     }else{
       g <- "N2"
-      msg <- paste(msg, "no calibration for CDGA for gas: ", gas". Use N2 instead")
+      msg <- paste(msg, "no calibration for CDGA for gas: ", gas, ". Use N2 instead")
     }
 
       cfcdga    <- list()
