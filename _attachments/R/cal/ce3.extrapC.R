@@ -1,11 +1,10 @@
 ce3.extrapC <- function(ccc){
-
   
   msg       <- "calculated by ce3.extrapC"
   a         <-  abbrevList(ccc)
 
   ## andere Gase kommen noch
-  if(a$cmscg == "N2" || a$cmscg == "Ar"){
+  if(a$cmscg == "N2" || a$cmscg == "Ar"|| a$cmscg == "D2"){
 
     ilw    <- getConductIndex(ccc)
   
@@ -57,7 +56,7 @@ ce3.extrapC <- function(ccc){
            "cfm3",
            "l/s",
            cfm3,
-           "ist testweise cnom")
+           msg)
   
   ccc$Calibration$Analysis$Values$Conductance <-
     setCcl(ccc$Calibration$Analysis$Values$Conductance,

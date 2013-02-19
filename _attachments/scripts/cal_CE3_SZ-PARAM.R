@@ -12,13 +12,10 @@ lw      <- infList$args[4]
 a       <-  abbrevList(doc)
 
 ## andere Gase kommen noch
-if((a$cmscg == "N2" || a$cmscg == "Ar") & is.numeric(pfill)){
+if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pfill)){
   gas <- a$cmscg
   cf  <- list()
- 
- 
-
-  
+   
   if(lw == "lw0" ){ ## kl.LW
     cf$a   <-  getConstVal(a$cms, paste("klLw_",gas,"_A", sep=""))
     cf$b   <-  getConstVal(a$cms, paste("klLw_",gas,"_B", sep=""))

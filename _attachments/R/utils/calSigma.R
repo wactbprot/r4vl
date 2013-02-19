@@ -60,6 +60,11 @@ calSigma <- function( ccc ){
       M <- getConstVal(a$cc, "molWeight_N2" )
       msg <- paste(msg, "; gas:", a$cmscg)
     }
+    if(  a$cmscg == "D2"){
+      M <- getConstVal(a$cc, "molWeight_D2" )
+      msg <- paste(msg, "; gas:", a$cmscg)
+    }
+
     IndUnit <- CAL$Unit
     K <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/2000
 

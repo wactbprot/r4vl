@@ -86,14 +86,22 @@ ce3.newCalPfill <- function(ccc){
     ## cdga
     ## gasartabh.
     ## F(relativ)=(a+c*pind+e*pind^2)/(1+b*pind+d*pind^2+f*pind^3)
-    cfcdga    <- list()
-    cfcdga$a  <- getConstVal(  a$cmco, paste("cdgaCorrA_",gas,sep=""))
-    cfcdga$b  <- getConstVal(  a$cmco, paste("cdgaCorrB_",gas,sep=""))
-    cfcdga$c  <- getConstVal(  a$cmco, paste("cdgaCorrC_",gas,sep=""))
-    cfcdga$d  <- getConstVal(  a$cmco, paste("cdgaCorrD_",gas,sep=""))
-    cfcdga$e  <- getConstVal(  a$cmco, paste("cdgaCorrE_",gas,sep=""))
-    cfcdga$f  <- getConstVal(  a$cmco, paste("cdgaCorrF_",gas,sep=""))
-       
+    if(gas == "Ar" || gas = "N2"){
+      g <- gas
+    }else{
+      g <- "N2"
+      msg <- paste(msg, "no calibration for CDGA for gas: ", gas". Use N2 instead")
+    }
+
+      cfcdga    <- list()
+      cfcdga$a  <- getConstVal(  a$cmco, paste("cdgaCorrA_",g,sep=""))
+      cfcdga$b  <- getConstVal(  a$cmco, paste("cdgaCorrB_",g,sep=""))
+      cfcdga$c  <- getConstVal(  a$cmco, paste("cdgaCorrC_",g,sep=""))
+      cfcdga$d  <- getConstVal(  a$cmco, paste("cdgaCorrD_",g,sep=""))
+      cfcdga$e  <- getConstVal(  a$cmco, paste("cdgaCorrE_",g,sep=""))
+      cfcdga$f  <- getConstVal(  a$cmco, paste("cdgaCorrF_",g,sep=""))
+      
+      
     pdriftfill[icdga] <- pdriftfill[icdga]/(fn.7904(cfcdga,pdriftfill[icdga]) + 1)
     pfill[icdga]      <- pfill[icdga]/(fn.7904(cfcdga,pfill[icdga]) + 1)
 

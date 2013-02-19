@@ -16,6 +16,10 @@ ce3.calMfp <- function(ccc){
     M          <- getConstVal(a$cc,"molWeight_Ar") ## [M] = kg/mol
     visc       <- getConstVal(a$cc,"visc_Ar")
   }
+  if(a$cmsc$Gas =="D2"){
+    M          <- getConstVal(a$cc,"molWeight_D2") ## [M] = kg/mol
+    visc       <- getConstVal(a$cc,"visc_D2")
+  }
 
   Mr <- M*1000 ## relative Teilchenmasse [Mr]=1
 

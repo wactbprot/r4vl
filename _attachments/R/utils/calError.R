@@ -49,6 +49,10 @@ calError <- function(ccc){
       M <- getConstVal(a$cc, "molWeight_N2" )
       msg <- paste(msg, "; gas:", gas)
     }
+    if(  gas == "D2"){
+      M <- getConstVal(a$cc, "molWeight_D2" )
+      msg <- paste(msg, "; gas:", gas)
+    }
 
     
     if(CAL$Unit == "mbar"){

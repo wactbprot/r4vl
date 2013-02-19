@@ -14,20 +14,21 @@ ce3.calPcal <- function(ccc){
 
   if(a$cmscg =="N2")  M <- getConstVal(a$cc,"molWeight_N2")
   if(a$cmscg =="Ar")  M <- getConstVal(a$cc,"molWeight_Ar")
+  if(a$cmscg =="D2")  M <- getConstVal(a$cc,"molWeight_D2")
 
   if(a$cmscok == "opK1" | a$cmscok == "opK2"| a$cmscok == "opK4"){
 
-    r1        <- getConstVal(a$cms,"r1")
-    A1        <- r1^2*pi ## in m^2
-    K3        <- getConstVal(a$cms,"K3Uhv")
-    Tch       <- getConstVal(a$ca, "Tuhv")
-    K2        <- (1 + aK2*(2* r1/mfp))
+    r1          <- getConstVal(a$cms,"r1")
+    A1          <- r1^2*pi ## in m^2
+    K3          <- getConstVal(a$cms,"K3Uhv")
+    Tch         <- getConstVal(a$ca, "Tuhv")
+    K2          <- (1 + aK2*(2* r1/mfp))
 
     ## leitwerte in m^3/s 
-    c         <- sqrt(8 * R * Tch/(pi * M)) ## m/s 
-    C1        <- c/4 * A1 * K2 * K3
+    c           <- sqrt(8 * R * Tch/(pi * M)) ## m/s 
+    C1          <- c/4 * A1 * K2 * K3
 
-    p         <- qpV * mbarls2pam3s/C1 * Pa2mbar ##  [qpVUhv] = mbar l/s [C1] = m^3/s
+    p           <- qpV * mbarls2pam3s/C1 * Pa2mbar ##  [qpVUhv] = mbar l/s [C1] = m^3/s
 
     if(a$cmscp == "P1"){ K4 <- getConstVal(a$cms,"K4P1")}
     if(a$cmscp == "P2"){ K4 <- getConstVal(a$cms,"K4P2")}
