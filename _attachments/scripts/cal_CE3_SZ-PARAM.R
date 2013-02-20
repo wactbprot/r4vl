@@ -32,8 +32,8 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pfill)){
     cf$b  <-  getConstVal(a$cms, paste("grLw_",gas,"_B", sep=""))
     cf$c  <-  getConstVal(a$cms, paste("grLw_",gas,"_C", sep=""))
     cf$d  <-  getConstVal(a$cms, paste("grLw_",gas,"_D", sep=""))
-    E     <- 0.0015 ## war 0.001 (mehr zeit bei 350 mbar) 
-    noMp  <- 85
+    E     <- 0.001 ## war 0.001 (mehr zeit bei 350 mbar) 
+    noMp  <- 80
     V     <- 0.2808 ## l aus AA
     tc    <- 2.1e-3  ## call offset 2ms 
   }
