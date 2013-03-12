@@ -56,9 +56,9 @@ calError <- function(ccc){
 
     
     if(CAL$Unit == "mbar"){
-      
-      K <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/2000
-      
+
+      indUnit  <- "mbar"
+      K        <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/2000
       corrind  <- K * dcr/sigma
       ind      <- K * ind
       ofs      <- K * ofs

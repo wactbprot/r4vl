@@ -22,25 +22,25 @@ if(length(doc$Calibration) > 0 &
                    "Expansion_A",
                    "Expansion_B",
                    "Expansion_E")
-  
+
   N        <- length(exName)
-  p        <- rep(NA,N) 
+  p        <- rep(NA,N)
   startVol <- rep(NA,N)
   funcorr  <- rep(NA,N)
-  
+
   for( i in 1:N){
 
     fStruct     <- getSubList(a$cms,exName[i])
-    
+
     startVol[i] <- as.numeric(getConstVal(a$cms,fStruct$StartVolume))
     funcorr[i]  <- as.numeric(fStruct$Value)
-   
+
     p[i]        <- targetpcal/funcorr[i]
   }
+
+  iOk <- which( p > 1 & p < 1000)
   
-  iOk <- which( p > 10 & p < 1000)
   if(length(iOk) > 0){
-    
     pSel      <- p[iOk]
     exNameSel <- exName[iOk]
     fSel      <- funcorr[iOk]
@@ -48,15 +48,25 @@ if(length(doc$Calibration) > 0 &
     ## der größte Fülldruck hat die
     ## geringste Unsicherheit
     iSel      <- which.max(pSel)
-    
+
+
+
+    cat(toJSON(list("expansion"   = exNameSel[iSel],
+                    "p_fill_mbar" = pSel[iSel],
+                    "p_fill_V"    = pSel[iSel]*10/1000,
+                    "f_uncorr"    = fSel[iSel],
+                    "start_vol"   = VSel[iSel]
+                    )))
+  }else{
+
+    cat(toJSON(list("expansion"   = "keinen",
+                    "p_fill_mbar" = "passenden",
+                    "p_fill_V"    = "pfill",
+                    "f_uncorr"    = "gefunden",
+                    "start_vol"   = "~")))
+
   }
 
-  cat(toJSON(list("expansion"   = exNameSel[iSel],
-                  "p_fill_mbar" = pSel[iSel],
-                  "p_fill_V"    = pSel[iSel]*10/1000,
-                  "f_uncorr"    = fSel[iSel],
-                  "start_vol"   = VSel[iSel]
-                  )))
 }else{
   cat(toJSON(list("expansion"   = "~",
                   "p_fill_mbar" = "~",
