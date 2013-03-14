@@ -51,9 +51,7 @@ se1.calf <- function(ccc){
       fp <- 1/(1/f + Vz/sv)
       
     }
-    
-    fp <-  checkOutIndex(a,fp)
-    
+     
     ccc$Calibration$Analysis$Values$Expansion <-
       setCcl(ccc$Calibration$Analysis$Values$Expansion,
              "corr",

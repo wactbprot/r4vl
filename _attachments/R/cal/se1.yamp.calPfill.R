@@ -8,9 +8,9 @@ se1.yamp.calPfill <- function(ccc){
     PFILL       <- getSubList(a$cmv, "ruska_p_fill")
     PFILLOFFSET <- getSubList(a$cma, "ruska_p_fill_offset")
     
-    omt         <- getSubList(a$cma, "amt_offset")
-    bmt         <- getSubList(a$cma, "amt_before")
-    
+    omt         <- getConstVal(a$cma, "amt_offset")
+    bmt         <- getConstVal(a$cmv, "amt_before")
+
     if((PFILL$Unit == PFILLOFFSET$Unit) & (PFILL$Unit =="V")){
       
       CA        <-  getSubList(a$cmco, "conv_a")
@@ -18,16 +18,18 @@ se1.yamp.calPfill <- function(ccc){
       
       if((CA$Unit == "mbar/V") & (CB$Unit == "mbar")){
         
-        convA               <-  getConstVal(NA, NA, CA)
-        convB               <-  getConstVal(NA, NA, CB)
+        convA         <-  getConstVal(NA, NA, CA)
+        convB         <-  getConstVal(NA, NA, CB)
         
         pfillVolt     <-  getConstVal(NA, NA, PFILL)
         pfillOffVolt  <-  getConstVal(NA, NA, PFILLOFFSET)
 
+        N             <- length(pfillVolt)
+        
         if(!is.null(omt) & !is.null(bmt) & 
            (length(omt) > 1) & (length(bmt) > 1)){
           
-          offsetVolt <- rep(NA,length(bmt))
+          offsetVolt <- rep(NA,N)
           
           for(i in 1:length(omt)){
             k             <- which(bmt > omt[i])
