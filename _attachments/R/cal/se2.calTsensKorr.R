@@ -1,7 +1,9 @@
 se2.calTsensKorr <- function(ccc){
   msg <- "calculated by se2.calTsensKorr"
   
-  a <- abbrevList( ccc )
+  a    <- abbrevList( ccc )
+  maxT <- 24
+  minT <- 22
   
   if(a$dataAvailable){
     baseName <- "keithley_ch"
@@ -23,19 +25,34 @@ se2.calTsensKorr <- function(ccc){
     normName <- "f250"
  
     nVal <-  getConstVal(a$cmv,normName)
-    nout <- which(is.na(nVal))
 
+    nout <- which(is.na(nVal) | (nVal < minT) | (nVal > maxT))
+
+    nVal <- nVal[-nout]
+       
+    
     for(idx in 1:length(chVec)){
 
       cmplName <- paste(baseName, chVec[idx], sep="")
 
       iVal     <-  getConstVal(a$cmv,cmplName)
-      iout     <-  which(is.na(iVal))      
+      iout     <-  which((is.na(nVal) | (iVal < minT) | (iVal > maxT)))
       iVal     <-  iVal[-c(nout,iout)]
+      
+      
+      if(length(iVal) > length(nVal)){
+        
        
-      kVal     <- nVal[-c(nout,iout)] - iVal
-      k        <- mean(kVal)
-      sdK      <- sd(kVal)
+        kVal     <- nVal - iVal[1:length(nVal)]
+      }else{
+
+        kVal     <- nVal[1:length(iVal)] - iVal
+
+      }
+
+
+      k        <- mean(kVal, na.rm = TRUE)
+      sdK      <- sd(kVal, na.rm = TRUE)
       
       ccc$Calibration$Result$Values$Temperature <-
         setCcl(ccc$Calibration$Result$Values$Temperature,
