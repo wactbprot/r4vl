@@ -12,10 +12,10 @@ calVFrs5Se1ExpA <- function(ccc){
   Tbefore <- getConstVal(a$cav$Temperature, "before")
   Tafter  <- getConstVal(a$cav$Temperature, "after")
   rg      <- getConstVal(a$cav$Correction,  "rg")
-
+  ## nach http://a73434.berlin.ptb.de/mediawiki/index.php/Vermessung_des_V2%2BV3_%2803/13%29#.24V_.7B23.7D.24
   V1      <- getConstVal(a$cms, "V1")
-  V23     <- 21332.28 # nach http://a73434.berlin.ptb.de/mediawiki/index.php/QSE-SE1-2010
-  Vnd     <- 80
+  V23     <- 21327.78
+  Vnd     <- 72.83  
   pfrs    <- getConstVal(a$cav, "cal")
 
   PFILL   <- getSubList(a$cav, "fill")
