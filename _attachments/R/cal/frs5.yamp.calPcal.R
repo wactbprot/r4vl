@@ -24,15 +24,15 @@ frs5.calPfrs5 <- function(ccc){
   Tfrs   <- getConstVal(NA,NA,TFRS)
   
   ##            ^^^^^^^^^^
-  RCAL   <- getSubList(a$cms$Constants,    "R_cal") ## in lb
+  RCAL   <- getSubList(a$cms,    "R_cal") ## in lb
      
-  MCAL   <- getSubList(a$cms$Constants,    "m_cal") ## in in kg
+  MCAL   <- getSubList(a$cms,    "m_cal") ## in in kg
 
-  AEFF   <- getSubList(a$cms$Constants,    "A_eff") ## in in m^2
+  AEFF   <- getSubList(a$cms,    "A_eff") ## in in m^2
 
-  RHOFrs <-  getSubList(a$cms$Constants,    "rho_frs") ## in in kg/m^3
-  RHOGas <-  getSubList(a$cms$Constants,    "rho_gas") ## in in kg/m^3
-  AB     <-  getSubList(a$cms$Constants,    "alpha_beta_frs") ## in in kg/m^3
+  RHOFrs <-  getSubList(a$cms,    "rho_frs") ## in in kg/m^3
+  RHOGas <-  getSubList(a$cms,    "rho_gas") ## in in kg/m^3
+  AB     <-  getSubList(a$cms,    "alpha_beta_frs") ## in in kg/m^3
   ## check der Einheiten
   g      <- getConstVal(NA,NA,G) * getConvFactor(ccc,"m/s^2",G$Unit)
 

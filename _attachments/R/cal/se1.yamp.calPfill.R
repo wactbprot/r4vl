@@ -36,7 +36,8 @@ se1.yamp.calPfill <- function(ccc){
             offsetVolt[k] <- pfillOffVolt[i] 
           }
         }else{
-          offsetVolt <- pfillOffVolt
+          offsetVolt <- rep(pfillOffVolt,N)
+         
         }
         
         pfill <- convA  *  pfillVolt  + convB
