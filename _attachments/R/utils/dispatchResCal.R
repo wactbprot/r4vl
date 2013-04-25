@@ -17,6 +17,10 @@ dispatchResCal <- function(ccc){
          ccc <-  calRatio(ccc)
        }
 
+      if(resType == "sens"){
+         ccc <-  calSens(ccc)
+       }
+
        if(resType == "correctionFactor"){
          ccc <-  calCf(ccc)
        }

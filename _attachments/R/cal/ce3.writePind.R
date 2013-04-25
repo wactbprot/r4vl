@@ -28,7 +28,8 @@ ce3.writePind <- function(ccc){
     OFF <- getSubList(a$cmv, "offset")
   }
  
-  if(!is.null(IND) & !is.null(OFF) & IND$Unit != "DCR"){
+  if(!is.null(IND) & !is.null(OFF) & IND$Unit != "DCR" &
+     !is.null(IND) & !is.null(OFF) & IND$Unit != "A"){
 
     pind <- getConstVal(NA,NA,IND) * getConvFactor(ccc,pUnit,IND$Unit)
     poff <- getConstVal(NA,NA,OFF) * getConvFactor(ccc,pUnit,OFF$Unit)
