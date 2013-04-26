@@ -58,11 +58,17 @@ ce3.calDeltaVDeltat <- function(ccc){
     ## das ist der mittelwert der mittleren
     ## sz-Drücke; die "Extrapolationslänge"
     ## wird so minimal.
+
+    mt <- mt  - min(mt)
     ## ------------------------------------##
     corrSlope  <- slope  - drift[j]
     ci         <- mp     - corrSlope *  mt
     t0         <- (mean(mp) - ci) / corrSlope
     ## ------------------------------------##
+
+    ## Güte des SZ: Steigung mp ~ mt möglichst klein
+
+    gslope     <- as.numeric(lm(mp ~ mt)$coefficients[2])
     
     nt         <- length(t0)
     j1         <- 1:(nt-1)
@@ -115,6 +121,12 @@ ce3.calDeltaVDeltat <- function(ccc){
            lL,
            msg)
 
+  ccc$Calibration$Analysis$Values$Conductance <-
+    setCcl(ccc$Calibration$Analysis$Values$Conductance,
+           "g_slope",
+           "mbar/ms",
+           gslope,
+           msg)
 
    return(ccc)
 }
