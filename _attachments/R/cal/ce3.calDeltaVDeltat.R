@@ -22,6 +22,7 @@ ce3.calDeltaVDeltat <- function(ccc){
   Mp      <-  NULL
   meanMp  <-  NULL
   sdMeanMp<-  NULL
+  gslope  <-  NULL
 
   t2mm    <- getConstVal(a$cms,"turn_2_mm")
   ms2s    <- getConstVal(a$cc,"ms_2_s")
@@ -67,8 +68,7 @@ ce3.calDeltaVDeltat <- function(ccc){
     ## ------------------------------------##
 
     ## Güte des SZ: Steigung mp ~ mt möglichst klein
-
-    gslope     <- as.numeric(lm(mp ~ mt)$coefficients[2])
+    gslope[j]  <- as.numeric(lm(mp ~ mt)$coefficients[2])
     
     nt         <- length(t0)
     j1         <- 1:(nt-1)
