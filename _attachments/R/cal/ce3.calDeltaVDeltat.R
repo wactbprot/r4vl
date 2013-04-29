@@ -10,6 +10,8 @@ ce3.calDeltaVDeltat <- function(ccc){
   LWSTART   <-  getSubList(a$cma,"start_lw")
   lwstart   <-  getConstVal(NA,NA,LWSTART)
 
+  pfill     <- getConstVal(a$cav, "fill")
+  
   cf      <- list()
   cf$A    <-  getConstVal(a$cms, "fbv_A")
   cf$B    <-  getConstVal(a$cms, "fbv_B")
@@ -23,7 +25,9 @@ ce3.calDeltaVDeltat <- function(ccc){
   meanMp  <-  NULL
   sdMeanMp<-  NULL
   gslope  <-  NULL
-
+  Vol     <-  NULL
+  corrF   <-  NULL
+  dt      <-  NULL
   t2mm    <- getConstVal(a$cms,"turn_2_mm")
   ms2s    <- getConstVal(a$cc,"ms_2_s")
   vconv   <- getConvFactor(ccc,vUnit, "mm^3")
@@ -59,12 +63,12 @@ ce3.calDeltaVDeltat <- function(ccc){
     ## das ist der mittelwert der mittleren
     ## sz-Drücke; die "Extrapolationslänge"
     ## wird so minimal.
-
     mt <- mt  - min(mt)
     ## ------------------------------------##
     corrSlope  <- slope  - drift[j]
     ci         <- mp     - corrSlope *  mt
     t0         <- (mean(mp) - ci) / corrSlope
+    dp.corr    <- diff(mp)
     ## ------------------------------------##
 
     ## Güte des SZ: Steigung mp ~ mt möglichst klein
@@ -93,12 +97,22 @@ ce3.calDeltaVDeltat <- function(ccc){
     A          <- (fn.Afit(cf,h[i2]) - fn.Afit(cf,h[i1]))/(h[i2] - h[i1])
     deltaV     <- A * (h[i2] - h[i1]) * vconv
     ## Leitwert = dV/dt
-    L          <- append(L,    mean(deltaV / deltat))
-    sdL        <- append(sdL,    sd(deltaV / deltat))
-    lL         <- append(lL, length(deltaV / deltat))
+    Vol[j]     <- mean(deltaV)
+    dt[j]      <- mean(deltat)
+    
+
+    corrF[j]   <- mean(dp.corr/pfill[j]*A * vconv/deltat) *nt
+
+    
+    L[j]       <- mean(deltaV / deltat)
+    sdL[j]     <- sd(deltaV / deltat)
+    lL[j]      <- length(deltaV / deltat)
     ## ------------------------------------##
 
   }
+
+  lw2List    <- getSubList(a$cms, "useLw2")
+  
   
   ccc$Calibration$Analysis$Values$Conductance <-
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
@@ -107,6 +121,21 @@ ce3.calDeltaVDeltat <- function(ccc){
            L,
            msg)
 
+  ilw    <- getConductIndex(ccc)
+  
+  corrConst <- rep(NA, length(L))
+
+  if(length(ilw$iLw2) > 0){
+    corrConst[ilw$iLw2] <- 0.0004017
+  }
+  
+  if(length(ilw$iLw1) > 0){
+    corrConst[ilw$iLw1] <-  0.001525
+  }
+
+  print(corrF / corrConst/Vol)
+ 
+  
   ccc$Calibration$Analysis$Values$Conductance <-
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
            "sd_cnom",
