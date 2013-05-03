@@ -27,6 +27,7 @@ ce3.calDeltaVDeltat <- function(ccc){
   gslope  <-  NULL
   Vol     <-  NULL
   corrF   <-  NULL
+  gF      <-  NULL
   dt      <-  NULL
   t2mm    <- getConstVal(a$cms,"turn_2_mm")
   ms2s    <- getConstVal(a$cc,"ms_2_s")
@@ -47,28 +48,32 @@ ce3.calDeltaVDeltat <- function(ccc){
     mttype     <- paste("mean_t_", i,sep="")
     ttype      <- paste("t_N_",    i,sep="")
     turntype   <- paste("turn_",   i,sep="")
-    mt         <- paste("mean_p_", i,sep="")
+    mptype     <- paste("mean_p_", i,sep="")
 
     ## delta t
-    mp         <- getConstVal(a$cm, mt)    
+    mp         <- getConstVal(a$cm, mptype)
+    
     MT         <- getSubList(a$cm, mttype)
     mt         <- getConstVal(NA,NA,MT)
+
     TE         <- getSubList(a$cm, ttype)
     te         <- getConstVal(NA,NA,TE)
+
     SLOPE      <- getSubList(a$cm,stype)
     slope      <- getConstVal(NA,NA,SLOPE)
+
     tconv      <- getConvFactor(ccc,tUnit, MT$Unit)
     ##
     ## die Extrapolation erfolgt zu mean(mp)
     ## das ist der mittelwert der mittleren
     ## sz-Drücke; die "Extrapolationslänge"
     ## wird so minimal.
-    mt <- mt  - min(mt)
+    mt         <- mt  - min(mt)
     ## ------------------------------------##
     corrSlope  <- slope  - drift[j]
     ci         <- mp     - corrSlope *  mt
     t0         <- (mean(mp) - ci) / corrSlope
-    dp.corr    <- diff(mp)
+
     ## ------------------------------------##
 
     ## Güte des SZ: Steigung mp ~ mt möglichst klein
@@ -100,19 +105,20 @@ ce3.calDeltaVDeltat <- function(ccc){
     Vol[j]     <- mean(deltaV)
     dt[j]      <- mean(deltat)
     
-
-    corrF[j]   <- mean(dp.corr/pfill[j]*A * vconv/deltat) *nt
+    dp.corr    <- diff(mp)
+    corrF[j]   <- mean(dp.corr/pfill[j]* A * vconv/deltat) *nt
 
     
-    L[j]       <- mean(deltaV / deltat)
+    gF[j]      <- mean(sqrt(diff(mp)^2 + diff(deltat)^2)/deltat)*sign(dp.corr)
+
+    
+    L[j]       <- mean(deltaV / (deltat * (1 - gF[j]) ))
     sdL[j]     <- sd(deltaV / deltat)
     lL[j]      <- length(deltaV / deltat)
     ## ------------------------------------##
 
   }
 
-  lw2List    <- getSubList(a$cms, "useLw2")
-  
   
   ccc$Calibration$Analysis$Values$Conductance <-
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
@@ -132,9 +138,6 @@ ce3.calDeltaVDeltat <- function(ccc){
   if(length(ilw$iLw1) > 0){
     corrConst[ilw$iLw1] <-  0.001525
   }
-
-  print(corrF / corrConst/Vol)
- 
   
   ccc$Calibration$Analysis$Values$Conductance <-
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
@@ -155,6 +158,20 @@ ce3.calDeltaVDeltat <- function(ccc){
            "g_slope",
            "mbar/ms",
            gslope,
+           msg)
+
+  ccc$Calibration$Analysis$Values$Conductance <-
+    setCcl(ccc$Calibration$Analysis$Values$Conductance,
+           "g_corr",
+           "1/s",
+           corrF /corrConst/Vol,
+           msg)
+
+  ccc$Calibration$Analysis$Values$Conductance <-
+    setCcl(ccc$Calibration$Analysis$Values$Conductance,
+           "g_f",
+           "1",
+           gF,
            msg)
 
    return(ccc)
