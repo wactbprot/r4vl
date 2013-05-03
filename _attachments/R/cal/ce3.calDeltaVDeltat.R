@@ -25,13 +25,11 @@ ce3.calDeltaVDeltat <- function(ccc){
   meanMp  <-  NULL
   sdMeanMp<-  NULL
   gslope  <-  NULL
-  Vol     <-  NULL
-  corrF   <-  NULL
-  gF      <-  NULL
-  dt      <-  NULL
+
   t2mm    <- getConstVal(a$cms,"turn_2_mm")
   ms2s    <- getConstVal(a$cc,"ms_2_s")
   vconv   <- getConvFactor(ccc,vUnit, "mm^3")
+
   j       <- 0
   noOfSZ  <-  length(lwstart)
 
@@ -44,11 +42,11 @@ ce3.calDeltaVDeltat <- function(ccc){
  
   for(i in lwstart){
     j <- j+1
-    stype      <- paste("slope_x_",i,sep="")
-    mttype     <- paste("mean_t_", i,sep="")
-    ttype      <- paste("t_N_",    i,sep="")
-    turntype   <- paste("turn_",   i,sep="")
-    mptype     <- paste("mean_p_", i,sep="")
+    stype      <- paste("slope_x_",i, sep="")
+    mttype     <- paste("mean_t_", i, sep="")
+    ttype      <- paste("t_N_",    i, sep="")
+    turntype   <- paste("turn_",   i, sep="")
+    mptype     <- paste("mean_p_", i, sep="")
 
     ## delta t
     mp         <- getConstVal(a$cm, mptype)
@@ -73,16 +71,15 @@ ce3.calDeltaVDeltat <- function(ccc){
     corrSlope  <- slope  - drift[j]
     ci         <- mp     - corrSlope *  mt
     t0         <- (mean(mp) - ci) / corrSlope
-
+    nt         <- length(t0)
+    deltat     <- diff(t0) * tconv
     ## ------------------------------------##
-
+    
     ## Güte des SZ: Steigung mp ~ mt möglichst klein
     mts        <- mt * tconv
-    gslope[j]  <- as.numeric(lm(mp ~ mts)$coefficients[2])/(length(mp) - 1) 
-    
-    deltat     <- diff(t0) * tconv
+    gslope[j]  <- as.numeric(lm(mp ~ mts)$coefficients[2]) 
+     
     ## delta V
-    h          <- abs(getConstVal(a$cm, turntype)) * t2mm    
     ## fn.Afit:
     ##
     ## f(x) = ax^3/3+a*b*x^2+x*(a*b^2+c)
@@ -92,21 +89,20 @@ ce3.calDeltaVDeltat <- function(ccc){
     ## A(f(x[2] - f(x1))/(x[2] - x[1]
     
     ## ------------------------------------##   
-    A          <- (fn.Afit(cf,h[i2]) - fn.Afit(cf,h[i1]))/(h[i2] - h[i1])
+    h          <- abs(getConstVal(a$cm, turntype)) * t2mm    
     nv         <- length(h)
     i1         <- 1:(nv-1)
     i2         <- i1 + 1
-    
+    A          <- (fn.Afit(cf,h[i2]) - fn.Afit(cf,h[i1]))/(h[i2] - h[i1])    
     deltaV     <- A * (h[i2] - h[i1]) * vconv
+
     ## Leitwert = dV/dt
-        
-    L[j]       <- mean(deltaV / deltat )
-    sdL[j]     <- sd(deltaV / deltat)
-    lL[j]      <- length(deltaV / deltat)
+
+    L[j]       <- mean(   deltaV / deltat)
+    sdL[j]     <- sd(     deltaV / deltat)
+    lL[j]      <- length( deltaV / deltat)
     ## ------------------------------------##
-
   }
-
   
   ccc$Calibration$Analysis$Values$Conductance <-
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
