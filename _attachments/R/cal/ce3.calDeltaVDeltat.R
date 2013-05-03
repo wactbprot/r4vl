@@ -77,19 +77,12 @@ ce3.calDeltaVDeltat <- function(ccc){
     ## ------------------------------------##
 
     ## Güte des SZ: Steigung mp ~ mt möglichst klein
-    gslope[j]  <- as.numeric(lm(mp ~ mt)$coefficients[2])
+    mts        <- mt * tconv
+    gslope[j]  <- as.numeric(lm(mp ~ mts)$coefficients[2])/(length(mp) - 1) 
     
-    nt         <- length(t0)
-    j1         <- 1:(nt-1)
-    j2         <- j1 + 1
-    
-    deltat     <- (t0[j2] - t0[j1]) * tconv 
+    deltat     <- diff(t0) * tconv
     ## delta V
-    h          <- abs(getConstVal(a$cm, turntype)) * t2mm
-    nv         <- length(h)
-    i1         <- 1:(nv-1)
-    i2         <- i1 + 1
-    
+    h          <- abs(getConstVal(a$cm, turntype)) * t2mm    
     ## fn.Afit:
     ##
     ## f(x) = ax^3/3+a*b*x^2+x*(a*b^2+c)
@@ -100,19 +93,14 @@ ce3.calDeltaVDeltat <- function(ccc){
     
     ## ------------------------------------##   
     A          <- (fn.Afit(cf,h[i2]) - fn.Afit(cf,h[i1]))/(h[i2] - h[i1])
+    nv         <- length(h)
+    i1         <- 1:(nv-1)
+    i2         <- i1 + 1
+    
     deltaV     <- A * (h[i2] - h[i1]) * vconv
     ## Leitwert = dV/dt
-    Vol[j]     <- mean(deltaV)
-    dt[j]      <- mean(deltat)
-    
-    dp.corr    <- diff(mp)
-    corrF[j]   <- mean(dp.corr/pfill[j]* A * vconv/deltat) *nt
-
-    
-    gF[j]      <- mean(sqrt(diff(mp)^2 + diff(deltat)^2)/deltat)*sign(dp.corr)
-
-    
-    L[j]       <- mean(deltaV / (deltat * (1 - gF[j]) ))
+        
+    L[j]       <- mean(deltaV / deltat )
     sdL[j]     <- sd(deltaV / deltat)
     lL[j]      <- length(deltaV / deltat)
     ## ------------------------------------##
@@ -126,18 +114,6 @@ ce3.calDeltaVDeltat <- function(ccc){
            "l/s",
            L,
            msg)
-
-  ilw    <- getConductIndex(ccc)
-  
-  corrConst <- rep(NA, length(L))
-
-  if(length(ilw$iLw2) > 0){
-    corrConst[ilw$iLw2] <- 0.0004017
-  }
-  
-  if(length(ilw$iLw1) > 0){
-    corrConst[ilw$iLw1] <-  0.001525
-  }
   
   ccc$Calibration$Analysis$Values$Conductance <-
     setCcl(ccc$Calibration$Analysis$Values$Conductance,
@@ -158,20 +134,6 @@ ce3.calDeltaVDeltat <- function(ccc){
            "g_slope",
            "mbar/ms",
            gslope,
-           msg)
-
-  ccc$Calibration$Analysis$Values$Conductance <-
-    setCcl(ccc$Calibration$Analysis$Values$Conductance,
-           "g_corr",
-           "1/s",
-           corrF /corrConst/Vol,
-           msg)
-
-  ccc$Calibration$Analysis$Values$Conductance <-
-    setCcl(ccc$Calibration$Analysis$Values$Conductance,
-           "g_f",
-           "1",
-           gF,
            msg)
 
    return(ccc)
