@@ -8,44 +8,42 @@ library(RCurl,    quietly =TRUE)
 library(R4CouchDB,quietly =TRUE)
 
 cdb  <- cdbIni()
-loadSrc <- TRUE
-cdb$DBName     <- "" ## DBName
-
-saveNoProxy <- Sys.getenv("no_proxy")
-Sys.setenv("no_proxy" = "*")
 
 
-if(loadSrc){
+cdb$DBName     <- "vaclab_db" ## DBName
 
-  cdb$id <- paste("_design/rproc",sep="")
-  srcDoc <- cdbGetDoc(cdb)$res
-  files <- names(srcDoc$'_attachments')
+infList <- list()
+infList$srcPath     <-  "/usr/local/src/map/_attachments/"
 
-  baseSrcUrl <- paste(cdb$baseUrl(cdb),
-                      cdb$DBName,"/",
-                      cdb$id,"/",
-                      sep="")
+setwd(infList$srcPath)
 
-  for(file in  files){
-    fn <- grep("^R/.*\\.R$",file)
+source("load.R")
 
-    if(length(fn) > 0){
-        srcUrl <- paste(baseSrcUrl,
-                        file,
-                        sep="")
-
-        source(srcUrl)
-
-      }
-  }
-}
 
 ## devel/tests/calculations from here -----------------
-cdb$id         <- "81639d04934132e766657369210f2629"
+cdb$id         <- "7fae64fa9f90ad02320c90696a0097dd"
 doc <- cdbGetDoc(cdb)$res
 
- if(length(ccc$Calibration) > 0){
- }
+ if(length(doc$Calibration) > 0){
+
+    doc <- ce3.compareCDGs(doc)
+ ## > doc$Calibration$Analysis$AuxValues
+ ## $Pressure
+ ## $Pressure$Type
+ ## [1] "dpfill"
+ ## 
+ ## $Pressure$Unit
+ ## [1] "1"
+ ## 
+ ## $Pressure$Value
+ ## [1] -0.02279198166037 -0.00681538071554  0.12771535580525 -0.00705722202039
+ ## 
+ ## $Pressure$Comment
+ ## [1] "calculated by ce3.compareCDGs ; dpfill =  (pcdga  - p0cdga)/(pcdgb  - p0cdgb) -1"
+
+
+
+}
 
 
 
