@@ -3,7 +3,6 @@ if(length(doc$Calibration) > 0){
 
   deviation <- getConstVal(doc$Calibration$Analysis$AuxValues, "dpfill")
   
-  cat(toJSON(list("deviation"   = deviation )))
-
+  cat(toJSON(list("deviation"   = deviation[length(deviation)] )))
 
 }

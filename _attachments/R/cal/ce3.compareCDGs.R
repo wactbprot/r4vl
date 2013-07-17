@@ -21,7 +21,7 @@ ce3.compareCDGs <- function(ccc){
     if((length(pcdga)  > 0) &
        (length(pcdgb)  > 0) &
        (length(p0cdga) > 0) &
-       (length(p0cdgb) > 0) &){
+       (length(p0cdgb) > 0) ){
 
         cfcdga    <- list()
         cfcdga$a  <- getConstVal(  a$cmco, paste("cdgaCorrA_",g,sep=""))
@@ -41,7 +41,7 @@ ce3.compareCDGs <- function(ccc){
 
         pa        <- pcdga - p0cdga
         pb        <- pcdgb - p0cdgb
-        dpfill     <-  (pa/(fn.7904(cfcdga,pa ) + 1))/(pb/(fn.7904(cfcdgb, pb) +1)) - 1
+        dpfill    <-  (pa/(fn.7904(cfcdga,pa ) + 1))/(pb/(fn.7904(cfcdgb, pb) +1)) - 1
 
 
         ccc$Calibration$Analysis <- checkSetList(
