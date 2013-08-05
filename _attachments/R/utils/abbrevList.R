@@ -30,7 +30,9 @@ abbrevList <- function(ccc){
     a$cmscg  <- a$cmsc$Gas
     a$cmscp  <- a$cmsc$calPort
   }
-
+  if(a$cs =="SE1"){
+      a$cmag <- a$cma$Gas 
+  }
 
 ### VG Dkm Frs-spezifisch
   if(a$cs =="DKM|FRS5" | a$cs == "FRS5" | a$cs == "DKM"){
