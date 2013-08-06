@@ -119,7 +119,8 @@ se1.calPfill <- function(ccc){
         
         pfill[i.1000]   <- pfill.1000.mbar[i.1000]
         offset[i.1000]  <- cdg.offset.1000.mbar[i.1000]
-        
+
+        ## ---------------------------------------------------------^
        
         ccc$Calibration$Analysis$Values$Pressure <-
             setCcl(ccc$Calibration$Analysis$Values$Pressure,
