@@ -30,6 +30,7 @@ abbrevList <- function(ccc){
     a$cmscg  <- a$cmsc$Gas
     a$cmscp  <- a$cmsc$calPort
   }
+### se1-spezifisch
   if(a$cs =="SE1"){
       a$cmag <- a$cma$Gas 
   }

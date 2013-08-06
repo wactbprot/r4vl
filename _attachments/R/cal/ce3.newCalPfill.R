@@ -35,7 +35,7 @@ ce3.newCalPfill <- function(ccc){
   sVpocx01  <-  getConstVal(a$cma$Pressure, paste(cpre,"x0.1" ,suf,sep=""))
   sVpocx1   <-  getConstVal(a$cma$Pressure, paste(cpre,"x1"   ,suf,sep=""))
 
-  ## der offset kann mehrmals gemesseb werden
+  ## der offset kann mehrmals gemessen werden
   ## welcher für welchen benutzt wird
   ## wird über die Zeit entschieden
   ofMt      <- getConstVal(a$cma$Time, "offset_mt")

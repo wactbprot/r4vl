@@ -5,7 +5,7 @@ if(length(doc$Calibration) > 0){
   doc <- se1.calTime(doc)
   doc <- se1.yamp.calT(doc)
 
-  doc <- se1.yamp.calPfill(doc)
+  doc <- se1.calPfill(doc)
 
   doc <- se1.yamp.calf(doc)
   doc <- se1.calRGC(doc)
