@@ -1,14 +1,45 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title></title>
-</head>
-<body>
-  
-  <h1>Kalibrierung: <!--rinline dcs -->
-  <!--begin.rcode
-      opts_chunk$set(fig.width=5, fig.height=5)
-      end.rcode-->
-  
-</body>
+  <head>
+    <title>CE3 Report</title>
+  </head>
+  <body>
+
+    <h1>CE3 Report</h1>
+    <!--begin.rcode
+	opts_chunk$set(fig.width=5, fig.height=5)
+	end.rcode-->
+    <h2>Header</h2>
+    <ul>
+      <li>Standard: <!--rinline a$cs --></li>
+      <li>Sign: <!--rinline a$csi --></li>
+      <li>Year: <!--rinline a$cy --></li>
+    </ul>
+    <h2>Customer device</h2>
+    <ul>
+      <li>Name: <!--rinline  a$cmco1$Name  --></li>
+      <li>Type: <!--rinline  a$cmco1$Type  --></li>
+      <li>Sign: <!--rinline  a$cmco1$Sign --></li>
+    </ul>
+    <h2>Temperatures</h2>
+    
+    <!--begin.rcode
+	upperLimit <- 24.0
+	lowerLimit <- 22.0
+	df <- data.frame(
+	Tpbox = getConstVal(a$cav$Temperature, "Tpbox"),
+	Troom = getConstVal(a$cav$Temperature, "Troom"),
+	Txhv = getConstVal(a$cav$Temperature, "Txhv"),
+	Tuhv = getConstVal(a$cav$Temperature, "Tuhv"),
+	Tfm3 = getConstVal(a$cav$Temperature, "Tfm3"))
+	N <- length(Tfm3)
+	ggplot(data=df) +
+	geom_point(aes(x = 1:N, y = Tfm3), col = 2) +
+	geom_point(aes(x = 1:N, y = Troom), col = 3) +
+	geom_point(aes(x = 1:N, y = Txhv), col = 4) +
+	geom_point(aes(x = 1:N, y = Tuhv), col = 5) +
+	geom_point(aes(x = 1:N, y = Tpbox), col = 6)
+        end.rcode-->
+
+  </body>
 </html>

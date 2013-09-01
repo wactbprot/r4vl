@@ -9,25 +9,25 @@ library(RJSONIO,  quietly =TRUE)
 library(RCurl,    quietly =TRUE)
 library(R4CouchDB,quietly =TRUE) 
 
-infList$utilsPath     <- "./utils/"
-infList$calPath       <- "./cal/"
-infList$uncertPath    <- "./uncert/"
-infList$scriptPath    <- "./scripts/"
-infList$srcPat        <- "R$"
+utilsPath     <- "./utils/"
+calPath       <- "./cal/"
+uncertPath    <- "./uncert/"
+scriptPath    <- "./scripts/"
+srcPat        <- "R$"
 
-fn <- list.files(infList$utilsPath, pattern=infList$srcPat)
+fn <- list.files(utilsPath, pattern=srcPat)
 for (k in 1:length(fn)){
-  source(paste(infList$utilsPath,fn[k],sep=""))
+  source(paste(utilsPath,fn[k],sep=""))
 }
 
-fn <- list.files(infList$calPath, pattern=infList$srcPat)
+fn <- list.files(calPath, pattern=srcPat)
 for (k in 1:length(fn)){
-  source(paste(infList$calPath,fn[k],sep=""))
+  source(paste(calPath,fn[k],sep=""))
 }
 
-fn <- list.files(infList$uncertPath, pattern=infList$srcPat)
+fn <- list.files(uncertPath, pattern=srcPat)
 for (k in 1:length(fn)){
-  source(paste(infList$uncertPath,fn[k],sep=""))
+  source(paste(uncertPath,fn[k],sep=""))
 }
 ## 
 
