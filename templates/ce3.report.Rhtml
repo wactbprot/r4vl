@@ -26,19 +26,47 @@
     <!--begin.rcode
 	upperLimit <- 24.0
 	lowerLimit <- 22.0
-	df <- data.frame(
-	Tpbox = getConstVal(a$cav$Temperature, "Tpbox"),
-	Troom = getConstVal(a$cav$Temperature, "Troom"),
-	Txhv = getConstVal(a$cav$Temperature, "Txhv"),
-	Tuhv = getConstVal(a$cav$Temperature, "Tuhv"),
-	Tfm3 = getConstVal(a$cav$Temperature, "Tfm3"))
-	N <- length(Tfm3)
-	ggplot(data=df) +
-	geom_point(aes(x = 1:N, y = Tfm3), col = 2) +
-	geom_point(aes(x = 1:N, y = Troom), col = 3) +
-	geom_point(aes(x = 1:N, y = Txhv), col = 4) +
-	geom_point(aes(x = 1:N, y = Tuhv), col = 5) +
-	geom_point(aes(x = 1:N, y = Tpbox), col = 6)
+
+	Tpbox <- getConstVal(a$cav$Temperature, "Tpbox")
+	Troom <- getConstVal(a$cav$Temperature, "Troom")
+	Txhv  <- getConstVal(a$cav$Temperature, "Txhv")
+	Tuhv  <- getConstVal(a$cav$Temperature, "Tuhv")
+	Tfm3  <- getConstVal(a$cav$Temperature, "Tfm3")
+	N     <- length(Tfm3)
+	df    <- data.frame(
+	Tpbox = Tpbox,
+	Troom = Troom,
+	Txhv  =	Txhv,
+	Tuhv  = Tuhv,
+	Tfm3  = Tfm3,
+	Mpkt  = 1:N)
+	ggplot(ndf) + 
+	geom_point(aes(x=Mpkt, y=value, 
+	color = factor(ndf$variable),
+	pch=factor(ndf$variable)),
+	size=3) + 
+
+	Tpbox <- getConstVal(a$cav$Temperature, "Tpbox")
+	Troom <- getConstVal(a$cav$Temperature, "Troom")
+	Txhv  <- getConstVal(a$cav$Temperature, "Txhv")
+	Tuhv  <- getConstVal(a$cav$Temperature, "Tuhv")
+	Tfm3  <- getConstVal(a$cav$Temperature, "Tfm3")
+	N     <- length(Tfm3)
+
+	df    <- data.frame(
+	Tpbox = Tpbox,
+	Troom = Troom,
+	Txhv  =	Txhv,
+	Tuhv  = Tuhv,
+	Tfm3  = Tfm3,
+	Mpkt  = 1:N)
+
+	ggplot(ndf) + 
+	geom_point(aes(x = Mpkt, y = value, 
+	color = factor(ndf$variable)),
+	size=4) + 	  
+	guides(colour = guide_legend("Temperatures"))
+
         end.rcode-->
 
   </body>

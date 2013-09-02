@@ -2,6 +2,7 @@
 ## wactbprot/2012-08-14
 ## --
 library(knitr,    quietly =TRUE)
+library(reshape,  quietly =TRUE)
 library(ggplot2,  quietly =TRUE)
 library(methods,  quietly =TRUE)
 library(bitops,   quietly =TRUE)
