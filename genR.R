@@ -4,11 +4,11 @@ gl <- cdbIni() ## getList
 pl <- cdbIni() ##putList
 
 gl$DBName <- "vaclab_db"
-gl$id     <- "f481e565fd252673c6a6e7b6b8003f05"
+gl$id     <- "910fd907311a80c24cee9ad18a07d57b"
 
 doc <- cdbGetDoc(gl)$res
 a   <- abbrevList(doc)
 
 if(a$cs == "CE3"){
-    knit("templates/ce3.report.Rhtml")
+    knit("html/ce3.report.Rhtml")
 }

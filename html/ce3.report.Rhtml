@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CE3 Report</title>
+    <style>
+      * {
+      font-family: ‘Lucida Console’, Monaco, monospace;
+      background-color:#F6F6F6;
+      }
+      body {
+      max-width: 950px;
+      margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <hr>    
+    
+    <h1>CE3 Calibration Report</h1>
+    <!--begin.rcode echo=FALSE
+	opts_chunk$set(fig.width=10, fig.height=8)
+	options( digits = 8)
+	end.rcode-->
+    <ul>
+      <li><a href="#header">Header</a></li>
+      <li><a href="#custDev">Customer device</a></li>
+      <ul>
+	<li><a href="#custDevVal">Values</a></li>
+	<li><a href="#custDevConst">Constants</a></li>
+	<li><a href="#custDevSet">Setup</a></li>
+      </ul>   
+      <li><a href="#temp">Temperatures</a></li> 
+      <ul>   
+	<li><a href="#tempSum">Summary</a></li> 
+	<li><a href="#tempDia">Diagram</a></li> 
+      </ul>    
+      <li><a href="#pres">Pressures</a></li> 
+      <ul>   
+	<li><a href="#presFillLw">p<sub>fill</sub></a></li> 
+	<li><a href="#presFillOffset">p<sub>fill, offset</sub> p<sub>dpC</sub></li> 
+	<li><a href="#presInd">p<sub>ind</sub></a></li> 
+	<li><a href="#presCal">p<sub>cal</sub></a></li> 
+      </ul>    
+    </ul>
+    <hr>
+
+    <h2 id="header">Calibration Header</h2>
+    <ul>
+      <li>id: <!--rinline doc[["_id"]] --></li>
+      <li>Standard: <!--rinline a$cs --></li>
+      <li>Sign: <!--rinline a$csi --></li>
+      <li>Type: <!--rinline a$ct --></li>
+      <li>Year: <!--rinline a$cy --></li>
+    </ul>
+    <hr>
+    <h2 id="custDev">Customer device</h2>
+    <ul>
+      <li>Name: <!--rinline  a$cmco1$Name  --></li>
+      <li>Type: <!--rinline  a$cmco1$Type  --></li>
+      <li>Sign: <!--rinline  a$cmco1$Sign --></li>
+    </ul>
+    <h3 id="custDevVal">Values</h3>
+    <!--begin.rcode 
+	a$cmco1$Values
+	end.rcode-->
+    <h3 id="custDevConst">Constants</h3>
+    <!--begin.rcode 
+	a$cmco1$Constants
+	end.rcode-->
+    <h3 id="custDevSet">Setup</h3>
+    <!--begin.rcode 
+	a$cmco1$Setup
+	end.rcode-->
+    <hr>
+    
+    <h2 id="temp">Temperatures</h2>
+    <!--begin.rcode 
+    getwd()
+    source("../chunks/ce3.temperature.data.R")
+    N
+    end.rcode-->
+    
+    <h3 id="tempSum">Summary</h3>
+    
+       <!--begin.rcode 
+	   
+	   summary(Tpbox)
+	   end.rcode-->
+       
+       <!--begin.rcode 
+	   summary(Troom)
+	   end.rcode-->
+       
+       <!--begin.rcode 
+	   summary(Txhv)
+	   end.rcode-->
+       
+       <!--begin.rcode 
+	   summary(Tuhv)
+	   end.rcode-->
+       
+       <!--begin.rcode 
+	   summary(Tfm3)
+	   end.rcode-->
+       
+       <h3 id="tempDia" >Diagram</h3>
+    
+       <!--begin.rcode echo=FALSE
+       source("../chunks/ce3.temperature.plot.R")
+       plt
+       end.rcode-->
+      
+       <h2 id="pres">Pressures</h2>
+    <!--begin.rcode 
+	
+	plw           <- getConstVal(a$cav$Pressure, "lw")
+	pfill         <- getConstVal(a$cav$Pressure, "fill")
+	pfill.offset  <- getConstVal(a$cav$Pressure, "fill_offset")
+	pdpC          <- getConstVal(a$cav$Pressure, "dpC")
+	pcorrind      <- getConstVal(a$cav$Pressure, "corrind")
+	pind          <- getConstVal(a$cav$Pressure, "ind")
+	poffset       <- getConstVal(a$cav$Pressure, "offset")
+	pcal          <- getConstVal(a$cav$Pressure, "cal") 
+	upfill        <- getConstVal(a$cav$Uncertainty, "uncertPfill")
+	upcal         <- getConstVal(a$cav$Uncertainty, "uncertPcal_rel")
+	N             <- length(pcal)
+	N
+	end.rcode-->  
+    <h3 id="presSum">Summary</h3>
+    <!--begin.rcode
+	round(pfill, 4)
+
+	round(pfill.offset, 4)
+
+	round(pfill.offset/pfill, 4)
+
+	round(pdpC/pfill, 4)
+
+	round(pfill/plw -1, 4)
+
+	end.rcode-->
+    <h3 id="presFill">p<sub>fill</sub></h3>
+    
+    <!--begin.rcode echo=FALSE
+	par(mfrow=c(2,1))
+	df    <- data.frame(
+	plw          = plw,       
+	pfill        = pfill,
+	upfill       = upfill,
+	Mpkt         = 1:N)
+	ndf <- melt(df, id=c("Mpkt","upfill"))
+	
+	ggplot(ndf) + 
+	geom_point(aes(x = Mpkt, y = value, color = factor(ndf$variable)), size=5) + 	  
+	guides(color = guide_legend("pfill")) +
+	scale_y_log10() +
+	       geom_errorbar(aes(x=Mpkt,ymax = pfill*(1 + upfill),
+	ymin=pfill*(1 - upfill))) + 
+	      theme(legend.position="bottom")
+	end.rcode-->
+
+    <h3 id="presFillOffset">p<sub>fill, offset</sub> p<sub>dpC</sub></h3>
+
+    <!--begin.rcode   echo=FALSE  
+	df    <- data.frame(
+	pfill.offset = pfill_offset, 
+	pdpC         = pdpC,	
+	Mpkt         = 1:N)
+	ndf <- melt(df, id=c("Mpkt"))
+	
+	ggplot(ndf) + 
+	geom_point(aes(x = Mpkt, y = value, color = factor(ndf$variable)), size=5) + 	  
+	guides(color = guide_legend("p")) + 
+	       theme(legend.position="bottom")
+	     
+	end.rcode-->
+    
+  </body>
+</html>

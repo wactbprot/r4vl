@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CE3 Report</title>
+    <style>
+      * {
+      font-family: ‘Lucida Console’, Monaco, monospace;
+      background-color:#F6F6F6;
+      }
+      body {
+      max-width: 950px;
+      margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <hr>    
+    
+    <h1>CE3 Calibration Report</h1>
+
+
+    <ul>
+      <li><a href="#header">Header</a></li>
+      <li><a href="#custDev">Customer device</a></li>
+      <ul>
+	<li><a href="#custDevVal">Values</a></li>
+	<li><a href="#custDevConst">Constants</a></li>
+	<li><a href="#custDevSet">Setup</a></li>
+      </ul>   
+      <li><a href="#temp">Temperatures</a></li> 
+      <ul>   
+	<li><a href="#tempSum">Summary</a></li> 
+	<li><a href="#tempDia">Diagram</a></li> 
+      </ul>    
+      <li><a href="#pres">Pressures</a></li> 
+      <ul>   
+	<li><a href="#presFillLw">p<sub>fill</sub></a></li> 
+	<li><a href="#presFillOffset">p<sub>fill, offset</sub> p<sub>dpC</sub></li> 
+	<li><a href="#presInd">p<sub>ind</sub></a></li> 
+	<li><a href="#presCal">p<sub>cal</sub></a></li> 
+      </ul>    
+    </ul>
+    <hr>
+
+    <h2 id="header">Calibration Header</h2>
+    <ul>
+      <li>id: <code class="knitr inline">f481e565fd252673c6a6e7b6b8003f05</code></li>
+      <li>Standard: <code class="knitr inline">CE3</code></li>
+      <li>Sign: <code class="knitr inline">4814_0004</code></li>
+      <li>Type: <code class="knitr inline">PN</code></li>
+      <li>Year: <code class="knitr inline">2013</code></li>
+    </ul>
+    <hr>
+    <h2 id="custDev">Customer device</h2>
+    <ul>
+      <li>Name: <code class="knitr inline">PTB SIG</code></li>
+      <li>Type: <code class="knitr inline">SIG GP360</code></li>
+      <li>Sign: <code class="knitr inline">4814</code></li>
+    </ul>
+    <h3 id="custDevVal">Values</h3>
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">a</span><span class="hl opt">$</span><span class="hl std">cmco1</span><span class="hl opt">$</span><span class="hl std">Values</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## NULL
+</pre></div>
+</div></div>
+
+    <h3 id="custDevConst">Constants</h3>
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">a</span><span class="hl opt">$</span><span class="hl std">cmco1</span><span class="hl opt">$</span><span class="hl std">Constants</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## NULL
+</pre></div>
+</div></div>
+
+    <h3 id="custDevSet">Setup</h3>
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">a</span><span class="hl opt">$</span><span class="hl std">cmco1</span><span class="hl opt">$</span><span class="hl std">Setup</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## $Display
+## [1] "mbar"
+## 
+## $IG
+## [1] "1"
+## 
+## $PressureRange
+## [1] "L"
+## 
+## $Cathode
+## [1] "1"
+## 
+## $Channel
+## [1] "IG1"
+</pre></div>
+</div></div>
+
+    <hr>
+    <h2 id="temp">Temperatures</h2>
+<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">Tpbox</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">getConstVal</span><span class="hl std">(a</span><span class="hl opt">$</span><span class="hl std">cav</span><span class="hl opt">$</span><span class="hl std">Temperature,</span> <span class="hl str">&quot;Tpbox&quot;</span><span class="hl std">)</span>
+<span class="hl std">Troom</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">getConstVal</span><span class="hl std">(a</span><span class="hl opt">$</span><span class="hl std">cav</span><span class="hl opt">$</span><span class="hl std">Temperature,</span> <span class="hl str">&quot;Troom&quot;</span><span class="hl std">)</span>
+<span class="hl std">Txhv</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">getConstVal</span><span class="hl std">(a</span><span class="hl opt">$</span><span class="hl std">cav</span><span class="hl opt">$</span><span class="hl std">Temperature,</span> <span class="hl str">&quot;Txhv&quot;</span><span class="hl std">)</span>
+<span class="hl std">Tuhv</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">getConstVal</span><span class="hl std">(a</span><span class="hl opt">$</span><span class="hl std">cav</span><span class="hl opt">$</span><span class="hl std">Temperature,</span> <span class="hl str">&quot;Tuhv&quot;</span><span class="hl std">)</span>
+<span class="hl std">Tfm3</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">getConstVal</span><span class="hl std">(a</span><span class="hl opt">$</span><span class="hl std">cav</span><span class="hl opt">$</span><span class="hl std">Temperature,</span> <span class="hl str">&quot;Tfm3&quot;</span><span class="hl std">)</span>
+<span class="hl std">uTuhv</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">getConstVal</span><span class="hl std">(a</span><span class="hl opt">$</span><span class="hl std">cav</span><span class="hl opt">$</span><span class="hl std">Uncertainty,</span> <span class="hl str">&quot;uncertTch&quot;</span><span class="hl std">)</span>
+<span class="hl std">uTfm</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">getConstVal</span><span class="hl std">(a</span><span class="hl opt">$</span><span class="hl std">cav</span><span class="hl opt">$</span><span class="hl std">Uncertainty,</span> <span class="hl str">&quot;uncertTfm&quot;</span><span class="hl std">)</span>
+<span class="hl std">N</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">length</span><span class="hl std">(Tfm3)</span>
+<span class="hl std">N</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 17
+</pre></div>
+</div></div>
+
+    
+    <h3 id="tempSum">Summary</h3>
+    
+<div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(Tpbox)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  295.74  295.84  295.87  295.95  295.92  297.32
+</pre></div>
+</div></div>
+
+       
+<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(Troom)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  295.69  295.98  296.01  295.99  296.03  296.05
+</pre></div>
+</div></div>
+
+       
+<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(Txhv)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  295.72  295.93  295.95  295.93  295.96  295.97
+</pre></div>
+</div></div>
+
+       
+<div class="chunk" id="unnamed-chunk-9"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(Tuhv)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  296.65  296.69  296.71  296.72  296.74  296.86
+</pre></div>
+</div></div>
+
+       
+<div class="chunk" id="unnamed-chunk-10"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">summary</span><span class="hl std">(Tfm3)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  297.09  297.10  297.12  297.15  297.16  297.45
+</pre></div>
+</div></div>
+
+       
+       <h3 id="tempDia" >Diagram</h3>
+    
+
+
+
+
+
+
+
+
+
+
