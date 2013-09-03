@@ -9,3 +9,6 @@ gl$id     <- "f481e565fd252673c6a6e7b6b8003f05"
 doc <- cdbGetDoc(gl)$res
 a   <- abbrevList(doc)
 
+if(a$cs == "CE3"){
+    knit("templates/ce3.report.Rhtml")
+}
