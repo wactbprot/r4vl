@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CE3 Report</title>
+    <style>
+      * {
+      font-family: ‘Lucida Console’, Monaco, monospace;
+      background-color:#F6F6F6;
+      }
+      body {
+      max-width: 950px;
+      margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <hr>
+    <hr>
+    <h1 id="top">CE3 Calibration Report</h1>
+    <!--begin.rcode echo=FALSE
+        opts_chunk$set(fig.width=8, fig.height=6, fig.path="./")
+        options( digits = 8)
+        end.rcode-->
+    <hr>
+    <hr>
+    <h2 id="header">Calibration Header</h2>
+    <ul>
+      <li>id: <!--rinline doc[["_id"]] --></li>
+      <li>Standard: <!--rinline a$cs --></li>
+      <li>Sign: <!--rinline a$csi --></li>
+      <li>Type: <!--rinline a$ct --></li>
+      <li>Year: <!--rinline a$cy --></li>
+    </ul>
+    <hr>
+
+    <ul>
+      <li><a href="#custDev">Customer device</a></li>
+      <ul>
+        <li><a href="#custDevVal">Values</a></li>
+        <li><a href="#custDevConst">Constants</a></li>
+        <li><a href="#custDevSet">Setup</a></li>
+      </ul>
+      <li><a href="#cond">Conductance</a></li>
+      <ul>
+        <li><a href="#condTab">Table</a></li>
+        <li><a href="#condSum">Summary</a></li>
+        <li><a href="#condDiag">Diagram</a></li>
+      </ul>
+      <li><a href="#temp">Temperatures</a></li>
+      <ul>
+        <li><a href="#tempTab">Table</a></li>
+        <li><a href="#tempSum">Summary</a></li>
+        <li><a href="#tempDiag">Diagram</a></li>
+      </ul>
+      <li><a href="#pres">Pressures</a></li>
+      <ul>
+        <li><a href="#presTab">Table</a></li>
+        <li><a href="#presSum">Summary</a></li>
+        <li><a href="#presDiag">Diagram</a></li>
+      </ul>
+    </ul>
+    <hr>
+    <h2 id="custDev">Customer Device
+      <sup><a href="#top">^</a></sup></h2>
+    <ul>
+      <li>Name: <!--rinline  a$cmco1$Name  --></li>
+      <li>Type: <!--rinline  a$cmco1$Type  --></li>
+      <li>Sign: <!--rinline  a$cmco1$Sign --></li>
+    </ul>
+    <h3 id="custDevVal">Values
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+        a$cmco1$Values
+        end.rcode-->
+    <h3 id="custDevConst">Constants
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+        a$cmco1$Constants
+        end.rcode-->
+    <h3 id="custDevSet">Setup
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+        a$cmco1$Setup
+        end.rcode-->
+    <hr>
+    <h2 id="cond">Conductance
+      <sup><a href="#top">^</a></sup></h2>
+    <!--begin.rcode
+        source("../chunks/ce3.conductance.R")
+
+        N
+        end.rcode-->
+    <h3 id="condTab">Conductance Table
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+
+        format(df, scientific=TRUE, digits=5)
+
+        end.rcode-->
+
+    <h3 id="condSum">Conductance Summary
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+        format(data.frame(sdcnom/cnom), scientific=TRUE)
+        end.rcode-->
+
+    <!--begin.rcode
+        format(data.frame(cfm3/cnom -1), scientific=TRUE)
+        end.rcode-->
+
+    <!--begin.rcode
+        format(data.frame((uDV^2 +uDt^2 +uDVDt^2)^.5), scientific=TRUE)
+        end.rcode-->
+
+    <h3 id="condDiag">Conductance Diagram
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode conductance-plot, echo=FALSE
+        pltc
+        end.rcode-->
+
+    <h2 id="temp">Temperatures
+      <sup><a href="#top">^</a></sup></h2>
+    <!--begin.rcode
+        source("../chunks/ce3.temperature.R")
+        N
+        iout
+        end.rcode-->
+    <h3 id="tempTab">Table
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+        format(df)
+        end.rcode-->
+
+    <h3 id="tempSum">Summary
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+
+        summary(Tpbox)
+        end.rcode-->
+
+    <!--begin.rcode
+        summary(Troom)
+        end.rcode-->
+
+    <!--begin.rcode
+        summary(Txhv)
+        end.rcode-->
+
+    <!--begin.rcode
+        summary(Tuhv)
+        end.rcode-->
+
+    <!--begin.rcode
+        summary(Tfm3)
+        end.rcode-->
+
+    <h3 id="tempDiag" >Diagram
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode temperature-plot, echo=FALSE
+        plt
+        end.rcode-->
+
+    <h2 id="pres">Pressures
+      <sup><a href="#top">^</a></sup></h2>
+    <!--begin.rcode
+        source("../chunks/ce3.pressure.R")
+        N
+        iout
+        end.rcode-->
+    <h3 id="presTab">Pressure Table
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+
+        format(dffilloffs, scientific=TRUE, digits=5)
+        format(dffill, scientific=TRUE, digits=5)
+        format(dfcal, scientific=TRUE, digits=5)
+        end.rcode-->
+
+    <h3 id="presSum">Pressure Summary
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+
+        format(data.frame(pfill.offset/pfill), scientific=TRUE)
+
+        format(data.frame(pdpC/pfill), scientific=TRUE)
+
+        format(data.frame(pfill/plw -1), scientific=TRUE)
+
+        format(data.frame(pcorrind/pcal - 1), scientific=TRUE)
+
+        end.rcode-->
+    <h3 id="presDiag">Pressure Diagram
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode  pfill-plot, echo=FALSE
+        pltfill
+
+        end.rcode-->
+
+    <!--begin.rcode  pfilloffset-plot, echo=FALSE
+        pltfilloffs
+        end.rcode-->
+  </body>
+</html>

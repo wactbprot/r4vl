@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CE3 Report</title>
+    <style>
+      * {
+      font-family: ‘Lucida Console’, Monaco, monospace;
+      background-color:#F6F6F6;
+      }
+      body {
+      max-width: 950px;
+      margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <hr>    
+    
+    <h1>CE3 Calibration Report</h1>
+
+
+    <ul>
+      <li><a href="#header">Header</a></li>
+      <li><a href="#custDev">Customer device</a></li>
+      <ul>
+	<li><a href="#custDevVal">Values</a></li>
+	<li><a href="#custDevConst">Constants</a></li>
+	<li><a href="#custDevSet">Setup</a></li>
+      </ul>  
+      <li><a href="#cond">Conductance</a></li> 
+      <ul>   
+	<li><a href="#condTab">Table</a></li>
+	<li><a href="#condSum">Summary</a></li> 
+	<li><a href="#condDia">Diagram</a></li> 
+      </ul>   
+      <li><a href="#temp">Temperatures</a></li> 
+      <ul>   
+	<li><a href="#tempTab">Table</a></li>
+	<li><a href="#tempSum">Summary</a></li> 
+	<li><a href="#tempDia">Diagram</a></li> 
+      </ul>    
+      <li><a href="#pres">Pressures</a></li> 
+      <ul>   
+	<li><a href="#presTab">Table</a></li>
+	<li><a href="#presSum">Summary</a></li> 
+	<li><a href="#presDia">Diagram</a></li> 
+      </ul>    
+    </ul>
+    <hr>
+
+    <h2 id="header">Calibration Header</h2>
+    <ul>
+      <li>id: <code class="knitr inline">910fd907311a80c24cee9ad18a07d57b</code></li>
+      <li>Standard: <code class="knitr inline">CE3</code></li>
+      <li>Sign: <code class="knitr inline">4714_0001</code></li>
+      <li>Type: <code class="knitr inline">VG</code></li>
+      <li>Year: <code class="knitr inline">2013</code></li>
+    </ul>
+    <hr>
+    <h2 id="custDev">Customer device</h2>
+    <ul>
+      <li>Name: <code class="knitr inline">SRG 14</code></li>
+      <li>Type: <code class="knitr inline">SRG</code></li>
+      <li>Sign: <code class="knitr inline">4714</code></li>
+    </ul>
+    <h3 id="custDevVal">Values</h3>
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">a</span><span class="hl opt">$</span><span class="hl std">cmco1</span><span class="hl opt">$</span><span class="hl std">Values</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## NULL
+</pre></div>
+</div></div>
+
+    <h3 id="custDevConst">Constants</h3>
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">a</span><span class="hl opt">$</span><span class="hl std">cmco1</span><span class="hl opt">$</span><span class="hl std">Constants</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [[1]]
+## [[1]]$Type
+## [1] "d"
+## 
+## [[1]]$Value
+## [1] "4.762e-3"
+## 
+## [[1]]$Unit
+## [1] "m"
+## 
+## [[1]]$Comment
+## [1] "rotor diameter"
+## 
+## 
+## [[2]]
+## [[2]]$Type
+## [1] "rho"
+## 
+## [[2]]$Value
+## [1] "7.715e+3"
+## 
+## [[2]]$Unit
+## [1] "kg/m3"
+## 
+## [[2]]$Comment
+## [1] "rotor density"
+## 
+## 
+## [[3]]
+## [[3]]$Type
+## [1] "mu"
+## 
+## [[3]]$Value
+## [1] "0"
+## 
+## [[3]]$Unit
+## [1] "Pas"
+## 
+## [[3]]$Comment
+## [1] "viscosity during calibration"
+</pre></div>
+</div></div>
+
+    <h3 id="custDevSet">Setup</h3>
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">a</span><span class="hl opt">$</span><span class="hl std">cmco1</span><span class="hl opt">$</span><span class="hl std">Setup</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## $Display
+## [1] "DCR"
+</pre></div>
+</div></div>
+
+    <hr>
+          <h2 id="cond">Conductance</h2>
+<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">source</span><span class="hl std">(</span><span class="hl str">&quot;../chunks/ce3.conductance.R&quot;</span><span class="hl std">)</span>
+<span class="hl std">N</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 12
+</pre></div>
+</div></div>
+
+       <h3 id="condTab">Conductance Table</h3>
+<div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">format</span><span class="hl std">(df,</span> <span class="hl kwc">scientific</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">,</span> <span class="hl kwc">digits</span> <span class="hl std">=</span> <span class="hl num">5</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##          cnom     sdcnom       cfm3    diffhist      gslope        uDV
+## 1  1.2242e-05 2.1667e-08 1.2235e-05 -4.7214e-02  3.2543e-04 2.9976e-04
+## 2  1.2279e-05 7.2402e-08 1.2271e-05 -4.4250e-02  4.7857e-04 2.9976e-04
+## 3  1.2338e-05 4.2195e-08 1.2333e-05 -4.2398e-02  6.2104e-05 2.9976e-04
+## 4  1.2346e-05 3.4407e-08 1.2341e-05 -3.9082e-02  1.0415e-04 2.9976e-04
+## 5  1.2345e-05 3.6921e-08 1.2338e-05 -3.9230e-02 -1.5277e-05 2.9976e-04
+## 6  1.2522e-05 3.9882e-08 1.2517e-05 -3.3865e-02 -4.7506e-06 2.9976e-04
+## 7  1.2510e-05 3.7229e-08 1.2503e-05 -3.4128e-02 -2.8764e-05 2.9976e-04
+## 8  1.2480e-05 3.5978e-08 1.2469e-05 -3.5498e-02  1.0028e-04 2.9976e-04
+## 9  1.2506e-05 6.2603e-08 1.2498e-05 -3.1978e-02  6.0209e-05 2.9976e-04
+## 10 1.2451e-05 2.9851e-08 1.2446e-05 -3.5124e-02  1.9496e-05 2.9976e-04
+## 11 1.2444e-05 4.6662e-08 1.2438e-05 -3.5003e-02  1.2499e-04 2.9976e-04
+## 12 1.2438e-05 4.0942e-08 1.2431e-05 -3.4635e-02  1.2431e-04 2.9976e-04
+##      uDVDt        uDt Mpkt
+## 1  1.3e-03 1.5107e-03    1
+## 2  1.3e-03 1.5105e-03    2
+## 3  1.3e-03 1.5131e-03    3
+## 4  1.3e-03 1.5109e-03    4
+## 5  1.3e-03 1.5108e-03    5
+## 6  1.3e-03 1.5179e-03    6
+## 7  1.3e-03 1.5171e-03    7
+## 8  1.3e-03 1.5158e-03    8
+## 9  1.3e-03 1.5149e-03    9
+## 10 1.3e-03 1.5144e-03   10
+## 11 1.3e-03 1.5137e-03   11
+## 12 1.3e-03 1.5129e-03   12
+</pre></div>
+</div></div>
+
+
+       <h3 id="condSum">Conductance Summary</h3>
+<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">format</span><span class="hl std">(</span><span class="hl kwd">data.frame</span><span class="hl std">(sdcnom</span><span class="hl opt">/</span><span class="hl std">cnom),</span> <span class="hl kwc">scientific</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##      sdcnom.cnom
+## 1  1.7698905e-03
+## 2  5.8964085e-03
+## 3  3.4199222e-03
+## 4  2.7868945e-03
+## 5  2.9907655e-03
+## 6  3.1849545e-03
+## 7  2.9759392e-03
+## 8  2.8828526e-03
+## 9  5.0058372e-03
+## 10 2.3974781e-03
+## 11 3.7497589e-03
+## 12 3.2916868e-03
+</pre></div>
+</div></div>
+
+
+<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">format</span><span class="hl std">(</span><span class="hl kwd">data.frame</span><span class="hl std">(cfm3</span><span class="hl opt">/</span><span class="hl std">cnom</span> <span class="hl opt">-</span> <span class="hl num">1</span><span class="hl std">),</span> <span class="hl kwc">scientific</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##     cfm3.cnom...1
+## 1  -5.7180199e-04
+## 2  -6.5151885e-04
+## 3  -4.0525207e-04
+## 4  -4.0498947e-04
+## 5  -5.6703119e-04
+## 6  -3.9929724e-04
+## 7  -5.5955236e-04
+## 8  -8.8141026e-04
+## 9  -6.3969295e-04
+## 10 -4.0157417e-04
+## 11 -4.8216008e-04
+## 12 -5.6279145e-04
+</pre></div>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
