@@ -67,13 +67,10 @@ ce3.calDeltaVDeltat <- function(ccc){
     ## ------------------------------------##
     mts <- mt /1000
     lf <- lm(mp ~ mts)
-    print(paste(j,"  " ,mean(corrSlope*1000)))
     gslope[j] <- as.numeric(lf$coefficients[2])
     nt         <- length(t0)
-    j1         <- 1:(nt-1)
-    j2         <- j1 + 1
     
-    deltat     <- (t0[j2] - t0[j1]) * tconv 
+    deltat     <- diff(t0) * tconv 
     ## delta V
     h          <- abs(getConstVal(a$cm, turntype)) * t2mm
     nv         <- length(h)

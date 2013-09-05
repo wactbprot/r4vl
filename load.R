@@ -2,13 +2,13 @@
 ## wactbprot/2012-08-14
 ## --
 library(knitr,    quietly =TRUE)
-library(reshape,  quietly =TRUE)
+library(reshape2,  quietly =TRUE)
 library(ggplot2,  quietly =TRUE)
 library(methods,  quietly =TRUE)
 library(bitops,   quietly =TRUE)
 library(RJSONIO,  quietly =TRUE)
 library(RCurl,    quietly =TRUE)
-library(R4CouchDB,quietly =TRUE) 
+library(R4CouchDB,quietly =TRUE)
 
 utilsPath     <- "./utils/"
 calPath       <- "./cal/"

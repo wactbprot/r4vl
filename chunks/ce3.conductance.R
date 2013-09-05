@@ -4,7 +4,7 @@ cnom           <- getConstVal(a$cav$Conductance, "cnom")
 sdcnom         <- getConstVal(a$cav$Conductance, "sd_cnom")
 cfm3           <- getConstVal(a$cav$Conductance, "cfm3")
 diffhist       <- getConstVal(a$cav$Conductance, "diff_hist")
-gslope         <- getConstVal(a$cav$Conductance, "g_slope")
+
 
 
 
@@ -14,7 +14,7 @@ cnom           <-  cnom[-iout]
 sdcnom         <-  sdcnom[-iout]    
 cfm3           <-  cfm3[-iout]      
 diffhist       <-  diffhist[-iout]  
-gslope         <-  gslope[-iout]    
+
 
 
 
@@ -45,13 +45,12 @@ if(withU){
         sdcnom    =   sdcnom ,  
         cfm3      =   cfm3,     
         diffhist  =   diffhist, 
-        gslope    =   gslope,   
         uDV       =  uDV,    
         uDVDt     =  uDVDt,  
         uDt       =  uDt,    
-        Mpkt         = 1:N)
+        Mpkt       = 1:N)
     
-    ndf <- melt(df, id=c("Mpkt","uDV","uDVDt","uDt","gslope","diffhist","sdcnom"))
+    ndf <- melt(df, id=c("Mpkt","uDV","uDVDt","uDt","diffhist","sdcnom"))
     
 }else{
     df    <- data.frame(
@@ -59,10 +58,9 @@ if(withU){
         sdcnom    =   sdcnom,   
         cfm3      =   cfm3,     
         diffhist  =   diffhist, 
-        gslope    =   gslope,   
-        Mpkt         = 1:N)
+        Mpkt      = 1:N)
     
-    ndf <- melt(df, id=c("Mpkt","gslope","diffhist","sdcnom"))
+    ndf <- melt(df, id=c("Mpkt","diffhist","sdcnom"))
   
    
 }
