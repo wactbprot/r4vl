@@ -1,0 +1,120 @@
+calError <- function(ccc){
+  msg <- "calculated by calError()"
+  a <- abbrevList(ccc)
+  
+  IND <- getSubList(a$cmv, "p_ind")
+  OFS <- getSubList(a$cmv, "p_ind_offset")
+
+  if(is.null(IND)){
+    IND <- getSubList(a$cmv, "ind")
+  }
+  
+  if(is.null(OFS)){
+    OFS <- getSubList(a$cmv, "ind_offset")
+  }
+  
+  if(is.null(OFS)){
+    OFS <- getSubList(a$cmv, "offset")
+  }
+  
+  ofs <-  getConstVal(NA,NA,OFS)
+  ind <-  getConstVal(NA,NA,IND)
+  
+  CAL <- getSubList(a$ca, "cal")
+  cal <- getConstVal(NA,NA,CAL)
+  
+  ## soll auch an SE1 für SRG-Fehler funktionieren
+  if(IND$Unit == "DCR" & OFS$Unit == "DCR"){
+
+    d     <- getConstVal(a$cmco1, "d")
+    rho   <- getConstVal(a$cmco1,"rho" )
+    sigma <- getConstVal(a$cmco1,"sigma" )
+    gas   <- a$cma$Gas
+    
+    dcr <- ind - ofs
+    
+    R <- getConstVal(a$cc, "R" )
+
+    if(a$cs == "SE1"){
+      T <- getConstVal(a$cav, "after")
+    }
+    if(a$cs == "CE3"){
+      T <- getConstVal(a$cav, "Tuhv")
+    }
+    if(  gas == "Ar"){
+      M <- getConstVal(a$cc, "molWeight_Ar" )
+      msg <- paste(msg, "; gas:", gas)
+    }
+    if(  gas == "N2"){
+      M <- getConstVal(a$cc, "molWeight_N2" )
+      msg <- paste(msg, "; gas:", gas)
+    }
+    if(  gas == "D2"){
+      M <- getConstVal(a$cc, "molWeight_D2" )
+      msg <- paste(msg, "; gas:", gas)
+    }
+
+    
+    if(CAL$Unit == "mbar"){
+
+      indUnit  <- "mbar"
+      K        <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/2000
+      corrind  <- K * dcr/sigma
+      ind      <- K * ind
+      ofs      <- K * ofs
+
+    }else{
+      stop("conversion to mbar needed; todo!")
+    }
+    
+  }else{
+    
+    convInd <- getConvFactor(ccc, CAL,IND)
+    convOfs <- getConvFactor(ccc, CAL,OFS)
+    
+    ind <- getConstVal(NA,NA,IND) * convInd
+    ofs <- getConstVal(NA,NA,OFS) * convOfs
+
+    corrind <- (ind - ofs)
+    
+    ## unit of ind and offset is now
+    indUnit <- CAL$Unit
+    
+    msg <- paste(msg,
+                 "ind conversion factor was:", convInd,
+                 "offset conversion factor was:",convOfs )
+    
+  }
+
+  error <- corrind/cal - 1
+
+  ccc$Calibration$Analysis$Values$Pressure <-
+    setCcl(ccc$Calibration$Analysis$Values$Pressure, "ind",
+           indUnit,
+           ind,
+           paste(msg)
+           )
+
+  ccc$Calibration$Analysis$Values$Pressure <-
+    setCcl(ccc$Calibration$Analysis$Values$Pressure, "offset",
+           indUnit,
+           ofs,
+           paste(msg)
+           )
+
+  ccc$Calibration$Analysis$Values$Pressure <-
+    setCcl(ccc$Calibration$Analysis$Values$Pressure, "corrind",
+           indUnit,
+           corrind,
+           paste(msg, ";p_ind - p_ind_offset")
+           )
+
+  ccc$Calibration$Analysis$Values$Error <-
+    setCcl(ccc$Calibration$Analysis$Values$Error, "relative",
+           "1",
+           error,
+           paste(msg, "error is defined by (corrind/p_cal-1)")
+           )
+
+  return(ccc)
+}
