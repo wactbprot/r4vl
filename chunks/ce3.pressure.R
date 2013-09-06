@@ -42,69 +42,104 @@ if(length(iout) > 0){
 
 N <- length(pcal)
 
-dffilloffs <- data.frame(
+df.pressure.fill.offs <- data.frame(
     pfill.offset = pfill.offset,
     pdpC = pdpC,
     Mpkt = 1:N)
 
-ndffilloffs <- melt(dffilloffs, id=c("Mpkt"))
+ndf.pressure.fill.offs <- melt(df.pressure.fill.offs, id=c("Mpkt"))
 
 if(withU){
-    dffill <- data.frame(
+    df.pressure.fill <- data.frame(
         plw = plw,
         pfill = pfill,
         upfill = upfill,
         Mpkt = 1:N)
 
-    dfcal <- data.frame(
+    df.pressure.cal <- data.frame(
         pcal = pcal,
         poffset = poffset,
         pcorrind = pcorrind,
         upcal = upcal,
         Mpkt = 1:N)
 
-    ndfcal <- melt(dfcal, id=c("Mpkt","upcal"))
-    ndfill <- melt(dffill, id=c("Mpkt","upfill"))
+    ndf.pressure.cal <- melt(df.pressure.cal,
+                             id=c("Mpkt","upcal","poffset"))
+    ndf.pressure.fill <- melt(df.pressure.fill,
+                              id=c("Mpkt","upfill"))
 
 }else{
-    dffill <- data.frame(
+    df.pressure.fill <- data.frame(
         plw = plw,
         pfill = pfill,
         Mpkt = 1:N)
 
-    dfcal <- data.frame(
+    df.pressure.cal <- data.frame(
         pcal = pcal,
         poffset = poffset,
         pcorrind = pcorrind,
         Mpkt = 1:N)
 
-    ndfcal <- melt(dfcal, id=c("Mpkt"))
-    ndfill <- melt(dffill, id=c("Mpkt"))
+    ndf.pressure.cal <- melt(df.pressure.cal,
+                             id=c("Mpkt","poffset"))
+    ndf.pressure.fill <- melt(df.pressure.fill,
+                              id=c("Mpkt"))
 
 }
 N <- length(pcal)
 
-pltfill <- ggplot(ndfill)
-pltfill <- pltfill + geom_point(aes(x = Mpkt,
-                                    y = value,
-                                    color = factor(ndfill$variable)),
-                                size=5)
-pltfill <- pltfill + guides(color = guide_legend("Pressure"))
-pltfill <- pltfill + scale_y_log10()
-pltfill <- pltfill + theme(legend.position="bottom")
-
-if(withU){
-    pltfill <- pltfill + geom_errorbar(aes(x=Mpkt,
-                                           ymax = pfill*(1 + upfill),
-                                           ymin = pfill*(1 - upfill)))
-}
 
 
+        pltfill <- ggplot(ndf.pressure.fill)
 
-pltfilloffs <- ggplot(ndffilloffs)
-pltfilloffs <- pltfilloffs + geom_point(aes(x = Mpkt,
-                                            y = value,
-                                            color = factor(ndffilloffs$variable)),
-                                        size=5)
-pltfilloffs <- pltfilloffs + guides(color = guide_legend("Pressure"))
-pltfilloffs <- pltfilloffs + theme(legend.position="bottom")
+        pltfill <- pltfill + geom_point(aes(x = Mpkt,
+        y = value,
+        color = factor(ndf.pressure.fill$variable)),
+        size=5)
+
+        pltfill <- pltfill + guides(color = guide_legend("Pressure"))
+
+        pltfill <- pltfill + scale_y_log10()
+
+        pltfill <- pltfill + theme(legend.position="bottom")
+
+        if(withU){
+        pltfill <- pltfill + geom_errorbar(aes(x=Mpkt,
+        ymax = pfill*(1 + upfill),
+        ymin = pfill*(1 - upfill)))
+        }
+
+        ###
+
+        pltfilloffs <- ggplot(ndf.pressure.fill.offs)
+
+        pltfilloffs <- pltfilloffs + geom_point(aes(x = Mpkt,
+        y = value,
+        color = factor(ndf.pressure.fill.offs$variable)),
+        size=5)
+
+        pltfilloffs <- pltfilloffs + guides(color = guide_legend("Pressure"))
+
+        pltfilloffs <- pltfilloffs + theme(legend.position="bottom")
+
+        ###
+
+        pltcal <- ggplot(ndf.pressure.cal)
+        pltcal <- pltcal + geom_point(aes(x = Mpkt,
+        y = value,
+        color = factor(ndf.pressure.cal$variable)),
+        size=5)
+
+        pltcal <- pltcal + guides(color = guide_legend("Pressure"))
+
+        pltcal <- pltcal + scale_y_log10()
+
+        pltcal <- pltcal + theme(legend.position="bottom")
+
+        if(withU){
+        pltcal <- pltcal + geom_errorbar(aes(x=Mpkt,
+        ymax = pcal*(1 + upcal),
+        ymin = pcal*(1 - upcal)))
+        }
+
+

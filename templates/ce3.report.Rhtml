@@ -14,12 +14,12 @@
     </style>
   </head>
   <body>
-   
+
     <hr>
     <h1 id="top">CE3 Calibration Report</h1>
-   
+
     <hr>
-   
+
     <h2 id="header">Calibration Header</h2>
     <ul>
       <li>id: <!--rinline doc[["_id"]] --></li>
@@ -84,14 +84,14 @@
       <sup><a href="#top">^</a></sup></h2>
     <!--begin.rcode
         source("../chunks/ce3.conductance.R")
-
+        reportName
         N
         end.rcode-->
     <h3 id="condTab">Conductance Table
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode
 
-        format(df, scientific=TRUE, digits=5)
+        format(df.conductance, scientific=TRUE, digits=5)
 
         end.rcode-->
 
@@ -125,7 +125,7 @@
     <h3 id="tempTab">Table
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode
-        format(df)
+        format(df.temperature)
         end.rcode-->
 
     <h3 id="tempSum">Summary
@@ -153,7 +153,7 @@
 
     <h3 id="tempDiag" >Diagram
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode temperature-plot, echo=FALSE
+    <!--begin.rcode temperature-plot, echo=TRUE
         plt
         end.rcode-->
 
@@ -168,9 +168,9 @@
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode
 
-        format(dffilloffs, scientific=TRUE, digits=5)
-        format(dffill, scientific=TRUE, digits=5)
-        format(dfcal, scientific=TRUE, digits=5)
+        format(df.pressure.fill.offs, scientific=TRUE, digits=5)
+        format(df.pressure.fill, scientific=TRUE, digits=5)
+        format(df.pressure.cal, scientific=TRUE, digits=5)
         end.rcode-->
 
     <h3 id="presSum">Pressure Summary
@@ -186,15 +186,21 @@
         format(data.frame(pcorrind/pcal - 1), scientific=TRUE)
 
         end.rcode-->
+
     <h3 id="presDiag">Pressure Diagram
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode  pfill-plot, echo=FALSE
         pltfill
-
         end.rcode-->
 
     <!--begin.rcode  pfilloffset-plot, echo=FALSE
         pltfilloffs
         end.rcode-->
+
+    <!--begin.rcode  pcal-plot, echo=FALSE
+        pltcal
+        end.rcode-->
+
+
   </body>
 </html>

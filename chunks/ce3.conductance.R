@@ -33,7 +33,7 @@ if(length(iout) > 0){
 N <- length(cnom)
 
 if(withU){
-    df    <- data.frame(
+    df.conductance    <- data.frame(
         cnom      =   cnom,
         sdcnom    =   sdcnom ,
         cfm3      =   cfm3,
@@ -43,26 +43,26 @@ if(withU){
         uDt       =  uDt,
         Mpkt       = 1:N)
 
-    ndf <- melt(df, id=c("Mpkt","uDV","uDVDt","uDt","diffhist","sdcnom"))
+    ndf.conductance <- melt(df.conductance, id=c("Mpkt","uDV","uDVDt","uDt","diffhist","sdcnom"))
 
 }else{
-    df    <- data.frame(
+    df.conductance    <- data.frame(
         cnom      =   cnom,
         sdcnom    =   sdcnom,
         cfm3      =   cfm3,
         diffhist  =   diffhist,
         Mpkt      = 1:N)
 
-    ndf <- melt(df, id=c("Mpkt","diffhist","sdcnom"))
+    ndf.conductance <- melt(df.conductance, id=c("Mpkt","diffhist","sdcnom"))
 
 
 }
 
 
-pltc <- ggplot(ndf)
+pltc <- ggplot(ndf.conductance)
 pltc <- pltc + geom_point(aes(x = Mpkt,
                               y = value,
-                              color = factor(ndf$variable)),
+                              color = factor(ndf.conductance$variable)),
                           size=5)
 pltc <- pltc +    guides(color = guide_legend("Conductance"))
 pltc <- pltc +    scale_y_log10()
