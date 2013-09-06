@@ -72,26 +72,3 @@ for( fig in figures){
 outdb$fileName     <-  paste(reportName, ".html", sep="")
 tmp                <- cdbAddAttachment(outdb)$res
 
-## excel-land:
-
-xlsxName <- paste(reportName, ".xlsx", sep="")
-
-if(is.data.frame(df.conductance)){
-
-    write.xlsx(df.conductance, 
-           sheetName = "Conductance", 
-           xlsxName)
-
-}
-
-if(is.data.frame(df.temperature)){
-    write.xlsx(df.temperature, 
-               sheetName = "Temperature", 
-               xlsxName,
-               append=TRUE)
-    
-}
-
-
-outdb$fileName     <- xlsxName
-tmp                <- cdbAddAttachment(outdb)$res
