@@ -50,26 +50,20 @@ outdb$id      <- cdb$id
 outdb$dataList <- ndoc
 try(cdbUpdateDoc(outdb)$res, TRUE)
 
-## excel-land:
+## -----------excel-land:
 
 xlsxName <- paste(reportName, ".xlsx", sep="")
 
-if(is.data.frame(df.conductance)){
+lnames   <- names(valList)
+for(sheetName in lnames){
 
-    write.xlsx(df.conductance, 
-           sheetName = "Conductance", 
-           xlsxName)
-
-}
-
-if(is.data.frame(df.temperature)){
-    write.xlsx(df.temperature, 
-               sheetName = "Temperature", 
-               xlsxName,
-               append=TRUE)
-    
+    df <- makeDf(valList[[sheetName]])
+    write.xlsx()
 }
 
 
-outdb$fileName     <- xlsxName
-tmp                <- cdbAddAttachment(outdb)$res
+
+if(!test){
+    outdb$fileName     <- xlsxName
+    tmp                <- cdbAddAttachment(outdb)$res
+}
