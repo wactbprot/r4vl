@@ -53,7 +53,6 @@ if(length(doc$Calibration) > 0 &
 
     cat(toJSON(list("expansion"   = exNameSel[iSel],
                     "p_fill_mbar" = pSel[iSel],
-                    "p_fill_V"    = pSel[iSel]*10/1000,
                     "f_uncorr"    = fSel[iSel],
                     "start_vol"   = VSel[iSel]
                     )))
@@ -61,7 +60,6 @@ if(length(doc$Calibration) > 0 &
 
     cat(toJSON(list("expansion"   = "keinen",
                     "p_fill_mbar" = "passenden",
-                    "p_fill_V"    = "pfill",
                     "f_uncorr"    = "gefunden",
                     "start_vol"   = "~")))
 
@@ -70,7 +68,6 @@ if(length(doc$Calibration) > 0 &
 }else{
   cat(toJSON(list("expansion"   = "~",
                   "p_fill_mbar" = "~",
-                  "p_fill_V"    = "~",
                   "f_uncorr"    = "~",
                   "start_vol"   = "~")))
 }
