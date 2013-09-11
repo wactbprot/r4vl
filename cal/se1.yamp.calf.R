@@ -12,7 +12,7 @@ se1.yamp.calf <- function(ccc){
     msg      <- paste(msg, "used", conv, "to convert from",fromUnit, "to", volUnit)
     
     nV       <- getConstVal(NA,NA,a$cma$Volume[[i]])
-    lnV      <- length(nV)
+    lnV      <- length(nV) # nur die letzte Eingabe zählt
     
     Vz       <- Vz + nV[lnV] * conv
   }
@@ -27,8 +27,7 @@ se1.yamp.calf <- function(ccc){
   sV       <- getConstVal(NA,NA,SV)*conv
   
   fp       <- 1/(1/f + Vz/sV)
-
-      
+  
     ccc$Calibration$Analysis$Values$Expansion <-
       setCcl(ccc$Calibration$Analysis$Values$Expansion,
              "corr",

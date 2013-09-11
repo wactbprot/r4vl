@@ -46,6 +46,7 @@ ce3.extrapC <- function(ccc){
       cf$c  <-  getConstVal(a$cms, paste("grLw_",gas,"_C", sep=""))
       cf$d  <-  getConstVal(a$cms, paste("grLw_",gas,"_D", sep=""))
       ## wie oben
+
       cfm3[ilw$iLw1]  <- cnom[ilw$iLw1]*fn.2162(cf,pfill[ilw$iLw1])/fn.2162(cf,plw[ilw$iLw1])
       dh[ilw$iLw1]    <- cnom[ilw$iLw1]/fn.2162(cf,plw[ilw$iLw1]) - 1 
     }

@@ -1,126 +1,143 @@
 se1.calPfill <- function(ccc){
-  msg <- "calculated by calPfill()"
-  
-  a <- abbrevList( ccc )
-  if(a$dataAvailable){
-    ## a$cmscex steht für SequenceControll/Expansion
-    N <- length(a$cmscex)
-    ## es muss jetzt ein resVec mit der Länge N gebildet werden,
-    ## der mit cdg oder ruska werten gefüllt wird
-    ## zum schluss muss noch nach verbleibenden NAs getested werden
     
-    ## -------------------- ruska--------------------------v
-    ruska.PFILL       <- getSubList(a$cmv, "ruska_p_fill")
-    ruska.PFILLOFFSET <- getSubList(a$cmv, "ruska_p_fill_offset")
+    msg <- "calculated by se1.calPfill()"
     
-    if((ruska.PFILL$Unit == ruska.PFILLOFFSET$Unit) & (ruska.PFILL$Unit =="V")){
-      
-      CA        <-  getSubList(a$cmco, "conv_a")
-      CB        <-  getSubList(a$cmco, "conv_b")
-      
-      if((CA$Unit == "mbar/V") & (CB$Unit == "mbar")){
-        
-        convA        <-  getConstVal(
-                                     NA, NA, CA)
-        convB        <-  getConstVal(NA, NA, CB)
-        
-        ruska.pfillVolt    <-  getConstVal(NA, NA, ruska.PFILL)
-        ruska.pfillOffVolt <-  getConstVal(NA, NA, ruska.PFILLOFFSET)
-        ruska.pfillVolt <- checkOutIndex(a,ruska.pfillVolt)
-        ruska.pfillOffVolt <- checkOutIndex(a,ruska.pfillOffVolt)
+    a      <- abbrevList( ccc )
+    g      <- a$cmag
+    pUnit  <- "mbar"
+    N      <- length(getConstVal(a$cmv$Expansion, "ratio_uncorr"))
 
-        ruska.pfill <- convA  *  (ruska.pfillVolt - ruska.pfillOffVolt) + convB
+    pfill                <- rep(NA, N)
+    offset               <- rep(NA, N)
+    cdg.offset.10.mbar   <- rep(NA, N)
+    cdg.offset.100.mbar  <- rep(NA, N)
+    cdg.offset.1000.mbar <- rep(NA, N)
+    ## der offset kann mehrmals gemessen werden
+    ## welcher für welchen benutzt wird
+    ## wird über die Zeit entschieden
+    ofMt      <- getConstVal(a$cma$Time, "amt_offset")
+    beMt      <- getConstVal(a$cmv$Time, "amt_before")
+
+
+    if(a$dataAvailable){
+        ## -------------------- 10T CDG --------------------------v
+
+        cdg.conv.10             <- getConstVal(a$cmco,"cdg10Conv")
+        cdg.pfill.10.mbar       <- getConstVal(a$cmv, "cdg10_p_fill")          * cdg.conv.10
         
+        ## ----offset---
+        cdg.offset.10           <- getConstVal(a$cma, "cdg10_p_fill_offset")  
+        for(k in 1:length(ofMt)){
+            ## 
+            u                     <- which( beMt > ofMt[k])
+            cdg.offset.10.mbar[u] <- cdg.offset.10[k] * cdg.conv.10
+        }
+        ## ------------
+        
+        cfcdg10        <- list()
+        cfcdg10$a      <- getConstVal(  a$cmco, paste("cdg10CorrA_",g,sep=""))
+        cfcdg10$b      <- getConstVal(  a$cmco, paste("cdg10CorrB_",g,sep=""))
+        cfcdg10$c      <- getConstVal(  a$cmco, paste("cdg10CorrC_",g,sep=""))
+        cfcdg10$d      <- 0
+        cfcdg10$e      <- 0
+        cfcdg10$f      <- 0
+
+        p.fill.10.uncorr.mbar   <- cdg.pfill.10.mbar - cdg.offset.10.mbar
+        pfill.10.mbar           <- p.fill.10.uncorr.mbar/(fn.7904(cfcdg10, p.fill.10.uncorr.mbar)/100 + 1)
+
+        RANGE.10       <- getSubList(a$cmco, "cdg10UseDev")
+        
+        i.10           <- which((pfill.10.mbar > as.numeric(RANGE.10$From)) &
+                                (pfill.10.mbar < as.numeric(RANGE.10$To)))
+
+        pfill[i.10]    <- pfill.10.mbar[i.10]
+        offset[i.10]   <- cdg.offset.10.mbar[i.10]
+                          
+        
+        ## -------------------- 100T CDG --------------------------v
+        cdg.conv.100               <- getConstVal(a$cmco,"cdg100Conv")
+        
+        cdg.pfill.100.mbar         <- getConstVal(a$cmv, "cdg100_p_fill")        * cdg.conv.100
+
+        ## ----offset---
+        cdg.offset.100             <- getConstVal(a$cma, "cdg100_p_fill_offset")  
+        for(k in 1:length(ofMt)){
+            ## 
+            u                      <- which( beMt > ofMt[k])
+            cdg.offset.100.mbar[u] <- cdg.offset.100[k] * cdg.conv.100
+        }
+        ## ------------
+
+        cfcdg100       <- list()
+        cfcdg100$a     <- getConstVal(a$cmco, "cdg100CorrA")
+        cfcdg100$b     <- 0
+        cfcdg100$c     <- 0
+        cfcdg100$d     <- 0
+        cfcdg100$e     <- 0
+        cfcdg100$f     <- 0
+
+        p.fill.100.uncorr.mbar  <- cdg.pfill.100.mbar - cdg.offset.100.mbar
+        pfill.100.mbar          <- p.fill.100.uncorr.mbar/(fn.7904(cfcdg100, p.fill.100.uncorr.mbar)/100 + 1)
+
+        RANGE.100      <- getSubList(a$cmco, "cdg100UseDev")
+        
+        i.100          <- which((pfill.100.mbar > as.numeric(RANGE.100$From)) &
+                          (pfill.100.mbar < as.numeric(RANGE.100$To)))
+        
+        pfill[i.100]   <- pfill.100.mbar[i.100]
+        offset[i.100]  <- cdg.offset.100.mbar[i.100]
+        
+        ## -------------------- 1000T CDG --------------------------v
+        cdg.conv.1000               <- getConstVal(a$cmco,"cdg1000Conv")
+        
+        cdg.pfill.1000.mbar         <- getConstVal(a$cmv, "cdg1000_p_fill")        * cdg.conv.1000
+
+        ## ----offset---
+        cdg.offset.1000             <- getConstVal(a$cma, "cdg1000_p_fill_offset")  
+        for(k in 1:length(ofMt)){
+            ## 
+            u                      <- which( beMt > ofMt[k])
+            cdg.offset.1000.mbar[u] <- cdg.offset.1000[k] * cdg.conv.1000
+        }
+        ## ------------
+
+        cfcdg1000       <- list()
+        cfcdg1000$a     <- getConstVal(a$cmco, "cdg1000CorrA")
+        cfcdg1000$b     <- 0
+        cfcdg1000$c     <- 0
+        cfcdg1000$d     <- 0
+        cfcdg1000$e     <- 0
+        cfcdg1000$f     <- 0
+
+        p.fill.1000.uncorr.mbar  <- cdg.pfill.1000.mbar - cdg.offset.1000.mbar
+        pfill.1000.mbar          <- p.fill.1000.uncorr.mbar/(fn.7904(cfcdg1000, p.fill.1000.uncorr.mbar)/100 + 1)
+
+        RANGE.1000      <- getSubList(a$cmco, "cdg1000UseDev")
+        
+        i.1000          <- which((pfill.1000.mbar > as.numeric(RANGE.1000$From)) &
+                          (pfill.1000.mbar < as.numeric(RANGE.1000$To)))
+        
+        pfill[i.1000]   <- pfill.1000.mbar[i.1000]
+        offset[i.1000]  <- cdg.offset.1000.mbar[i.1000]
+
+        ## ---------------------------------------------------------^
        
-        
-        msg   <- paste(msg, "calculated with:", convA, "* (pfill - pfillOffs) +",convB)
-        pUnit <- "mbar"
-        
-      }else{
-        stop("conversion of demanded units not implemented (maybe only a typo?)!")
-      }
-    }else{
-      stop("pfill Units dont match")
-    }
-    ## -------------------- ruska--------------------------^
-      
-    ## -------------------- cdg--------------------------v
-    cdg.PFILL       <- getSubList(a$cmv, "cdg_p_fill")
-    cdg.PFILLOFFSET <- getSubList(a$cmv, "cdg_p_fill_offset")
-    
-    if((cdg.PFILL$Unit == cdg.PFILLOFFSET$Unit) & (cdg.PFILL$Unit =="V")){
-      ## korrektur bezieht sich auf:
-      ## e(%)=(a+c*pind+e*pind^2+g*pind^3)/(1+b*pind+d*pind^2+f*pind^3) 
-      
-      CDG.A   <-  getSubList(a$cmco, "cdg_corr_a")
-      CDG.B   <-  getSubList(a$cmco, "cdg_corr_b")
-      CDG.C   <-  getSubList(a$cmco, "cdg_corr_c")
-      CDG.D   <-  getSubList(a$cmco, "cdg_corr_d")
-      CDG.E   <-  getSubList(a$cmco, "cdg_corr_e")
-      CDG.F   <-  getSubList(a$cmco, "cdg_corr_f")
-      CDG.G   <-  getSubList(a$cmco, "cdg_corr_g")
-      
-      if( CDG.A$Unit == "%" &
-         CDG.B$Unit == "%/V" &
-         CDG.C$Unit == "%/V" &
-         CDG.D$Unit == "%/V^2" &
-         CDG.E$Unit == "%/V^2" &
-         CDG.F$Unit == "%/V^3" &
-         CDG.G$Unit == "%/V^3" ){
-        
-        cdg.pfillVolt <- getConstVal(NA, NA,cdg.PFILL) - getConstVal(NA, NA,cdg.PFILLOFFSET)
-        
-        cdg.a <- getConstVal(NA, NA, CDG.A)
-        cdg.b <- getConstVal(NA, NA, CDG.B)
-        cdg.c <- getConstVal(NA, NA, CDG.C)
-        cdg.d <- getConstVal(NA, NA, CDG.D)
-        cdg.e <- getConstVal(NA, NA, CDG.E)
-        cdg.f <- getConstVal(NA, NA, CDG.F)
-        cdg.g <- getConstVal(NA, NA, CDG.G) 
-        
-        
-        cdg.pfillVolt    <- checkOutIndex(a,cdg.pfillVolt)
+        ccc$Calibration$Analysis$Values$Pressure <-
+            setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                   "fill",
+                   pUnit,
+                   pfill,
+                   paste(msg, "pfill = pindfill - poffset"))
        
+        ccc$Calibration$Analysis$Values$Pressure <-
+            setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                   "fill_offset",
+                   pUnit,
+                   offset,
+                   paste(msg, "offset nur zu Kontrollzwecken; ist bei pfill schon subtrahiert"))
         
-        
-        cdg.error <- (cdg.a + cdg.c * cdg.pfillVolt + cdg.e * cdg.pfillVolt^2 + cdg.g * cdg.pfillVolt^3)/ 
-          (1 + cdg.b * cdg.pfillVolt + cdg.d * cdg.pfillVolt^2 + cdg.f * cdg.pfillVolt^3) 
-        
-        cdg.pfill <-  cdg.pfillVolt/(cdg.error/100 + 1)
-        
-      }else{
-        stop("problen with units of cdg correction in se1.calPfill()") 
-      }## Korrektur Units
-    }else{
-      stop("conversion of demanded units not implemented (maybe only a typo?)!")
-    }
-    ## -------------------- cdg--------------------------^
-
-    pfill <- ruska.pfill
-    
-    dpfill <- cdg.pfill/ruska.pfill -1
-    
-    io <- which(is.na(dpfill))
-    if(length(io) > 0){
-      dpfill[io] <- 0
     }
     
-    
-    ccc$Calibration$Analysis$Values$Pressure <-
-      setCcl(ccc$Calibration$Analysis$Values$Pressure,
-             "fill",
-             pUnit,
-             ruska.pfill,
-             paste(msg, "p_fill = ruska.pfill"))
-
-     ccc$Calibration$Analysis$Values$Pressure <-
-       setCcl(ccc$Calibration$Analysis$Values$Pressure,
-              "delta_fill",
-              "1",
-              dpfill,
-              "comparison between ruska and cdg with p_cdg/p_ruska - 1, NANs are replaced by 0 until Duncan answers my bug report")
-     
     return(ccc)
-  }
+    
 }
-
