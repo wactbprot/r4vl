@@ -5,7 +5,7 @@ ce3.newCalPfill <- function(ccc){
   pUnit  <- "mbar"
   gas    <- a$cmscg
   ## muss noch aus db kommen
-  cdgax001border <- 0.133
+  cdgax001border <- 0.10
   cdgax01border  <- 1.33
   cdgax1border   <- 13.3
   
@@ -23,18 +23,51 @@ ce3.newCalPfill <- function(ccc){
   cpre <- "cdgc_"
   suf  <- "_offset"
 
-  poax001 <-  getConstVal(a$cma$Pressure, paste(apre,"x0.01",suf,sep=""))
-  poax01  <-  getConstVal(a$cma$Pressure, paste(apre,"x0.1" ,suf,sep=""))
-  poax1   <-  getConstVal(a$cma$Pressure, paste(apre,"x1"   ,suf,sep=""))
+  sVpoax001 <-  getConstVal(a$cma$Pressure, paste(apre,"x0.01",suf,sep=""))
+  sVpoax01  <-  getConstVal(a$cma$Pressure, paste(apre,"x0.1" ,suf,sep=""))
+  sVpoax1   <-  getConstVal(a$cma$Pressure, paste(apre,"x1"   ,suf,sep=""))
+ 
+  sVpobx001 <-  getConstVal(a$cma$Pressure, paste(bpre,"x0.01",suf,sep=""))
+  sVpobx01  <-  getConstVal(a$cma$Pressure, paste(bpre,"x0.1" ,suf,sep=""))
+  sVpobx1   <-  getConstVal(a$cma$Pressure, paste(bpre,"x1"   ,suf,sep=""))
+ 
+  sVpocx001 <-  getConstVal(a$cma$Pressure, paste(cpre,"x0.01",suf,sep=""))
+  sVpocx01  <-  getConstVal(a$cma$Pressure, paste(cpre,"x0.1" ,suf,sep=""))
+  sVpocx1   <-  getConstVal(a$cma$Pressure, paste(cpre,"x1"   ,suf,sep=""))
 
-  pobx001 <-  getConstVal(a$cma$Pressure, paste(bpre,"x0.01",suf,sep=""))
-  pobx01  <-  getConstVal(a$cma$Pressure, paste(bpre,"x0.1" ,suf,sep=""))
-  pobx1   <-  getConstVal(a$cma$Pressure, paste(bpre,"x1"   ,suf,sep=""))
+  ## der offset kann mehrmals gemessen werden
+  ## welcher für welchen benutzt wird
+  ## wird über die Zeit entschieden
+  ofMt      <- getConstVal(a$cma$Time, "offset_mt")
+  lwMt      <- getConstVal(a$cma$Time, "start_lw")
 
-  pocx001 <-  getConstVal(a$cma$Pressure, paste(cpre,"x0.01",suf,sep=""))
-  pocx01  <-  getConstVal(a$cma$Pressure, paste(cpre,"x0.1" ,suf,sep=""))
-  pocx1   <-  getConstVal(a$cma$Pressure, paste(cpre,"x1"   ,suf,sep=""))
+  navec     <- rep(NA,length(lwMt))
   
+  poax001 <- navec 
+  poax01  <- navec 
+  poax1   <- navec     
+  pobx001 <- navec 
+  pobx01  <- navec 
+  pobx1   <- navec 
+  pocx001 <- navec 
+  pocx01  <- navec   
+  pocx1   <- navec
+
+  for(k in 1:length(ofMt)){
+    ## 
+    u               <- which( lwMt > ofMt[k])
+
+    poax001[u]      <-  sVpoax001[k] 
+    poax01[u]       <-  sVpoax01[k]  
+    poax1[u]        <-  sVpoax1[k]   
+    pobx001[u]      <-  sVpobx001[k] 
+    pobx01[u]       <-  sVpobx01[k]  
+    pobx1[u]        <-  sVpobx1[k]   
+    pocx001[u]      <-  sVpocx001[k] 
+    pocx01[u]       <-  sVpocx01[k]  
+    pocx1[u]        <-  sVpocx1[k]     
+  }
+
   ## gemessen direkt nach usr-input ok
   PF    <- getSubList(a$cmv, "fill")
   pfill <- getConstVal(NA, NA, PF)
@@ -61,26 +94,21 @@ ce3.newCalPfill <- function(ccc){
     ix1      <- which((pdriftfill < cdgax1border ) & (pdriftfill > cdgax01border))
 
     if(length(ix1) > 0){
-      
-      pdriftfill[ix1]       <- pdriftfill[ix1]   -  poax1
-      pfill[ix1]            <- pfill[ix1]        -  poax1  
-     
-      pfilloffset[ix1]      <- poax1
-
+      pdriftfill[ix1]       <- pdriftfill[ix1]   -  poax1[ix1]
+      pfill[ix1]            <- pfill[ix1]        -  poax1[ix1]  
+      pfilloffset[ix1]      <- poax1[ix1]
     }
-    if(length(ix01)>0){
-      pdriftfill[ix01]      <- pdriftfill[ix01] -  poax01
-      pfill[ix01]           <- pfill[ix01]      -  poax01
 
-      pfilloffset[ix01]     <- poax01
+    if(length(ix01)>0){
+      pdriftfill[ix01]      <- pdriftfill[ix01] -  poax01[ix01]
+      pfill[ix01]           <- pfill[ix01]      -  poax01[ix01]
+      pfilloffset[ix01]     <- poax01[ix01]
 
     }
     if(length(ix001)>0){
-      pdriftfill[ix001]     <- pdriftfill[ix001]-  poax001
-      pfill[ix001]          <- pfill[ix001]     -  poax001
-      
-      pfilloffset[ix001]    <- poax001
-      
+      pdriftfill[ix001]     <- pdriftfill[ix001]-  poax001[ix001]
+      pfill[ix001]          <- pfill[ix001]     -  poax001[ix001]
+      pfilloffset[ix001]    <- poax001[ix001]
     }
     ## Fehlerkorrekturen:
     ## cdga
@@ -114,18 +142,18 @@ ce3.newCalPfill <- function(ccc){
     ix1   <- which((pdriftfill < cdgbx1border)  & (pdriftfill > cdgbx01border))
     
     if(length(ix1)>0){
-      pdriftfill[ix1]     <- pdriftfill[ix1]   -  pobx1
-      pfill[ix1]          <- pfill[ix1]        -  pobx1
+      pdriftfill[ix1]     <- pdriftfill[ix1]   -  pobx1[ix1]
+      pfill[ix1]          <- pfill[ix1]        -  pobx1[ix1]
 
-      pfilloffset[ix1]    <- pobx1
+      pfilloffset[ix1]    <- pobx1[ix1]
    
     }
     
     if(length(ix01)>0){
-      pdriftfill[ix01]    <- pdriftfill[ix01]  -  pobx01
-      pfill[ix01]         <- pfill[ix01]       -  pobx01
+      pdriftfill[ix01]    <- pdriftfill[ix01]  -  pobx01[ix01]
+      pfill[ix01]         <- pfill[ix01]       -  pobx01[ix01]
       
-      pfilloffset[ix01]   <- pobx01
+      pfilloffset[ix01]   <- pobx01[ix01]
     }
     
   

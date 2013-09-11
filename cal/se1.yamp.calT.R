@@ -23,10 +23,10 @@ se1.yamp.calT <- function(ccc) {
     baseTNameBefore     <- "keithley_T_before_ch" 
     expansionBaseName   <- "Expansion_" ## 
 
-    ## T_after ---------------------------------v
+    ## T_room ---------------------------------v
     channelsRoom <- c("110")
     roomRes <- getTemperatureVec(a,N,channelsRoom,baseTNameRoom,baseCorrName) + C2K
-    ## T_after ---------------------------------^
+    ## T_room ---------------------------------^
 
     
     ## T_after ---------------------------------v

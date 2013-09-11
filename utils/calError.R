@@ -29,7 +29,7 @@ calError <- function(ccc){
     d     <- getConstVal(a$cmco1, "d")
     rho   <- getConstVal(a$cmco1,"rho" )
     sigma <- getConstVal(a$cmco1,"sigma" )
-    gas   <- a$cma$Gas$Gas
+    gas   <- a$cma$Gas
     
     dcr <- ind - ofs
     

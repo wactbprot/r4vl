@@ -27,17 +27,33 @@ The following R-packages are needed:
        RCurl   
        R4CouchDB
 
-Dont forget to
+
+### java needed for xlsx
+
+It turned out to be a good idea to
+
+        zypper in java-1.7.0-openjdk-devel
+
+and 
+
+        zypper in java-devel
+
+followed by
 
         R CMD javareconf
 
-before trying to install xlsx stuff. 
-Afterwards:
+Afterwards (at least here) I could  install the xlsx stuff. 
 
-       cd /usr/local/lib
-	   git clone http://wellknowngitblitserver:8080/gitblit/git/r4vl.git 
+### r4vl
+
+
+
+       cd /usr/local/lib 
+       git clone http://wellknowngitblitserver:8080/gitblit/git/r4vl.git 
 
 Thats it.
+
+## Task 
 
 The Tasks look like this:
 

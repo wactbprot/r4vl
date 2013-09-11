@@ -5,20 +5,18 @@ ce3.calQ <- function(ccc){
 
   Pam3molK2mbarlmolK <- getConstVal(a$cc, "Pam^3/mol/K_2_mbarl/mol/K")
   R                  <- getConstVal(a$cc,"R") * Pam3molK2mbarlmolK ## in Pa m^3/mol/K
-
-  ## Vorsicht: Cdv ist schon extrapoliert!
+  
   Cdv   <-  getConstVal(a$ca,"cfm3")
   pfill <-  getConstVal(a$ca,"fill")
   TFm   <-  getConstVal(a$ca,"Tfm3")
   TUhv  <-  getConstVal(a$ca,"Tuhv")
   TXhv  <-  getConstVal(a$ca,"Txhv")
-
+  
   ## für die Eingangsgrößen ist keine outIndex Behandlung mehr nötig,
   ## da alles aus Analysis kommt
   ## also schon über outIndex gelaufen ist
-
-  qmol <- Cdv * pfill /( R * (TFm))
-
+  qmol  <- Cdv * pfill /( R * (TFm))
+  
   ## qpVFd gab es bisher nicht ist aber vertretbar
   qpVFd <-  qmol* (TXhv+TUhv)/2 * R
 

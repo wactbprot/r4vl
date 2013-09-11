@@ -1,5 +1,5 @@
 se1.calPcal <- function(ccc){
-  msg <- "calculated by calPcal()"
+  msg <- "calculated by se1.calPcal()"
   a   <- abbrevList( ccc )
 
   PFILL   <- getSubList(a$cav$Pressure, "fill")

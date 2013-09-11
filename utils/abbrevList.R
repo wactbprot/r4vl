@@ -7,8 +7,6 @@ abbrevList <- function(ccc){
 
   a$c        <- ccc$Calibration
   a$cs       <- ccc$Calibration$Standard
-  a$csi      <- ccc$Calibration$Sign
-  a$cy       <- ccc$Calibration$Year
   a$ct       <- a$c$Type
   a$cp       <- a$c$Presettings
   a$cpt      <- a$cp$ToDo
@@ -32,7 +30,10 @@ abbrevList <- function(ccc){
     a$cmscg  <- a$cmsc$Gas
     a$cmscp  <- a$cmsc$calPort
   }
-
+### se1-spezifisch
+  if(a$cs =="SE1"){
+      a$cmag <- a$cma$Gas 
+  }
 
 ### VG Dkm Frs-spezifisch
   if(a$cs =="DKM|FRS5" | a$cs == "FRS5" | a$cs == "DKM"){
