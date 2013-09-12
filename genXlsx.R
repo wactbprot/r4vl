@@ -8,21 +8,23 @@ if(!test){
     noOfArgs            <- length(infList$args)
 }
 
-instPath            <- "/usr/local/lib/r4vl/"
+
 tmpPath             <- "/tmp/"
 
-setwd(instPath)
-
-source("load.R")
-
-cdb                     <- cdbIni()
 if(!test){
+    instPath            <- "/usr/local/lib/r4vl/"
+    setwd(instPath)
+    source("load.R")
+    cdb                 <- cdbIni()
     cdb$serverName      <- infList$args[noOfArgs - 2]
     cdb$DBName          <- infList$args[noOfArgs - 1]
     cdb$id              <- infList$args[noOfArgs]
 }else{
+    source("load.R")
+    cwd                 <- getwd()
+    cdb                 <- cdbIni()
     cdb$DBName          <- "vaclab_db" 
-    cdb$id              <- "910fd907311a80c24cee9ad18a07bf58"
+    cdb$id              <- "f481e565fd252673c6a6e7b6b8003f05"
 }
 
 doc                 <- cdbGetDoc(cdb)$res
@@ -37,33 +39,35 @@ dir.create(outPath,
 setwd(outPath)
 
 ## build new doc
-ndoc <- list()
-ndoc[["_id"]] <- cdb$id
-ndoc$Standard <- a$cs
-ndoc$Sign     <-a$csi
-ndoc$Type     <-a$ct
-ndoc$Year     <-a$cy
+ndoc           <- list()
+ndoc[["_id"]]  <- cdb$id
+ndoc$Standard  <- a$cs
+ndoc$Sign      <- a$csi
+ndoc$Type      <- a$ct
+ndoc$Year      <- a$cy
 
-outdb         <- cdbIni() 
-outdb$DBName  <- "vaclab_ext"
-outdb$id      <- cdb$id
+outdb          <- cdbIni() 
+outdb$DBName   <- "vaclab_ext"
+outdb$id       <- cdb$id
 outdb$dataList <- ndoc
+
 try(cdbUpdateDoc(outdb)$res, TRUE)
 
 ## -----------excel-land:
 
-xlsxName <- paste(reportName, ".xlsx", sep="")
+xlsxName <- paste(reportName, "xlsx", sep=".")
 
+valList  <- a$cav
 lnames   <- names(valList)
+
 for(sheetName in lnames){
 
     df <- makeDf(valList[[sheetName]])
-    write.xlsx()
+##    write.xlsx()
 }
-
-
 
 if(!test){
     outdb$fileName     <- xlsxName
     tmp                <- cdbAddAttachment(outdb)$res
 }
+setwd(cwd)
