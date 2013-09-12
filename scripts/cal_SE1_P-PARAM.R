@@ -6,8 +6,16 @@
 #' @keywords yamp
 #'
 
-targetpcal   <- as.numeric(infList$args[3])
-unit         <- infList$args[4]
+## '/usr/local/lib/r4vl/cal.R',
+##      'scripts/cal_SE1_P-PARAM.R',
+##      '0.000002',
+##      'mbar',
+##      'localhost',
+##      'vaclab_db',
+##      'e313d0a66ef1b6d24dd0d3753d030946' ],
+
+targetpcal   <- as.numeric(infList$args[2])
+unit         <- infList$args[3]
 
 
 if(length(doc$Calibration) > 0 &
