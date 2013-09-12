@@ -10,10 +10,11 @@ infList             <- list()
 infList$args        <- commandArgs(TRUE) 
 ## load map env 
 noOfArgs            <- length(infList$args)
-infList$srcPath     <- infList$args[1]
-infList$callScript  <- infList$args[2]
+setwd("/usr/local/lib/r4vl")
 
-setwd(infList$srcPath)
+infList$callScript  <- infList$args[1]
+
+source("load.R")
 
 source("load.R")
 
