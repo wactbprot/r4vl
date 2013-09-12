@@ -52,17 +52,17 @@ calSigma <- function( ccc ){
     if(a$cs == "CE3"){
       T <- getConstVal(a$cav, "Tuhv")
     }
-    if(  a$cmscg == "Ar"){
+    if(  a$cmag == "Ar"){
       M <- getConstVal(a$cc, "molWeight_Ar" )
-      msg <- paste(msg, "; gas:", a$cmscg)
+      msg <- paste(msg, "; gas:", a$cmag)
     }
-    if(  a$cmscg == "N2"){
+    if(  a$cmag == "N2"){
       M <- getConstVal(a$cc, "molWeight_N2" )
-      msg <- paste(msg, "; gas:", a$cmscg)
+      msg <- paste(msg, "; gas:", a$cmag)
     }
-    if(  a$cmscg == "D2"){
+    if(  a$cmag == "D2"){
       M <- getConstVal(a$cc, "molWeight_D2" )
-      msg <- paste(msg, "; gas:", a$cmscg)
+      msg <- paste(msg, "; gas:", a$cmag)
     }
 
     IndUnit <- CAL$Unit
