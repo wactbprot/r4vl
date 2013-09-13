@@ -1,13 +1,15 @@
 ## --
-## wactbprot/2013-09-05
+## wactbprot/2013-09-13
 ## --
-test       <- TRUE
-tmpPath    <- "/tmp/"
+
+test <- TRUE
 if(!test){
     infList             <- list()
     infList$args        <- commandArgs(TRUE) 
     noOfArgs            <- length(infList$args)
 }
+
+tmpPath                 <- "/tmp/"
 
 if(!test){
     instPath            <- "/usr/local/lib/r4vl/"
@@ -27,39 +29,25 @@ if(!test){
 
 doc                 <- cdbGetDoc(cdb)$res
 a                   <- abbrevList(doc)
+
 reportName          <- paste(a$cy,a$ct,a$cs,a$csi, sep="-")
 outPath             <- paste(tmpPath, reportName,"/", sep="")
-
+dir.create(outPath,
+           showWarnings = FALSE,
+           mode = "0777")
 setwd(outPath)
-## -----------excel-land:
-for(structName in c("Measurement","Analysis")){
-    xlsxName <- paste(reportName, structName, "xlsx", sep=".")
-    
-    valList  <- a$c[[structName]]$Values
-    
-    lnames   <- names(valList)
-    for(sheetName in lnames){
-        
-        df <- makeDf(valList[[sheetName]])
 
-        if(file.exists(xlsxName)){
-            af = TRUE
-        }else{
-            af = FALSE
-        }
-        write.xlsx(df,
-                   xlsxName,
-                   sheetName=sheetName,
-                   append=af)
-    }
-    if(!test){
-        outdb$fileName     <- xlsxName
-        tmp                <- cdbAddAttachment(outdb)$res
-    }
-}
-##
-if(!test){
-    
-}else{
-    setwd(cwd)
-}
+## build new doc
+ndoc           <- list()
+ndoc[["_id"]]  <- cdb$id
+ndoc$Standard  <- a$cs
+ndoc$Sign      <- a$csi
+ndoc$Type      <- a$ct
+ndoc$Year      <- a$cy
+
+outdb          <- cdbIni() 
+outdb$DBName   <- "vaclab_ext"
+outdb$id       <- cdb$id
+outdb$dataList <- ndoc
+
+cat(cdbAddDoc(outdb)$res)

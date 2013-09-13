@@ -8,6 +8,8 @@ abbrevList <- function(ccc){
   a$c        <- ccc$Calibration
   a$cs       <- ccc$Calibration$Standard
   a$ct       <- a$c$Type
+  a$cy       <- a$c$Year
+  a$csi      <- a$c$Sign
   a$cp       <- a$c$Presettings
   a$cpt      <- a$cp$ToDo
   a$cc       <- a$c$Constants
