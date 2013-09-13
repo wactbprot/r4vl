@@ -1,7 +1,7 @@
 ## --
 ## wactbprot/2013-09-05
 ## --
-test       <- TRUE
+test       <- FALSE
 tmpPath    <- "/tmp/"
 if(!test){
     infList             <- list()
