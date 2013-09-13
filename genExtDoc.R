@@ -2,7 +2,8 @@
 ## wactbprot/2013-09-13
 ## --
 
-test <- TRUE
+test <- FALSE
+extdb <- "vaclab_ext"
 if(!test){
     infList             <- list()
     infList$args        <- commandArgs(TRUE) 
@@ -35,6 +36,7 @@ outPath             <- paste(tmpPath, reportName,"/", sep="")
 dir.create(outPath,
            showWarnings = FALSE,
            mode = "0777")
+
 setwd(outPath)
 
 ## build new doc
@@ -46,8 +48,8 @@ ndoc$Type      <- a$ct
 ndoc$Year      <- a$cy
 
 outdb          <- cdbIni() 
-outdb$DBName   <- "vaclab_ext"
+outdb$DBName   <- extdb
 outdb$id       <- cdb$id
 outdb$dataList <- ndoc
 
-cat(cdbAddDoc(outdb)$res)
+cat(toJSON(cdbUpdateDoc(outdb)$res))

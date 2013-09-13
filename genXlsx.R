@@ -3,6 +3,8 @@
 ## --
 test       <- FALSE
 tmpPath    <- "/tmp/"
+extdb      <- "vaclab_ext"
+
 if(!test){
     infList             <- list()
     infList$args        <- commandArgs(TRUE) 
@@ -17,6 +19,11 @@ if(!test){
     cdb$serverName      <- infList$args[noOfArgs - 2]
     cdb$DBName          <- infList$args[noOfArgs - 1]
     cdb$id              <- infList$args[noOfArgs]
+
+    outdb          <- cdbIni() 
+    outdb$DBName   <- extdb
+    outdb$id       <- cdb$id
+    
 }else{
     source("load.R")
     cwd                 <- getwd()
@@ -34,7 +41,10 @@ setwd(outPath)
 ## -----------excel-land:
 for(structName in c("Measurement","Analysis")){
     xlsxName <- paste(reportName, structName, "xlsx", sep=".")
-    
+    if(file.exists(xlsxName)){
+        ## immer neu
+        file.remove(xlsxName)
+    }
     valList  <- a$c[[structName]]$Values
     
     lnames   <- names(valList)

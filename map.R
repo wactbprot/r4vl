@@ -7,7 +7,7 @@
 #' @keywords yamp
 #'
 
+setwd("/usr/local/lib/r4vl")
 source("cal.R")
-
 cdb$dataList    <- doc
 cat(toJSON(cdbUpdateDoc(cdb)$res))
