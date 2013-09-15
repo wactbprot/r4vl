@@ -2,7 +2,7 @@
 ## wactbprot/2013-09-13
 ## --
 
-test <- FALSE
+test  <- TRUE
 extdb <- "vaclab_ext"
 if(!test){
     infList             <- list()
