@@ -34,51 +34,51 @@ if(!test){
     cdb$id          <- "f481e565fd252673c6a6e7b6b8003f05"
 }
 
-doc                 <- cdbGetDoc(cdb)$res
-a                   <- abbrevList(doc)
-reportName          <- paste(a$cy,a$ct,a$cs,a$csi, sep="-")
-outPath             <- paste(tmpPath, reportName,"/", sep="")
+ doc                 <- cdbGetDoc(cdb)$res
+ a                   <- abbrevList(doc)
+ reportName          <- paste(a$cy,a$ct,a$cs,a$csi, sep="-")
+ outPath             <- paste(tmpPath, reportName,"/", sep="")
+ 
+ dir.create(outPath,
+            showWarnings = FALSE,
+            mode = "0777")
+ 
+ dir.create(paste(outPath,
+                  figurePath , sep=""),
+            showWarnings = FALSE,
+            mode = "0777")
+ 
+  ## ---- generate report
+  setwd(outPath)
+  opts_knit$set(progress = FALSE, verbose = FALSE)
+  opts_chunk$set(fig.width=8, fig.height=6, fig.path=figurePath)
+  options( digits = 8)
+  
+ if(a$cs == "CE3"){
+     tmp <- knit(paste(instPath,"/",templatePath, "ce3.report.Rhtml", sep=""),
+          paste(reportName, ".html", sep=""))
+ }
+ if(a$cs == "SE1"){
+     tmp <- knit(paste(instPath,"/",templatePath, "se1.report.Rhtml", sep=""),
+          paste(reportName, ".html", sep=""))
+ }
 
-dir.create(outPath,
-           showWarnings = FALSE,
-           mode = "0777")
-
-dir.create(paste(outPath,
-                 figurePath , sep=""),
-           showWarnings = FALSE,
-           mode = "0777")
-
-## ---- generate report
-setwd(outPath)
-opts_knit$set(progress = FALSE, verbose = FALSE)
-opts_chunk$set(fig.width=8, fig.height=6, fig.path=figurePath)
-options( digits = 8)
-
-if(a$cs == "CE3"){
-    knit(paste(instPath,"/",templatePath, "ce3.report.Rhtml", sep=""),
-         paste(reportName, ".html", sep=""))
-}
-if(a$cs == "SE1"){
-    knit(paste(instPath,"/",templatePath, "se1.report.Rhtml", sep=""),
-         paste(reportName, ".html", sep=""))
-}
-
-## ---- upload report and figures
-outdb          <- cdbIni()
-outdb$DBName   <- extdb
-outdb$id       <- cdb$id
-
-figures        <- list.files(figurePath, pattern="png$")
-for( fig in figures){
-    outdb$fileName <-  paste(figurePath, fig, sep="")
-    resFigures     <- cdbAddAttachment(outdb)$res
-}
-outdb$fileName     <-  paste(reportName, ".html", sep="")
-resHtml            <- cdbAddAttachment(outdb)$res
-
-if(test){
-    setwd(cwd)
-}
-
-cat(toJSON(list(resExt = resFigures$ok,
-                resHtml = resHtml$ok)))
+ ## ---- upload report and figures
+ outdb          <- cdbIni()
+ outdb$DBName   <- extdb
+ outdb$id       <- cdb$id
+ 
+ figures        <- list.files(figurePath, pattern="png$")
+ for( fig in figures){
+     outdb$fileName <-  paste(figurePath, fig, sep="")
+     resFigures     <- cdbAddAttachment(outdb)$res
+ }
+ outdb$fileName     <-  paste(reportName, ".html", sep="")
+ resHtml            <- cdbAddAttachment(outdb)$res
+ 
+ if(test){
+     setwd(cwd)
+ }
+ 
+ cat(toJSON(list(resFigures = resFigures$ok,
+                 resHtml = resHtml$ok)))
