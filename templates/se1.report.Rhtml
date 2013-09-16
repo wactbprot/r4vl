@@ -51,6 +51,9 @@
       <sup><a href="#top">^</a></sup></h2>
     <!--begin.rcode
         withU    <- FALSE
+	upperLimit <- 24.0 +273.15
+	lowerLimit <- 22.0 +273.15
+	soll       <- 23.0 +273.15
         Tbefore  <- getConstVal(a$cav$Temperature, "before")
 	Tafter   <- getConstVal(a$cav$Temperature, "after")
 	Troom    <- getConstVal(a$cav$Temperature, "room")
@@ -60,18 +63,38 @@
     <h3 id="tempBefore">T<sub>before</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode
-	qplot(1:N, 
+	plot(1:N, 
 	Tbefore, 
 	xlab = "Messpkt.", 
 	ylab = "T before in K")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
 	end.rcode-->
     <h3 id="tempAfter">T<sub>after</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode
-	qplot(1:N, 
+	plot(1:N, 
 	Tafter, 
 	xlab = "Messpkt.", 
 	ylab = "T after in K")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
+    <h3 id="tempRoom">T<sub>Room</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+	plot(1:N, 
+	Troom, 
+	xlab = "Messpkt.", 
+	ylab = "T room in K")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
 	end.rcode-->
 
   </body>
