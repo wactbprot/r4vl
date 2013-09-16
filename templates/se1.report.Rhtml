@@ -90,7 +90,8 @@
 	plot(1:N, 
 	Troom, 
 	xlab = "Messpkt.", 
-	ylab = "T room in K")
+	ylab = "T room in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5))
 	grid()
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
