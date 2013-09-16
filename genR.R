@@ -74,7 +74,7 @@ for( fig in figures){
     resFigures     <- cdbAddAttachment(outdb)$res
 }
 outdb$fileName     <-  paste(reportName, ".html", sep="")
-resHtml                <- cdbAddAttachment(outdb)$res
+resHtml            <- cdbAddAttachment(outdb)$res
 
 if(test){
     setwd(cwd)
