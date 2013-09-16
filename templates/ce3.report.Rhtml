@@ -37,7 +37,10 @@
     <hr>
 
     <ul>
-       <li><a href="#cond">Conductance</a></li>
+      <li><a href="#cond">Conductance</a></li>
+      <ul>
+        <li><a href="#condCnom">C<sub>nom</sub></a></li>
+      </ul>
       <li><a href="#temp">Temperatures</a></li>
       <li><a href="#pres">Pressures</a></li>
     </ul>
@@ -47,17 +50,45 @@
     <h2 id="cond">Conductance
       <sup><a href="#top">^</a></sup></h2>
     <!--begin.rcode
-        source("../chunks/ce3.conductance.R")
-        reportName
-        N
+        withU     <- FALSE
+        cnom           <- getConstVal(a$cav$Conductance, "cnom")
+	sdcnom         <- getConstVal(a$cav$Conductance, "sd_cnom")
+        cfm3           <- getConstVal(a$cav$Conductance, "cfm3")
+        diffhist       <- getConstVal(a$cav$Conductance, "diff_hist")
+
+        iout <- which((abs(diffhist) > 0.5) | cnom < 1e-8 | is.na(cfm3))
+        skipVals <- length(iout) > 0
+
+        if(length( a$cav$Uncertainty) > 0){
+        withU     <- TRUE
+        uDV       <- getConstVal(a$cav$Uncertainty, "uncertDeltaV")
+        uDVDt     <- getConstVal(a$cav$Uncertainty, "uncertDeltaVDeltat")
+        uDt       <- getConstVal(a$cav$Uncertainty, "uncertDeltat")
+        }
+
+        if(skipVals){
+        iout
+        cnom      <-  cnom[-iout]
+        sdcnom    <-  sdcnom[-iout]
+        cfm3      <-  cfm3[-iout]
+        diffhist  <-  diffhist[-iout]
+        if(withU){
+        uDV      <-   uDV[-iout]
+        uDVDt    <-   uDVDt[-iout]
+        uDt      <-   uDt[-iout]
+        }
+        }
+	N <- length(cnom)
         end.rcode-->
-    <h3 id="condTab">Conductance Table
+    <h3 id="condCnom">C<sub>nom</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode
-
-        format(df.conductance, scientific=TRUE, digits=5)
-
-        end.rcode-->
+	qplot(1:N, 
+	cnom, 
+	log  = "xy", 
+	xlab = "Messpkt.", 
+	ylab = paste("C in", getSubList(a$cav$Conductance, "cnom")$Unit))
+	end.rcode-->
 
     <h3 id="condSum">Conductance Summary
       <sup><a href="#top">^</a></sup></h3>
