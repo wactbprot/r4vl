@@ -64,12 +64,13 @@ for(structName in c("Measurement","Analysis")){
     }
     if(!test){
         outdb$fileName     <- xlsxName
-        tmp                <- cdbAddAttachment(outdb)$res
+        resXlsx            <- cdbAddAttachment(outdb)$res
     }
 }
 ##
-if(!test){
-    
-}else{
+if(test){
     setwd(cwd)
 }
+
+cat(toJSON(list( resXlsx= resXlsx$ok)))
+

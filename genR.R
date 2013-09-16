@@ -71,11 +71,14 @@ outdb$id       <- cdb$id
 figures        <- list.files(figurePath, pattern="png$")
 for( fig in figures){
     outdb$fileName <-  paste(figurePath, fig, sep="")
-    tmp            <- cdbAddAttachment(outdb)$res
+    resFigures     <- cdbAddAttachment(outdb)$res
 }
 outdb$fileName     <-  paste(reportName, ".html", sep="")
-tmp                <- cdbAddAttachment(outdb)$res
+resHtml                <- cdbAddAttachment(outdb)$res
 
 if(test){
     setwd(cwd)
 }
+
+cat(toJSON(list(resExt = resFigures$ok,
+                resHtml = resHtml$ok)))

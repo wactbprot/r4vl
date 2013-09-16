@@ -53,4 +53,6 @@ outdb$DBName   <- extdb
 outdb$id       <- cdb$id
 outdb$dataList <- ndoc
 
-cat(toJSON(cdbUpdateDoc(outdb)$res))
+resExt <- cdbUpdateDoc(outdb)$res
+cat(toJSON(list(resExt = resExt$ok)))
+    
