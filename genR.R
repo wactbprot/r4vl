@@ -50,6 +50,7 @@ dir.create(paste(outPath,
 
 ## ---- generate report
 setwd(outPath)
+opts_knit$set(progress = FALSE, verbose = FALSE)
 opts_chunk$set(fig.width=8, fig.height=6, fig.path=figurePath)
 options( digits = 8)
 
