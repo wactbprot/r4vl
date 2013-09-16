@@ -2,7 +2,7 @@
 ## wactbprot/2013-09-05
 ## --
 
-test                <- TRUE
+test                <- FALSE
 tmpPath             <- "/tmp/"
 extdb               <- "vaclab_ext"
 templatePath        <- "templates/"
