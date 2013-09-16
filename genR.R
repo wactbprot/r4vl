@@ -57,6 +57,10 @@ if(a$cs == "CE3"){
     knit(paste(instPath,"/",templatePath, "ce3.report.Rhtml", sep=""),
          paste(reportName, ".html", sep=""))
 }
+if(a$cs == "SE1"){
+    knit(paste(instPath,"/",templatePath, "se1.report.Rhtml", sep=""),
+         paste(reportName, ".html", sep=""))
+}
 
 ## ---- upload report and figures
 outdb          <- cdbIni()
@@ -71,4 +75,6 @@ for( fig in figures){
 outdb$fileName     <-  paste(reportName, ".html", sep="")
 tmp                <- cdbAddAttachment(outdb)$res
 
-setwd(cwd)
+if(test){
+    setwd(cwd)
+}

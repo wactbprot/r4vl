@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SE1 Report</title>
+    <style>
+      * {
+      font-family: ‘Lucida Console’, Monaco, monospace;
+      background-color:#F6F6F6;
+      }
+      body {
+      max-width: 950px;
+      margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+
+    <hr>
+    <h1 id="top">SE1 Calibration Report</h1>
+
+    <hr>
+
+    <h2 id="header">Calibration Header</h2>
+    <ul>
+      <li>id: <!--rinline doc[["_id"]] --></li>
+      <li>Standard: <!--rinline a$cs --></li>
+      <li>Sign: <!--rinline a$csi --></li>
+      <li>Type: <!--rinline a$ct --></li>
+      <li>Year: <!--rinline a$cy --></li>
+    </ul>
+    <ul>
+      <li>Name: <!--rinline  a$cmco1$Name  --></li>
+      <li>Type: <!--rinline  a$cmco1$Type  --></li>
+      <li>Sign: <!--rinline  a$cmco1$Sign --></li>
+    </ul>
+
+    <hr>
+
+    <ul>
+      <li><a href="#temp">Temperaturen</a></li>
+      <ul>
+        <li><a href="#tempBefore">T<sub>before</sub></a></li>
+        <li><a href="#tempAfter">T<sub>after</sub></a></li>
+        <li><a href="#tempRoom">T<sub>room</sub></a></li>
+      </ul>
+    </ul>
+
+    <hr>
+
+    <h2 id="temp">Temperaturen
+      <sup><a href="#top">^</a></sup></h2>
+    <!--begin.rcode
+        withU    <- FALSE
+        Tbefore  <- getConstVal(a$cav$Temperature, "before")
+	Tafter   <- getConstVal(a$cav$Temperature, "after")
+	Troom    <- getConstVal(a$cav$Temperature, "room")
+
+	N <- length(Tbefore)
+        end.rcode-->
+    <h3 id="tempBefore">T<sub>before</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+	qplot(1:N, 
+	Tbefore, 
+	xlab = "Messpkt.", 
+	ylab = "T before in K")
+	end.rcode-->
+    <h3 id="tempAfter">T<sub>after</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode
+	qplot(1:N, 
+	Tafter, 
+	xlab = "Messpkt.", 
+	ylab = "T after in K")
+	end.rcode-->
+
+  </body>
+</html>

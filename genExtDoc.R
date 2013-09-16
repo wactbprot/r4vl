@@ -2,7 +2,7 @@
 ## wactbprot/2013-09-13
 ## --
 
-test  <- FALSE
+test  <- TRUE
 extdb <- "vaclab_ext"
 if(!test){
     infList             <- list()
@@ -25,7 +25,8 @@ if(!test){
     cwd                 <- getwd()
     cdb                 <- cdbIni()
     cdb$DBName          <- "vaclab_db" 
-    cdb$id              <- "f481e565fd252673c6a6e7b6b8003f05"
+#    cdb$id              <- "f481e565fd252673c6a6e7b6b8003f05" #CE3
+    cdb$id              <- "4a279906e8f7855fea31e7a18c044774" #SE1
 }
 
 doc                 <- cdbGetDoc(cdb)$res
