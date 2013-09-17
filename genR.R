@@ -63,6 +63,7 @@ if(!test){
           paste(reportName, ".html", sep=""))
  }
 
+
  ## ---- upload report and figures
  outdb          <- cdbIni()
  outdb$DBName   <- extdb
