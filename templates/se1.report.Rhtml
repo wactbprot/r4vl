@@ -125,7 +125,16 @@
 	pfill, 
 	xlab = "Messpkt.", 
 	ylab = paste("p fill in", pfillUnit),
-	log="xy")
+	log="y")
+	grid()
+	end.rcode-->
+    
+    <!--begin.rcode
+	plot(1:N, 
+	pfilloffset/pfill*100, 
+	xlab = "Messpkt.", 
+	ylab = "p fill offset/ p fill in %",
+	log="y")
 	grid()
 	end.rcode-->
   </body>
