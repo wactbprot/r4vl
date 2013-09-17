@@ -72,7 +72,7 @@
         end.rcode-->
     <h3 id="tempBefore">T<sub>before</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
+    <!--begin.rcode Temperature_before
 	plot(1:N, 
 	Tbefore, 
 	xlab = "Messpkt.", 
@@ -86,7 +86,7 @@
 	end.rcode-->
     <h3 id="tempAfter">T<sub>after</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
+    <!--begin.rcode Temperature_after
 	plot(1:N, 
 	Tafter, 
 	xlab = "Messpkt.", 
@@ -100,7 +100,7 @@
 	end.rcode-->
     <h3 id="tempRoom">T<sub>Room</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
+    <!--begin.rcode Temperature_room
 	plot(1:N, 
 	Troom, 
 	xlab = "Messpkt.", 
@@ -131,7 +131,7 @@
         end.rcode-->
     <h3 id="presFill">p<sub>fill</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
+    <!--begin.rcode Pressure_fill
 	plot(1:N, 
 	pfill, 
 	xlab = "Messpkt.", 
@@ -143,7 +143,7 @@
 
  <h3 id="presFillOffset">p<sub>fill offset</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
+    <!--begin.rcode Pressure_fill_offset
 	plot(1:N, 
 	pfilloffset, 
 	xlab = "Messpkt.", 
@@ -154,7 +154,7 @@
 
   <h3 id="presFillOffset/presFill">p<sub>fill offset</sub>/p<sub>fill</sub>
       <sup><a href="#top">^</a></sup></h3>    
-    <!--begin.rcode
+    <!--begin.rcode Pressure_offset-to_fill
     plot(1:N, 
     pfilloffset/pfill*100, 
     xlab = "Messpkt.", 
@@ -165,7 +165,7 @@
     end.rcode-->
     <h3 id="presCdg">CDG comparison
       <sup><a href="#top">^</a></sup></h3>    
-    <!--begin.rcode
+    <!--begin.rcode Pressure_cdg_comp
     plot(1:N, 
     (pfill10/pfill100 -1)*100, 
     xlab = "Messpkt.", 
@@ -189,7 +189,7 @@
     end.rcode-->
     <h3 id="presOutg">Outgasing
       <sup><a href="#top">^</a></sup></h3>    
-    <!--begin.rcode
+    <!--begin.rcode Pressure_outgassing
     OUTG  <- getSubList(a$cma, "outgas")
     
     if(is.list(OUTG) & OUTG$Unit == "mbar/s"){

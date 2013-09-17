@@ -44,6 +44,16 @@ for(structName in c("Measurement","Analysis")){
     if(file.exists(xlsxName)){
         ## immer neu
         file.remove(xlsxName)
+        headDf <- data.frame(id   = doc[["_id"]],
+                             rev  = doc[["_rev"]],
+                             sign = a$csi,
+                             type = a$ct,
+                             year = a$cy,
+                             futonUrl = paste("http://a73434.berlin.ptb.de:5984/_utils/document.html?vaclab_db/",doc[["_id"]],sep="")) 
+
+        write.xlsx(t(headDf),
+                   xlsxName,
+                   sheetName="Header")
     }
     valList  <- a$c[[structName]]$Values
     
@@ -57,6 +67,7 @@ for(structName in c("Measurement","Analysis")){
         }else{
             af = FALSE
         }
+        
         write.xlsx(df,
                    xlsxName,
                    sheetName=sheetName,
