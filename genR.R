@@ -80,5 +80,5 @@ if(test){
     setwd(cwd)
 }
 
-cat(toJSON(list(resExt = resFigures$ok,
+cat(toJSON(list(resFigures = resFigures$ok,
                 resHtml = resHtml$ok)))
