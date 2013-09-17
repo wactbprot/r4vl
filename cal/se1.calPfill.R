@@ -135,6 +135,32 @@ se1.calPfill <- function(ccc){
                    pUnit,
                    offset,
                    paste(msg, "offset nur zu Kontrollzwecken; ist bei pfill schon subtrahiert"))
+
+        
+        ccc$Calibration$Analysis$Values$Pressure <-
+            setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                   "fill_1000",
+                   pUnit,
+                   pfill.1000.mbar,
+                   paste(msg, "Übereinstimmung der CDGs"))
+
+        
+        ccc$Calibration$Analysis$Values$Pressure <-
+            setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                   "fill_100",
+                   pUnit,
+                   pfill.100.mbar,
+                   paste(msg, "Übereinstimmung der CDGs"))
+
+        
+        ccc$Calibration$Analysis$Values$Pressure <-
+            setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                   "fill_10",
+                   pUnit,
+                   pfill.10.mbar,
+                   paste(msg, "Übereinstimmung der CDGs"))
+
+
         
     }
     
