@@ -51,7 +51,7 @@ if(!test){
   ## ---- generate report
   setwd(outPath)
   opts_knit$set(progress = FALSE, verbose = FALSE)
-  opts_chunk$set(fig.width=8, fig.height=6, fig.path=figurePath)
+  opts_chunk$set(fig.width=10, fig.height=8, fig.path=figurePath)
   options( digits = 8)
   
  if(a$cs == "CE3"){

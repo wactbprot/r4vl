@@ -46,6 +46,11 @@
       <li><a href="#pres">Pressure</a></li>
       <ul>
         <li><a href="#presFill">p<sub>fill</sub></a></li>
+        <li><a href="#presFillOffset">p<sub>fill offset</sub></a></li>
+        <li><a href="#presFillOffset/presFill">p<sub>fill
+        offset</sub>/p<sub>fill</sub></a></li>
+        <li><a href="#presCdg">CDG comparison</a></li>
+	<li><a href="#outg">Outgasing</a></li>
       </ul>
   
    </ul>
@@ -72,7 +77,8 @@
 	Tbefore, 
 	xlab = "Messpkt.", 
 	ylab = "T before in K",
-	ylim=c(lowerLimit -0.5, upperLimit +0.5))
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+    type="b")
 	grid()
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -85,7 +91,8 @@
 	Tafter, 
 	xlab = "Messpkt.", 
 	ylab = "T after in K",
-	ylim=c(lowerLimit -0.5, upperLimit +0.5))
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+    type="b")
 	grid()
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -98,7 +105,8 @@
 	Troom, 
 	xlab = "Messpkt.", 
 	ylab = "T room in K",
-	ylim=c(lowerLimit -0.5, upperLimit +0.5))
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+    type="b")
 	grid()
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -108,34 +116,98 @@
     <h2 id="pres">Pressure
       <sup><a href="#top">^</a></sup></h2>
     <!--begin.rcode
-	 pfill        <- getConstVal(a$cav$Pressure, "fill")
-	 pfilloffset  <- getConstVal(a$cav$Pressure, "fill_offset")
-	 pcal         <- getConstVal(a$cav$Pressure, "cal")
-	 pind         <- getConstVal(a$cav$Pressure, "ind")
-	 pindoffset   <- getConstVal(a$cav$Pressure, "ind_offset")
-	 pindcorr     <- getConstVal(a$cav$Pressure, "ind_corr")
-
-	 pfillUnit   <- getSubList(a$cav$Pressure, "fill")$Unit
-	 
+	pfill        <- getConstVal(a$cav$Pressure, "fill")
+	pfill10      <- getConstVal(a$cav$Pressure, "fill_10")
+	pfill100     <- getConstVal(a$cav$Pressure, "fill_100")
+	pfill1000    <- getConstVal(a$cav$Pressure, "fill_1000")
+	pfilloffset  <- getConstVal(a$cav$Pressure, "fill_offset")
+	pcal         <- getConstVal(a$cav$Pressure, "cal")
+	pind         <- getConstVal(a$cav$Pressure, "ind")
+	pindoffset   <- getConstVal(a$cav$Pressure, "ind_offset")
+	pindcorr     <- getConstVal(a$cav$Pressure, "ind_corr")
+	
+	pfillUnit   <- getSubList(a$cav$Pressure, "fill")$Unit
+	
         end.rcode-->
-  <h3 id="presFill">p<sub>fill</sub>
+    <h3 id="presFill">p<sub>fill</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode
 	plot(1:N, 
 	pfill, 
 	xlab = "Messpkt.", 
 	ylab = paste("p fill in", pfillUnit),
-	log="y")
+	log="y",
+    type="b")
 	grid()
 	end.rcode-->
-    
+
+ <h3 id="presFillOffset">p<sub>fill offset</sub>
+      <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode
 	plot(1:N, 
-	pfilloffset/pfill*100, 
+	pfilloffset, 
 	xlab = "Messpkt.", 
-	ylab = "p fill offset/ p fill in %",
-	log="y")
+	ylab = paste("p fill offset in", pfillUnit),
+    type="b")
 	grid()
 	end.rcode-->
+
+  <h3 id="presFillOffset/presFill">p<sub>fill offset</sub>/p<sub>fill</sub>
+      <sup><a href="#top">^</a></sup></h3>    
+    <!--begin.rcode
+    plot(1:N, 
+    pfilloffset/pfill*100, 
+    xlab = "Messpkt.", 
+    ylab = "p fill offset/ p fill in %",
+    log="y",
+    type="b")
+    grid()
+    end.rcode-->
+    <h3 id="presCdg">CDG comparison
+      <sup><a href="#top">^</a></sup></h3>    
+    <!--begin.rcode
+    plot(1:N, 
+    (pfill10/pfill100 -1)*100, 
+    xlab = "Messpkt.", 
+    ylab = "(cdg low/cdg high -1) * 100 in %",
+    ylim = c(-1, 1),
+    col ="black",
+    type="b")
+    
+    text(1:N, 
+    (pfill10/pfill100 -1)*100, pfill)
+    
+    points(1:N,
+    (pfill100/pfill1000 -1)*100,
+    col ="red",
+    type="b")
+    
+    text(1:N, 
+    (pfill100/pfill1000 -1)*100, pfill)
+
+    grid()
+    end.rcode-->
+    <h3 id="presOutg">Outgasing
+      <sup><a href="#top">^</a></sup></h3>    
+    <!--begin.rcode
+    OUTG  <- getSubList(a$cma, "outgas")
+    
+    if(is.list(OUTG) & OUTG$Unit == "mbar/s"){
+    outg  <-  getConstVal(NA,NA,OUTG)
+    nOutg <- length(outg)
+  
+    tStartMs <- getConstVal(a$cmv, "amt_before") # in ms
+    tEndMs <- getConstVal(a$cmv, "amt_after") # in ms
+    dtS <- (tEndMs - tStartMs)/1000 # in s 
+    prise <- outg[nOutg] * dtS # nur letzter outg-Wert wird benutzt
+    plot(1:N,
+	 prise/pcal*100,
+         xlab = "Messpkt.", 
+	 ylab = "p outgas/ p cal in %",
+         type = "b")
+   text(1:N, prise/pcal*100, signif(prise,3))
+    }
+   end.rcode-->
+
   </body>
 </html>
