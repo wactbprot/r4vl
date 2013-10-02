@@ -280,9 +280,10 @@ ce3.newCalPfill <- function(ccc){
                            "mbar",
                            pfillSRG,
                            msg)
-                
-            }## Unit dcr
-        } ## a$cmscok == "opK4"
-
-        return(ccc)
-    }
+            }## Unit dcr           
+        }
+    } ## a$cmscok == "opK4"
+    
+    return(ccc)
+}
+    
