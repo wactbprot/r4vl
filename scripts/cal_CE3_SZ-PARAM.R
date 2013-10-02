@@ -7,14 +7,15 @@
 #' @keywords yamp
 #'
 
-pcal   <- as.numeric(infList$args[3])
-
+pcal    <- as.numeric(infList$args[2])
 a       <-  abbrevList(doc)
+
 
 ## andere Gase kommen noch
 if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
-  gas <- a$cmscg
-  cf  <- list()
+    
+  gas   <- a$cmscg
+  cf    <- list()
 
   if(pcal < 9e-7){
       lw <- "lw0"
@@ -22,7 +23,11 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
       lw <- "lw1"
   }
 
-  Cp <- getConstVal(a$cms,"nomC1") * 100 # f. l/s
+  NOMC1 <- getSubList(a$cms,"nomC1")
+  
+  conv <- getConvFactor(doc, "l/s" , NOMC1$Unit)
+                             #^^to , ^^from
+  Cp <- getConstVal(NA, NA, NOMC1) * conv # f. l/s
 
   
   if(lw == "lw0" ){ ## kl.LW
@@ -50,20 +55,18 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
   }
 
   pcal.pred <- fn.2162(cf,pfill)/Cp * pfill
-  
-  while(abs(pcal.pred/pcal - 1) > 1e-3){
+  for(i in 1:10){
 
       e         <- pcal.pred/pcal - 1
-      pfill     <- pfill * (1+e)
+      pfill     <- pfill * (1 - e)
       pcal.pred <- fn.2162(cf,pfill)/Cp * pfill
-      print(e)
-      print(pfill)
+
   }
 
   
   T       <-  V/fn.2162(cf,pfill) * E - noMp * tc ## gesamtmesszeit pro SZ
   tm      <- (T/noMp) * 1000
-
-  cat(toJSON(list("sz_time"=tm, "mp_repeat"= noMp, lwx=lw, "target_p_fill" = pfill)))
+  
+  cat(toJSON(list("target_p_fill" = pfill, "lwx" = lw,"sz_time"=tm, "mp_repeat"= noMp  )))
 
 }
