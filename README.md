@@ -1,4 +1,4 @@
-<pre>
+```
       __ __             ___      
      /\ \\ \           /\_ \     
  _ __\ \ \\ \    __  __\//\ \    
@@ -7,7 +7,7 @@
  \ \_\  \/_/\_\_/\ \___/  /\____\
   \/_/     \/_/   \/__/   \/____/
                                  
-</pre>
+```
 
 ## Collection of R-scripts and functions for vaclab
 
@@ -45,8 +45,6 @@ followed by
 Afterwards (at least here) I could  install the xlsx stuff. 
 
 ### r4vl
-
-
 
        cd /usr/local/lib 
        git clone http://wellknowngitblitserver:8080/gitblit/git/r4vl.git 
