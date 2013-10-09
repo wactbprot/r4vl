@@ -7,18 +7,22 @@
 #'
 
 pcal    <- as.numeric(infList$args[2])
-a       <-  abbrevList(doc)
-
+a       <- abbrevList(doc)
+maxIter <- 100
 ## andere Gase kommen noch
 if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
 
     gas   <- a$cmscg
     cf    <- list()
-
+    
+    if(pcal > 1e-4){
+        lw <- "lw1"
+    }
     if(pcal < 9e-7){
         lw <- "lw0"
-    }else{
-        lw <- "lw1"
+    }
+    if(pcal < 2e-9){
+        lw <- "lwc"
     }
 
     NOMC1 <- getSubList(a$cms,"nomC1")
@@ -57,21 +61,36 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
         tc    <- 2.1e-3 ## call-offset 2ms
         pfill <- 8.1    ## start pfill
     }
+
+    if(lw == "lwc"){
+        molLw <-  getConstVal(a$cms,"dv2MolCIntercept") 
+        pfill <- Cp / molLw * pcal
+        noMp  <- 0
+        tm    <- 0
+
+    }
+    
     ##
     ## Berechnen des pfill aus der Leitwertkurve
     ## und der Differenz zum Zieldruck
     ##
     pcal.pred     <- fn.2162(cf, pfill)/Cp * pfill
-    for(i in 1:10){
+    e             <- pcal.pred/pcal - 1
+    iter          <- 1
+    
+    while((abs(e) > 1e-4) | iter == maxIter ){
         e         <- pcal.pred/pcal - 1
         pfill     <- pfill * (1 - e)
         pcal.pred <- fn.2162(cf, pfill)/Cp * pfill
-
+        iter      <- iter + 1
     }
 
-    T       <-  V / fn.2162(cf, pfill) * E - noMp * tc ## Gesamtmesszeit pro SZ
-    tm      <- (T / noMp) * 1000
-
+    if(lw == "lw0" | lw == "lw1"){
+        T       <-  V / fn.2162(cf, pfill) * E - noMp * tc ## Gesamtmesszeit pro SZ
+        tm      <- (T / noMp) * 1000
+        
+    }
+    
     cat(toJSON(list("target_p_fill" = pfill, "lwx" = lw,"sz_time"=tm, "mp_repeat"= noMp  )))
-
+    
 }
