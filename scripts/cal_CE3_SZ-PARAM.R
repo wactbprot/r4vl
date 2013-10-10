@@ -69,23 +69,23 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
         tm    <- 0
 
     }
-    
-    ##
-    ## Berechnen des pfill aus der Leitwertkurve
-    ## und der Differenz zum Zieldruck
-    ##
-    pcal.pred     <- fn.2162(cf, pfill)/Cp * pfill
-    e             <- pcal.pred/pcal - 1
-    iter          <- 1
-    
-    while((abs(e) > 1e-4) | iter == maxIter ){
-        e         <- pcal.pred/pcal - 1
-        pfill     <- pfill * (1 - e)
-        pcal.pred <- fn.2162(cf, pfill)/Cp * pfill
-        iter      <- iter + 1
-    }
-
-    if(lw == "lw0" | lw == "lw1"){
+    if(lw == "lw0" | lw == "lw1"){    
+        ##
+        ## Berechnen des pfill aus der Leitwertkurve
+        ## und der Differenz zum Zieldruck
+        ##
+        pcal.pred     <- fn.2162(cf, pfill)/Cp * pfill
+        e             <- pcal.pred/pcal - 1
+        iter          <- 1
+        
+        while((abs(e) > 1e-4) | iter == maxIter ){
+            e         <- pcal.pred/pcal - 1
+            pfill     <- pfill * (1 - e)
+            pcal.pred <- fn.2162(cf, pfill)/Cp * pfill
+            iter      <- iter + 1
+        }
+        
+        
         T       <-  V / fn.2162(cf, pfill) * E - noMp * tc ## Gesamtmesszeit pro SZ
         tm      <- (T / noMp) * 1000
         
