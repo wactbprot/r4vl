@@ -19,8 +19,6 @@ The following R-packages are needed:
        xlsxjars
        xlsx    
        knitr   
-       reshape2
-       ggplot2 
        methods 
        bitops  
        RJSONIO 
