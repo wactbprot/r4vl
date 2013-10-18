@@ -5,21 +5,12 @@ ce3.calDeltaVDeltat <- function(ccc){
     vUnit   <- "l"
     a       <-  abbrevList(ccc)
 
+    PFILL   <- getSubList(a$cav, "fill")
+    pfill   <- getConstVal(NA, NA, PFILL)
+    
+    
     if(a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"){
-        DRIFT   <-  getSubList(a$cmv,"drift_slope_x")
-        drift   <-  getConstVal(NA,NA,DRIFT)
-
-        LWSTART   <-  getSubList(a$cma,"start_lw")
-        lwstart   <-  getConstVal(NA,NA,LWSTART)
-
-        pfill     <- getConstVal(a$cav, "fill")
-
-        cf      <- list()
-        cf$A    <-  getConstVal(a$cms, "fbv_A")
-        cf$B    <-  getConstVal(a$cms, "fbv_B")
-        cf$C    <-  getConstVal(a$cms, "fbv_C")
-
-        L       <-  NULL
+                L       <-  NULL
         sdL     <-  NULL
         lL      <-  NULL
         gamma   <-  NULL
@@ -27,6 +18,18 @@ ce3.calDeltaVDeltat <- function(ccc){
         meanMp  <-  NULL
         sdMeanMp<-  NULL
         gslope  <-  NULL
+                
+        DRIFT   <-  getSubList(a$cmv,"drift_slope_x")
+        drift   <-  getConstVal(NA,NA,DRIFT)
+
+        LWSTART <-  getSubList(a$cma,"start_lw")
+        lwstart <-  getConstVal(NA,NA,LWSTART)
+
+        cf      <- list()
+        cf$A    <-  getConstVal(a$cms, "fbv_A")
+        cf$B    <-  getConstVal(a$cms, "fbv_B")
+        cf$C    <-  getConstVal(a$cms, "fbv_C")
+
 
         t2mm    <- getConstVal(a$cms,"turn_2_mm")
         ms2s    <- getConstVal(a$cc,"ms_2_s")
@@ -136,5 +139,22 @@ ce3.calDeltaVDeltat <- function(ccc){
 
     } ## a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"
 
+    if(a$cmscok == "opK4"){
+        
+        if(PFILL$Unit == "mbar"){
+        
+            dv2MolCIntercept <-  getConstVal(a$cms$Constants, "dv2MolCIntercept")
+            dv2MolCSlope  <-  getConstVal(a$cms$Constants, "dv2MolCSlope") 
+            
+
+            
+        ccc$Calibration$Analysis$Values$Conductance <-
+            setCcl(ccc$Calibration$Analysis$Values$Conductance,
+                   "cnom",
+                   "l/s",
+                   dv2MolCSlope * pfill + dv2MolCIntercept,
+                   msg)
+    }
+    }
     return(ccc)
 }

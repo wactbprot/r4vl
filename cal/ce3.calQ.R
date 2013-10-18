@@ -2,12 +2,20 @@ ce3.calQ <- function(ccc){
   msg <- "calculated by ce3.calQ"
 
   a <-  abbrevList(ccc)
-
+  
   Pam3molK2mbarlmolK <- getConstVal(a$cc, "Pam^3/mol/K_2_mbarl/mol/K")
   R                  <- getConstVal(a$cc,"R") * Pam3molK2mbarlmolK ## in Pa m^3/mol/K
+
+  if(a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"){
+      pfill <-  getConstVal(a$ca,"fill")
+      Cdv   <-  getConstVal(a$ca,"cfm3")
+  }
+  if(a$cmscok == "opK4"){
+      pfill <-  getConstVal(a$ca,"srg_fill")
+      Cdv   <-  getConstVal(a$ca,"cnom")
+  }
   
-  Cdv   <-  getConstVal(a$ca,"cfm3")
-  pfill <-  getConstVal(a$ca,"fill")
+ 
   TFm   <-  getConstVal(a$ca,"Tfm3")
   TUhv  <-  getConstVal(a$ca,"Tuhv")
   TXhv  <-  getConstVal(a$ca,"Txhv")

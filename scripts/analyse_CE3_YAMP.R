@@ -6,14 +6,14 @@ if(length(doc$Calibration) > 0){
   doc <- ce3.newCalPfill(doc)
   doc <- ce3.calDeltaVDeltat(doc)
   doc <- ce3.extrapC(doc)
-## 
-   doc <- ce3.calQ(doc)
-##   doc <- ce3.calMfp(doc)
-##   doc <- ce3.writePind(doc)
-##   doc <- ce3.calPcal(doc)
-## 
+  ## 
+  doc <- ce3.calQ(doc)
+  doc <- ce3.calMfp(doc)
+  doc <- ce3.writePind(doc)
+  doc <- ce3.calPcal(doc)
+  ## 
 ##   
-##   doc <- dispatchResCal(doc)
+   doc <- dispatchResCal(doc)
 ## 
 ##   doc <- fm3.uncertPfill(doc)
 ##   doc <- fm3.uncertDPfill(doc)
