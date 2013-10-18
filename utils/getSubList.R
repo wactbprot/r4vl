@@ -34,11 +34,14 @@ gsl <- function(ccl, typeName, cc=list()){
   }else{
     ## - liste oder
     ## - NUll
-    if(is.null(ccl)){return(NULL)}
-
+    if(is.null(ccl)){
+        return(NULL)
+    }
+    if(length(ccl) == 0){
+        return(NULL)
+    }
+    
     for(i in 1:length(ccl)){
-
-
 
       resVal <-   gsl(ccl[[i]], typeName, ccl)
 
