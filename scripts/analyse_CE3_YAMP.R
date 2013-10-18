@@ -3,11 +3,11 @@ if(length(doc$Calibration) > 0){
   doc <- refreshAnalysis(cdb,doc)
 
   doc <- ce3.newCalT(doc)
-##   doc <- ce3.newCalPfill(doc)
-##   doc <- ce3.calDeltaVDeltat(doc)
-##   doc <- ce3.extrapC(doc)
+  doc <- ce3.newCalPfill(doc)
+  doc <- ce3.calDeltaVDeltat(doc)
+  doc <- ce3.extrapC(doc)
 ## 
-##   doc <- ce3.calQ(doc)
+   doc <- ce3.calQ(doc)
 ##   doc <- ce3.calMfp(doc)
 ##   doc <- ce3.writePind(doc)
 ##   doc <- ce3.calPcal(doc)
