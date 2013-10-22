@@ -15,13 +15,13 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
     gas   <- a$cmscg
     cf    <- list()
     
-    if(pcal > 1e-4){
+    if(pcal < 1e-4){
         lw <- "lw1"
     }
     if(pcal < 9e-7){
         lw <- "lw0"
     }
-    if(pcal < 2e-9){
+    if(pcal < 5e-10){
         lw <- "lwc"
     }
 
@@ -43,7 +43,7 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
         noMp   <- 100     ## Anzahl der Messpunkte
         V      <- 0.07673 ## Volumen in l aus AA
         tc     <- 1.8e-3  ## call offset 2ms
-        pfill  <- 0.26    ## start pfill
+        pfill  <- 0.0001  ## start pfill
     }
 
     if(lw == "lw1" ){
