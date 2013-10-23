@@ -8,7 +8,8 @@ calSens <- function( ccc ){
   iconv <- getConvFactor(ccc,iUnit, IE$Unit)
   ie    <- getConstVal(NA, NA, IE) * iconv
   
-  ioff  <- getConstVal(a$cmv, "offset")
+  ioff  <- getConstVal(a$cmv, "ind_offset")
+  icor  <- getConstVal(a$cmv, "ind_corr")
   iind  <- getConstVal(a$cmv, "ind")
   pcal  <- getConstVal(a$cav, "cal")
 

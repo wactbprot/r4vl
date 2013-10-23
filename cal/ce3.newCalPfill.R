@@ -226,7 +226,6 @@ ce3.newCalPfill <- function(ccc){
 
     if(a$cmscok == "opK4"){
 
-
         ## CDGA 10T 
         
         icdga      <- which( pfill <= cdgax1border)
@@ -249,7 +248,7 @@ ce3.newCalPfill <- function(ccc){
                 g <- gas
             }else{
                 g <- "N2"
-                msg <- paste(msg, "no calibration for CDGA for gas: ", gas, ". Use N2 instead")
+                msg <- paste(msg, "no calibration for CDGA for gas: ", g, ". Use N2 instead")
             }
 
             
@@ -262,15 +261,22 @@ ce3.newCalPfill <- function(ccc){
             cfcdga$f  <- getConstVal(  a$cmco, paste("cdgaCorrF_",g,sep=""))
 
             
+            F  <- fn.7904(cfcdga,pfill[icdga])
+            pfill[icdga]      <- pfill[icdga]/(F + 1)
 
-            pfill[icdga]      <- pfill[icdga]/(fn.7904(cfcdga,pfill[icdga]) + 1)
-
-        ccc$Calibration$Analysis$Values$Pressure <-
-            setCcl(ccc$Calibration$Analysis$Values$Pressure,
-                   "fill",
-                   PF$Unit,
-                   pfill,
-                   msg)
+            ccc$Calibration$Analysis$Values$Pressure <-
+                setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                       "fill",
+                       PF$Unit,
+                       pfill,
+                       msg)
+                        
+            ccc$Calibration$Analysis$Values$Pressure <-
+                setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                       "fill_offset",
+                       PF$Unit,
+                       pfilloffset,
+                       "pfill is already corrected by fill_offset")
 
         }# cdga
 
@@ -295,8 +301,8 @@ ce3.newCalPfill <- function(ccc){
                 rho          <- getConstVal(a$cmco,"rho")
                 R            <- getConstVal(a$cc,"R")
 
-                pfill        <- getConstVal(NA,NA,srgInd) -
-                    getConstVal(NA,NA,srgOff) # in DCR
+                pfillDCR        <- getConstVal(NA,NA,srgInd) 
+                poffsetDCR      <- getConstVal(NA,NA,srgOff) # in DCR
 
                 if(a$cmscg =="N2"){
                     sigma      <- getConstVal(a$cmco,"sigma_N2")
@@ -315,16 +321,17 @@ ce3.newCalPfill <- function(ccc){
 
                 T     <- getConstVal(a$ca,"Tfm3")
 
+                K <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/sigma/2000
+                pfillMbar <- K * pfillDCR ## mbar
+                poffsetMbar <- K * poffsetDCR ## mbar
 
-                pfill <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/sigma/2000*pfill ## mbar
-
-                panz      <- pfill
+                panz      <- pfillMbar - poffsetMbar 
                 pfillKorr <- panz
 
                 for(i in 1:noOfViscIter){
 
                     pfillKorr <- panz * sigma/(slope * pfillKorr + sigma)
-
+                    cat(slope * pfillKorr + sigma)
                 }
 
                 pfillSRG <- pfillKorr
@@ -333,13 +340,25 @@ ce3.newCalPfill <- function(ccc){
                              noOfViscIter,
                              " iterations for viscosity correction" )
 
-
+                ccc$Calibration$Analysis$Values$Pressure <-
+                    setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                           "srg_fill_uncor",
+                           "mbar",
+                           pfillMbar,
+                           msg)
 
                 ccc$Calibration$Analysis$Values$Pressure <-
                     setCcl(ccc$Calibration$Analysis$Values$Pressure,
                            "srg_fill",
                            "mbar",
                            pfillSRG,
+                           msg)
+
+                ccc$Calibration$Analysis$Values$Pressure <-
+                    setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                           "srg_fill_offset",
+                           "mbar",
+                           poffsetMbar,
                            msg)
             }## Unit dcr
         }

@@ -96,14 +96,14 @@ calError <- function(ccc){
            )
 
   ccc$Calibration$Analysis$Values$Pressure <-
-    setCcl(ccc$Calibration$Analysis$Values$Pressure, "offset",
+    setCcl(ccc$Calibration$Analysis$Values$Pressure, "ind_offset",
            indUnit,
            ofs,
            paste(msg)
            )
 
   ccc$Calibration$Analysis$Values$Pressure <-
-    setCcl(ccc$Calibration$Analysis$Values$Pressure, "corrind",
+    setCcl(ccc$Calibration$Analysis$Values$Pressure, "ind_corr",
            indUnit,
            corrind,
            paste(msg, ";p_ind - p_ind_offset")

@@ -37,165 +37,262 @@
     <hr>
 
     <ul>
-      <li><a href="#cond">Conductance</a></li>
+      <li><a href="#temp">Temperature</a></li>
       <ul>
-        <li><a href="#condCnom">C<sub>nom</sub></a></li>
+        <li><a href="#tempFm3">T<sub>fm3</sub></a></li> 
+	<li><a href="#tempPbox">T<sub>pbox</sub></a></li>
+        <li><a href="#tempUhv">T<sub>uhv</sub></a></li>
+        <li><a href="#tempXhv">T<sub>xhv</sub></a></li>
+        <li><a href="#tempRoom">T<sub>room</sub></a></li>
       </ul>
-      <li><a href="#temp">Temperatures</a></li>
-      <li><a href="#pres">Pressures</a></li>
-    </ul>
+      <li><a href="#pres">Pressure</a></li>
+      <ul>
+        <li><a href="#presFill">p<sub>fill</sub></a></li>
+      </ul>
+  
+   </ul>
 
     <hr>
 
-    <h2 id="cond">Conductance
+    <h2 id="temp">Temperature
       <sup><a href="#top">^</a></sup></h2>
     <!--begin.rcode
-        withU     <- FALSE
-        cnom           <- getConstVal(a$cav$Conductance, "cnom")
-	sdcnom         <- getConstVal(a$cav$Conductance, "sd_cnom")
-        cfm3           <- getConstVal(a$cav$Conductance, "cfm3")
-        diffhist       <- getConstVal(a$cav$Conductance, "diff_hist")
+        withU    <- FALSE
+	upperLimit <- 24.0 +273.15
+	lowerLimit <- 22.0 +273.15
+	soll       <- 23.0 +273.15
 
-        iout <- which((abs(diffhist) > 0.5) | cnom < 1e-8 | is.na(cfm3))
-        skipVals <- length(iout) > 0
-
-        if(length( a$cav$Uncertainty) > 0){
-        withU     <- TRUE
-        uDV       <- getConstVal(a$cav$Uncertainty, "uncertDeltaV")
-        uDVDt     <- getConstVal(a$cav$Uncertainty, "uncertDeltaVDeltat")
-        uDt       <- getConstVal(a$cav$Uncertainty, "uncertDeltat")
-        }
-
-        if(skipVals){
-        iout
-        cnom      <-  cnom[-iout]
-        sdcnom    <-  sdcnom[-iout]
-        cfm3      <-  cfm3[-iout]
-        diffhist  <-  diffhist[-iout]
-        if(withU){
-        uDV      <-   uDV[-iout]
-        uDVDt    <-   uDVDt[-iout]
-        uDt      <-   uDt[-iout]
-        }
-        }
-	N <- length(cnom)
+        Tfm3  <- getConstVal(a$cav$Temperature, "Tfm3")
+	Tpbox   <- getConstVal(a$cav$Temperature, "Tpbox")
+	Tuhv    <- getConstVal(a$cav$Temperature, "Tuhv")
+	Txhv    <- getConstVal(a$cav$Temperature, "Txhv")
+	Troom    <- getConstVal(a$cav$Temperature, "Troom")
+	N <- length(Tfm3)
         end.rcode-->
-    <h3 id="condCnom">C<sub>nom</sub>
+    <h3 id="tempFm3">T<sub>fm3</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
-	qplot(1:N, 
-	cnom, 
-	log  = "xy", 
+    <!--begin.rcode Temperature_FM3
+	plot(1:N, 
+	Tfm3, 
 	xlab = "Messpkt.", 
-	ylab = paste("C in", getSubList(a$cav$Conductance, "cnom")$Unit))
+	ylab = "Tfm3 in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+	type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
+    <h3 id="tempPbox">T<sub>pbox</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Temperature_Pbox
+	plot(1:N, 
+	Tpbox, 
+	xlab = "Messpkt.", 
+	ylab = "Tpbox in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+    type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
+    <h3 id="tempUhv">T<sub>uhv</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Temperature_uhv
+	plot(1:N, 
+	Tuhv, 
+	xlab = "Messpkt.", 
+	ylab = "Tuhv in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+    type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
+    <h3 id="tempXhv">T<sub>xhv</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Temperature_xhv
+	plot(1:N, 
+	Txhv, 
+	xlab = "Messpkt.", 
+	ylab = "Txhv in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+    type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
 	end.rcode-->
 
-    <h3 id="condSum">Conductance Summary
+    <h3 id="tempRoom">T<sub>Room</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
-        format(data.frame(sdcnom/cnom), scientific=TRUE)
-        end.rcode-->
-
-    <!--begin.rcode
-        format(data.frame(cfm3/cnom -1), scientific=TRUE)
-        end.rcode-->
-
-    <!--begin.rcode
-        format(data.frame((uDV^2 +uDt^2 +uDVDt^2)^.5), scientific=TRUE)
-        end.rcode-->
-
-    <h3 id="condDiag">Conductance Diagram
-      <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode conductance-plot, echo=FALSE
-        pltc
-        end.rcode-->
-
-    <h2 id="temp">Temperatures
+    <!--begin.rcode Temperature_room
+	plot(1:N, 
+	Troom, 
+	xlab = "Messpkt.", 
+	ylab = "T room in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+    type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
+    
+    <h2 id="pres">Pressure
       <sup><a href="#top">^</a></sup></h2>
-    <!--begin.rcode
-        source("../chunks/ce3.temperature.R")
-        N
-        iout
-        end.rcode-->
-    <h3 id="tempTab">Table
+        <!--begin.rcode
+	    if(a$cmscok == "opK4"){
+	      pfillSrg <- getConstVal(a$cav$Pressure, "srg_fill")
+	      poffsetSrg <- getConstVal(a$cav$Pressure, "srg_fill_offset")
+	    }else{
+              plw          <- getConstVal(a$cav$Pressure, "lw")
+	      dpC          <- getConstVal(a$cav$Pressure, "dpC")
+	    }
+
+        pfill        <- getConstVal(a$cav$Pressure, "fill")
+        pfillOffset  <- getConstVal(a$cav$Pressure, "fill_offset")
+
+        pcal         <- getConstVal(a$cav$Pressure, "cal")
+        pind         <- getConstVal(a$cav$Pressure, "ind")
+        pindOffset   <- getConstVal(a$cav$Pressure, "ind_offset")
+        pindcorr     <- getConstVal(a$cav$Pressure, "ind_corr")
+	end.rcode-->
+    <h3 id="presFill">p<sub>fill</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
-        format(df.temperature)
-        end.rcode-->
+    <!--begin.rcode Pressure_fill
+	upperLimit <- 400
+	lowerLimit <- 1e-3
+	plot(1:N, 
+	pfill, 
+	ylim=c(lowerLimit*(1-1e-2), upperLimit*(1+1e-2)),
+	xlab = "Messpkt.", 
+	ylab = "pfill",
+	type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	end.rcode-->
 
-    <h3 id="tempSum">Summary
+    <h3 id="presFillByOffset">p<sub>fill_offset</sub>/p<sub>fill</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
+    <!--begin.rcode Pressure_offset_by_fill
+	upperLimit <- 1e-3
+	lowerLimit <- -1e-3
+	plot(1:N, 
+	pfillOffset/pfill, 
+	xlab = "Messpkt.", 
+	ylab = "pfill_offset/pfill",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
 
-        summary(Tpbox)
-        end.rcode-->
-
-    <!--begin.rcode
-        summary(Troom)
-        end.rcode-->
-
-    <!--begin.rcode
-        summary(Txhv)
-        end.rcode-->
-
-    <!--begin.rcode
-        summary(Tuhv)
-        end.rcode-->
-
-    <!--begin.rcode
-        summary(Tfm3)
-        end.rcode-->
-
-    <h3 id="tempDiag" >Diagram
+	end.rcode-->
+  <h3 id="presFillBypdc">p<sub>dC</sub>/p<sub>fill</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode temperature-plot, echo=TRUE
-        plt
-        end.rcode-->
+    <!--begin.rcode Pressure_dp_by_fill
+	if(a$cmscok != "opK4"){
+	upperLimit <- 1e-2
+	lowerLimit <- -1e-2
+	plot(1:N, 
+	dpC/pfill, 
+	ylim=c(lowerLimit*2, upperLimit*2),
+	xlab = "Messpkt.", 
+	ylab = "dpC/pfill",
+	type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	}
+	end.rcode-->
 
-    <h2 id="pres">Pressures
-      <sup><a href="#top">^</a></sup></h2>
-    <!--begin.rcode
-        source("../chunks/ce3.pressure.R")
-        N
-        iout
-        end.rcode-->
-    <h3 id="presTab">Pressure Table
+    <h3 id="presSrgOffset">p<sup>offset</sup><sub>SRG</sub>/p<sup>ind</sup><sub>SRG</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
+    <!--begin.rcode Pressure_srg-offset_by_srg
+	if(a$cmscok == "opK4"){
+	upperLimit <- 1e-2
+	lowerLimit <- -1e-2
+	plot(1:N, 
+	poffsetSrg/pfillSrg , 
+	ylim=c(lowerLimit*2, upperLimit*2),
+	xlab = "Messpkt.", 
+	ylab = "SRG/CDG - 1",
+	type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	}
+	end.rcode-->
 
-        format(df.pressure.fill.offs, scientific=TRUE, digits=5)
-        format(df.pressure.fill, scientific=TRUE, digits=5)
-        format(df.pressure.cal, scientific=TRUE, digits=5)
-        end.rcode-->
-
-    <h3 id="presSum">Pressure Summary
+    <h3 id="presSrgCdg">p<sub>srg</sub>/p<sub>cdg</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
+    <!--begin.rcode Pressure_srg_by_cdg
+	if(a$cmscok == "opK4"){
+	upperLimit <- 1e-2
+	lowerLimit <- -1e-2
+	plot(1:N, 
+	pfillSrg/pfill -1 , 
+	ylim=c(lowerLimit*2, upperLimit*2),
+	xlab = "Messpkt.", 
+	ylab = "SRG/CDG - 1",
+	type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	}
+	end.rcode-->
 
-        format(data.frame(pfill.offset/pfill), scientific=TRUE)
-
-        format(data.frame(pdpC/pfill), scientific=TRUE)
-
-        format(data.frame(pfill/plw -1), scientific=TRUE)
-
-        format(data.frame(pcorrind/pcal - 1), scientific=TRUE)
-
-        end.rcode-->
-
-    <h3 id="presDiag">Pressure Diagram
+ <h3 id="prescal">p<sub>cal</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode  pfill-plot, echo=FALSE
-        pltfill
-        end.rcode-->
+    <!--begin.rcode Pressure_cal
+	upperLimit <- 1e-3
+	lowerLimit <- 1e-11
+	plot(1:N, 
+	pcal, 
+	xlab = "Messpkt.", 
+	ylab = "cal",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	type="b", 
+	log="y")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	end.rcode-->
 
-    <!--begin.rcode  pfilloffset-plot, echo=FALSE
-        pltfilloffs
-        end.rcode-->
 
-    <!--begin.rcode  pcal-plot, echo=FALSE
-        pltcal
-        end.rcode-->
+ <h3 id="presindBycal">p<sub>ind_corr</sub>/p<sub>cal</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Pressure_ind_cal_05
+	upperLimit <- 0.5
+	lowerLimit <- -0.5
+	plot(1:N, 
+	pindcorr/pcal-1, 
+	xlab = "Messpkt.", 
+	ylab = "p ind/ p cal-1",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	end.rcode-->
 
+    <!--begin.rcode Pressure_ind_cal_01
+	upperLimit <- 0.1
+	lowerLimit <- -0.1
+	plot(1:N, 
+	pindcorr/pcal-1, 
+	xlab = "Messpkt.", 
+	ylab = "p ind/ p cal-1",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	end.rcode-->
 
   </body>
 </html>
