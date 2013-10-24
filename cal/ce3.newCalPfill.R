@@ -1,3 +1,5 @@
+## dringend aufräumen!
+
 ce3.newCalPfill <- function(ccc){
     msg   <- "calculated by ce3.newCalPfill"
 
@@ -44,13 +46,13 @@ ce3.newCalPfill <- function(ccc){
     if(a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"){
         ofMt      <- getConstVal(a$cma$Time, "offset_mt")
         lwMt      <- getConstVal(a$cma$Time, "start_lw")
-    } ## a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"
+    } 
 
     if(a$cmscok == "opK4"){
         ofMt      <- getConstVal(a$cma$Time, "offset_mt")
         lwMt      <- getConstVal(a$cma$Time, "begin_constC")
         
-    } ## a$cmscok == "opK4"
+    } 
 
     navec     <- rep(NA,length(lwMt))
 
