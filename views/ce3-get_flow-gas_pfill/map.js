@@ -21,6 +21,7 @@ function(doc) {
                     if(gas && cavc && cavp && cavt){
 
                         var Ncond  = 0,
+			Nsdcond =0,
                         Ntemp  = 0,
                         Npfill = 0;
 
@@ -36,16 +37,25 @@ function(doc) {
                                 Ncond     = cond.length;
                             }
                         }
+			for(i in cavc){
+                            if(cavc[i].Type == "sd_cnom"){
+                                var sdcond  = cavc[i].Value;
+                                Nsdcond     = cond.length;
+                            }
+			}
                         for(var i in cavp){
                             if(cavp[i].Type == "fill"){
                                 var pfill = cavp[i].Value;
                                 Npfill    = pfill.length;
                             }
                         }
-                        if(Npfill > 0 && Npfill == Ncond && Ntemp == Npfill){
+                        if(Npfill > 0         && 
+			   Npfill == Nsdcond  && 
+			   Npfill == Ncond    && 
+			   Ntemp == Npfill){
                             for(var j = 0; j < Npfill; j++){
                                 emit( [gas, pfill[j]] , // key
-				      [cadv, cond[j], pfill[j], temp[j]] // value
+				      [cadv, cond[j], pfill[j], temp[j], sdcond[j]] // value
 				    );
                             }
                         }
