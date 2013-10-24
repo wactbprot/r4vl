@@ -331,7 +331,7 @@ ce3.newCalPfill <- function(ccc){
                 for(i in 1:noOfViscIter){
 
                     pfillKorr <- panz * sigma/(slope * pfillKorr + sigma)
-                    cat(slope * pfillKorr + sigma)
+                   
                 }
 
                 pfillSRG <- pfillKorr

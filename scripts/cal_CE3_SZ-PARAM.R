@@ -12,6 +12,7 @@ maxIter <- 100
 ## andere Gase kommen noch
 if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
 
+    molLw <-  getConstVal(a$cms,"dv2MolCIntercept") 
     gas   <- a$cmscg
     cf    <- list()
     
@@ -21,7 +22,7 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
     if(pcal < 9e-7){
         lw <- "lw0"
     }
-    if(pcal < 5e-10){
+    if(pcal < 8e-11){
         lw <- "lwc"
     }
 
@@ -63,7 +64,7 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
     }
 
     if(lw == "lwc"){
-        molLw <-  getConstVal(a$cms,"dv2MolCIntercept") 
+       
         pfill <- Cp / molLw * pcal
         noMp  <- 0
         tm    <- 0
@@ -81,7 +82,13 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
         while((abs(e) > 1e-4) | iter == maxIter ){
             e         <- pcal.pred/pcal - 1
             pfill     <- pfill * (1 - e)
-            pcal.pred <- fn.2162(cf, pfill)/Cp * pfill
+
+            if(pcal < 9e-10){
+                pcal.pred <- molLw/Cp * pfill
+            }else{
+                pcal.pred <- fn.2162(cf, pfill)/Cp * pfill
+            }
+            
             iter      <- iter + 1
         }
         

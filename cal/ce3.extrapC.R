@@ -8,7 +8,7 @@ ce3.extrapC <- function(ccc){
         if(a$cmscg == "N2" || a$cmscg == "Ar"|| a$cmscg == "D2"){
 
             ilw    <- getConductIndex(ccc)
-
+            
             cf        <- list()
             plw       <- getConstVal(a$cav, "lw")   ## zum Zeitpunkt der LW- Messung: p_l
             pfe       <- getConstVal(a$cav, "fill") ## zum Zeitpunkt Ende der Auslese: p_a
@@ -26,6 +26,7 @@ ce3.extrapC <- function(ccc){
             gas       <- a$cmscg
 
             if(length(ilw$iLw2) > 0){
+
                 cf$a   <-  getConstVal(a$cms, paste("klLw_",gas,"_A", sep=""))
                 cf$b   <-  getConstVal(a$cms, paste("klLw_",gas,"_B", sep=""))
                 cf$c   <-  getConstVal(a$cms, paste("klLw_",gas,"_C", sep=""))
@@ -51,7 +52,20 @@ ce3.extrapC <- function(ccc){
                 cfm3[ilw$iLw1]  <- cnom[ilw$iLw1]*fn.2162(cf,pfill[ilw$iLw1])/fn.2162(cf,plw[ilw$iLw1])
                 dh[ilw$iLw1]    <- cnom[ilw$iLw1]/fn.2162(cf,plw[ilw$iLw1]) - 1
             }
-        }
+
+            if(length(ilw$iLwC) > 0){
+                molLw      <-  getConstVal(a$cms,"dv2MolCIntercept")
+                ## LW wird gemessen
+                ## aber molLw wird benutzt
+                ## Messung kann später zur Anpassung
+                ## des molLw benutzt werden
+
+                
+                cfm3[ilw$iLwC] <- 8.65e-7#molLw
+                dh[ilw$iLwC]    <- cnom[ilw$iLwC]/molLw - 1
+            }
+            
+        } # gas
 
         ccc$Calibration$Analysis$Values$Conductance <-
             setCcl(ccc$Calibration$Analysis$Values$Conductance,

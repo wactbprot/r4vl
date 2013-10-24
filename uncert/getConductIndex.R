@@ -5,8 +5,14 @@ getConductIndex <- function(ccc){
   ## Leitwerte implementiert werden
   ## return Val bezieht sich
 
-  a <- abbrevList(ccc)
-  res <- list()
+  a          <- abbrevList(ccc)
+  res        <- list()
+  molFillLower  <- 0.0001
+  molFillUpper  <- 0.02 
+  
+
+
+
   ## Verf. 1: Lw Type in a$cmsc vorh.
   if(length(a$cmsc$usedConductance) > 0){
 
@@ -20,18 +26,12 @@ getConductIndex <- function(ccc){
   }
 
   ## Verf. 2: Lw Type wird aus Conduc. nachträglich bestimmt
-  CFM3       <- getSubList(a$cav, "cfm3")
-
-  if(length(CFM3$Unit) == 0){
-    CFM3       <- getSubList(a$cav, "cnom")
-  }
-
-
+  CFM3       <- getSubList(a$cav, "cnom")
   
   lwUnit     <- "l/s"
   ## --- Lw2
   lw2List    <- getSubList(a$cms, "useLw2")
-
+  
 
   if(length(CFM3$Unit) == 1 & CFM3$Unit == lwUnit){
     if(lw2List$RangeUnit ==  lwUnit){
@@ -56,8 +56,18 @@ getConductIndex <- function(ccc){
       }
     }
 
+    ## --- LwC
+    pfill <- getConstVal(a$cav, "fill")
+    
+    iLwC   <- which(pfill > molFillLower &
+                    pfill < molFillUpper)
+    ## -------------------
+
+    
     res$iLw1 <- iLw1   ## grosser LW
-    res$iLw2 <- iLw2    ## kleiner LW
+    res$iLw2 <- iLw2   ## kleiner LW
+    res$iLwC <- iLwC   ## constanter LW
+    
 
     ## ein stop() macht wegen des gelösten NAN Problems
     ## hier keinen Sinn mehr

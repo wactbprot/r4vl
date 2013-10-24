@@ -30,6 +30,7 @@ abbrevList <- function(ccc){
     }
     a$cmscok <- a$cmsc$operationKind
     a$cmscg  <- a$cmsc$Gas
+    a$cmag   <- a$cmscg
     a$cmscp  <- a$cmsc$calPort
   }
 ### se1-spezifisch

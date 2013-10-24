@@ -6,6 +6,7 @@ calSigma <- function( ccc ){
   ## ab welchem Druck sollen die gemessenen  sigma- werte auch extrapoliert werden:
   extrLowerValue <- 1.0e-3
   extrLowerUnit  <- "mbar"
+  
 
   ## neues Problem: welches sigma soll hier gerechnet werden?
   ## Antwort: das cmco1 (also das "Customer CO")
@@ -54,7 +55,7 @@ calSigma <- function( ccc ){
     }
     if(  a$cmag == "Ar"){
       M <- getConstVal(a$cc, "molWeight_Ar" )
-      msg <- paste(msg, "; gas:", a$cmag)
+      msg <- paste(msg, "; a$cmag:", a$cmag)
     }
     if(  a$cmag == "N2"){
       M <- getConstVal(a$cc, "molWeight_N2" )
