@@ -14,7 +14,6 @@ ce3.extrapC <- function(ccc){
         if(a$cmscg == "N2" || a$cmscg == "Ar"|| a$cmscg == "D2"){
 
             ilw       <- getConductIndex(ccc)
-            cat(ilw$iLw2)
             cf        <- list()
             
             plw       <- getConstVal(a$cav, "lw")   ## zum Zeitpunkt der LW- Messung: p_l
@@ -77,7 +76,7 @@ ce3.extrapC <- function(ccc){
                 ##' Die Messung kann später zur Anpassung
                 ##' des molLw benutzt werden (s. QSE-FM3-13-1)
                 pfill          <- getConstVal(a$cav, "fill")
-                cmolecular     <- dv2MolCSlope *  pfill[ilw$ilwC] + dv2MolCIntercept
+                cmolecular     <- dv2MolCSlope *  pfill[ilw$iLwC] + dv2MolCIntercept
                 cfm3[ilw$iLwC] <- cmolecular
                 dh[ilw$iLwC]   <- cnom[ilw$iLwC]/ cmolecular - 1
             }
