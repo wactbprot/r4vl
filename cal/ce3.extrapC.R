@@ -14,12 +14,12 @@ ce3.extrapC <- function(ccc){
         if(a$cmscg == "N2" || a$cmscg == "Ar"|| a$cmscg == "D2"){
 
             ilw       <- getConductIndex(ccc)
-            
+            cat(ilw$iLw2)
             cf        <- list()
             
             plw       <- getConstVal(a$cav, "lw")   ## zum Zeitpunkt der LW- Messung: p_l
             pfe       <- getConstVal(a$cav, "fill") ## zum Zeitpunkt Ende der Auslese: p_a
-            pfill     <- (plw + pfe)/2              ## bei einem SRG ist das so:
+            pfill     <- (plw + pfe)/2              ## bei einem SRG ist das so: 
 
             ##'
             ##' |-|------------------|----------------|------->
@@ -29,8 +29,8 @@ ce3.extrapC <- function(ccc){
             ##' |--------------------------|------------------>
             ##'                            ^t srgmv
             cnom      <- getConstVal(a$cav, "cnom")
-            cfm3      <- rep(NA, length(pfill))
-            dh        <- rep(NA, length(pfill))
+            cfm3      <- rep(NA, length(pfe))
+            dh        <- rep(NA, length(pfe))
             gas       <- a$cmscg
 
             ##'
@@ -70,14 +70,16 @@ ce3.extrapC <- function(ccc){
             }
 
             if(length(ilw$iLwC) > 0){
-                molLw      <-  getConstVal(a$cms,"dv2MolCIntercept")
+                dv2MolCIntercept  <-  getConstVal(a$cms,"dv2MolCIntercept")
+                dv2MolCSlope      <-  getConstVal(a$cms,"dv2MolCSlope")
                 ##' In diesem Leitwertbereich wird Cdv gemessen
                 ##' aber molLw wird zur weiteren Berechnung benutzt
                 ##' Die Messung kann später zur Anpassung
                 ##' des molLw benutzt werden (s. QSE-FM3-13-1)
-                
-                cfm3[ilw$iLwC] <- 8.65e-7#molLw
-                dh[ilw$iLwC]    <- cnom[ilw$iLwC]/molLw - 1
+                pfill          <- getConstVal(a$cav, "fill")
+                cmolecular     <- dv2MolCSlope *  pfill[ilw$ilwC] + dv2MolCIntercept
+                cfm3[ilw$iLwC] <- cmolecular
+                dh[ilw$iLwC]   <- cnom[ilw$iLwC]/ cmolecular - 1
             }
             
         } # gas

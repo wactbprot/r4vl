@@ -8,7 +8,7 @@ getConductIndex <- function(ccc){
   a          <- abbrevList(ccc)
   res        <- list()
   molFillLower  <- 0.0001
-  molFillUpper  <- 0.02 
+  molFillUpper  <- 0.03 
   
 
 
