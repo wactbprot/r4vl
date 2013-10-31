@@ -22,7 +22,7 @@ if((a$cmscg == "N2" || a$cmscg == "Ar" || a$cmscg == "D2") & is.numeric(pcal)){
     if(pcal < 9e-7){
         lw <- "lw0"
     }
-    if(pcal < 8e-11){
+    if(pcal < 1e-10){
         lw <- "lwc"
     }
 
