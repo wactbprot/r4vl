@@ -38,19 +38,9 @@
 
     <ul>
       <li><a href="#temp">Temperature</a></li>
-      <ul>
-        <li><a href="#tempFm3">T<sub>fm3</sub></a></li> 
-	<li><a href="#tempPbox">T<sub>pbox</sub></a></li>
-        <li><a href="#tempUhv">T<sub>uhv</sub></a></li>
-        <li><a href="#tempXhv">T<sub>xhv</sub></a></li>
-        <li><a href="#tempRoom">T<sub>room</sub></a></li>
-      </ul>
       <li><a href="#pres">Pressure</a></li>
-      <ul>
-        <li><a href="#presFill">p<sub>fill</sub></a></li>
-      </ul>
-  
-   </ul>
+      <li><a href="#cond">Conductance</a></li>
+    </ul>
 
     <hr>
 
@@ -143,15 +133,18 @@
     
     <h2 id="pres">Pressure
       <sup><a href="#top">^</a></sup></h2>
-        <!--begin.rcode
-	    if(a$cmscok == "opK4"){
-	      pfillSrg <- getConstVal(a$cav$Pressure, "srg_fill")
-	      poffsetSrg <- getConstVal(a$cav$Pressure, "srg_fill_offset")
-	    }else{
-              plw          <- getConstVal(a$cav$Pressure, "lw")
-	      dpC          <- getConstVal(a$cav$Pressure, "dpC")
-	    }
-
+    <!--begin.rcode
+	if(a$cmscok == "opK4"){
+	 prise          <- getConstVal(a$cma, "srg_p_rise")
+	 t.begin        <- getConstVal(a$cma, "begin_constC")
+	 t.end          <- getConstVal(a$cma, "end_constC")
+	 srg.offset.dcr <- getConstVal(a$cmv, "srg_offset")
+	 srg.fill.dcr   <- getConstVal(a$cmv, "srg_fill")
+	}else{
+         plw          <- getConstVal(a$cav$Pressure, "lw")
+	 dpC          <- getConstVal(a$cav$Pressure, "dpC")
+	}
+	
         pfill        <- getConstVal(a$cav$Pressure, "fill")
         pfillOffset  <- getConstVal(a$cav$Pressure, "fill_offset")
 
@@ -209,36 +202,23 @@
 	abline(h=lowerLimit, col="red")
 	}
 	end.rcode-->
-
-    <h3 id="presSrgOffset">p<sup>offset</sup><sub>SRG</sub>/p<sup>ind</sup><sub>SRG</sub>
+    
+    <h3 id="prise">p<sub>rise</sub>/p<sub>srg</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode Pressure_srg-offset_by_srg
+    <!--begin.rcode Pressure_rise
 	if(a$cmscok == "opK4"){
-	upperLimit <- 1e-2
-	lowerLimit <- -1e-2
+	
+	
+	Dt <- (t.end - t.begin) / 1000
+	srg.dcr <- srg.fill.dcr - srg.offset.dcr
+
+	upperLimit <- 1e-4
+	lowerLimit <- -1e-4
 	plot(1:N, 
-	poffsetSrg/pfillSrg , 
+	prise*Dt/ srg.dcr, 
 	ylim=c(lowerLimit*2, upperLimit*2),
 	xlab = "Messpkt.", 
-	ylab = "SRG/CDG - 1",
-	type="b")
-	grid()
-	abline(h=upperLimit, col="red")
-	abline(h=lowerLimit, col="red")
-	}
-	end.rcode-->
-
-    <h3 id="presSrgCdg">p<sub>srg</sub>/p<sub>cdg</sub>
-      <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode Pressure_srg_by_cdg
-	if(a$cmscok == "opK4"){
-	upperLimit <- 1e-2
-	lowerLimit <- -1e-2
-	plot(1:N, 
-	pfillSrg/pfill -1 , 
-	ylim=c(lowerLimit*2, upperLimit*2),
-	xlab = "Messpkt.", 
-	ylab = "SRG/CDG - 1",
+	ylab = "dp/dt / p",
 	type="b")
 	grid()
 	abline(h=upperLimit, col="red")
@@ -266,32 +246,121 @@
 
  <h3 id="presindBycal">p<sub>ind_corr</sub>/p<sub>cal</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode Pressure_ind_cal_05
-	upperLimit <- 0.5
-	lowerLimit <- -0.5
+    <!--begin.rcode Error
+	par(mfrow=c(2,2))
+	e <- pindcorr/pcal-1
+	span <- 0.5
+	M <- mean(e)
 	plot(1:N, 
-	pindcorr/pcal-1, 
+	e, 
 	xlab = "Messpkt.", 
 	ylab = "p ind/ p cal-1",
-	ylim=c(lowerLimit*2, upperLimit*2),
+	ylim=c(M*(1 - span), M*(1 + span)),
+	type="b")
+	grid()
+	abline(h=M, col="green")
+	abline(h=M*(1 - span), col="red")
+	abline(h=M*(1 + span), col="red")	
+
+	span <- 0.2
+	M <- mean(e)
+	plot(1:N, 
+	e, 
+	xlab = "Messpkt.", 
+	ylab = "p ind/ p cal-1",
+	ylim=c(M*(1 - span), M*(1 + span)),
+	type="b")
+	grid()
+	abline(h=M, col="green")
+	abline(h=M*(1 - span), col="red")
+	abline(h=M*(1 + span), col="red")	
+	
+	span <- 0.1
+	plot(1:N, 
+	e, 
+	xlab = "Messpkt.", 
+	ylab = "p ind/ p cal-1",
+	ylim=c(M*(1 - span), M*(1 + span)),
+	type="b")
+	grid()
+	abline(h=M, col="green")
+	abline(h=M*(1 - span), col="red")
+	abline(h=M*(1 + span), col="red")	
+	
+	span <- 0.05
+	plot(1:N, 
+	e, 
+	xlab = "Messpkt.", 
+	ylab = "p ind/ p cal-1",
+	ylim=c(M*(1 - span), M*(1 + span)),
+	type="b")
+	grid()
+	abline(h=M, col="green")
+	abline(h=M*(1 - span), col="red")
+	abline(h=M*(1 + span), col="red")	
+	
+	par(mfrow=c(1,1))
+	end.rcode-->
+    
+    <h2 id="cond">Conductance
+      <sup><a href="#top">^</a></sup></h2>
+    <!--begin.rcode
+	cnom        <- getConstVal(a$cav$Conductance, "cnom")
+	if(a$cmscok == "opK1" | a$cmscok == "opK2" | a$cmscok == "opK3"){
+	sdcnom      <- getConstVal(a$cav$Conductance, "sd_cnom")
+        cfm3        <- getConstVal(a$cav$Conductance, "cfm3")
+	diffhist    <- getConstVal(a$cav$Conductance, "diff_hist")
+	}
+	end.rcode-->
+    
+    <h3 id="cond_cnom">C<sub>nom</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Conductance_nom
+	par(mfrow=c(1,2))
+	## -- klLW
+	upperLimit <- 9e-7
+	lowerLimit <- 6e-7
+	plot(1:N, 
+	cnom, 
+	xlab = "Messpkt.", 
+	ylab = "Conductance in l/s",
+	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
 	type="b")
 	grid()
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
+	## -- grLW
+	upperLimit <- 3e-5
+	lowerLimit <- 1e-5
+	plot(1:N, 
+	cnom, 
+	xlab = "Messpkt.", 
+	ylab = "Conductance in l/s",
+	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
+	type="b")
+	grid()
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	par(mfrow=c(1,1))
 	end.rcode-->
 
-    <!--begin.rcode Pressure_ind_cal_01
-	upperLimit <- 0.1
-	lowerLimit <- -0.1
+    <h3 id="cond_cnomcfm3">C<sub>nom</sub>C<sub>fm3</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Conductance_ratio
+	if(a$cmscok == "opK1" | a$cmscok == "opK2" | a$cmscok == "opK3"){
+	upperLimit <- 1e-3
+	lowerLimit <- -1e-3
 	plot(1:N, 
-	pindcorr/pcal-1, 
+	cnom/cfm3 -1 , 
 	xlab = "Messpkt.", 
-	ylab = "p ind/ p cal-1",
+	ylab = "C nom / C fm3 -1",
 	ylim=c(lowerLimit*2, upperLimit*2),
 	type="b")
 	grid()
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
+	
+	}
 	end.rcode-->
 
   </body>
