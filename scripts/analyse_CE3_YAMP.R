@@ -19,8 +19,9 @@ if(length(doc$Calibration) > 0){
     doc <- fm3.uncertDPfill(doc)
     doc <- fm3.uncertDeltaV(doc)
     doc <- fm3.uncertDeltaVDeltat(doc)
+    doc <- fm3.uncertDeltat(doc)
     doc <- fm3.uncertConstC(doc)
-    ##   doc <- fm3.uncertDeltat(doc)
+    
     ##   doc <- fm3.uncertFmol(doc)
     ##   doc <- fm3.uncertqpV(doc)
     ##   doc <- fm3.uncertCmol(doc)
