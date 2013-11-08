@@ -1,0 +1,11 @@
+function(doc) {
+    if(doc.Calibration &&
+       doc.Calibration.Standard =="CE3" &&
+       doc.Calibration.Measurement &&
+       doc.Calibration.Measurement.AuxValues &&
+       doc.Calibration.Measurement.AuxValues.Pressure){
+	
+	var dcmap = doc.Calibration.Measurement.AuxValues.Pressure;
+	
+ }
+}	
