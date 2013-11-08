@@ -36,8 +36,6 @@ getConductIndex <- function(ccc){
     }
     ## -------------------
 
-                    
-    
     return(list(iLw1 = iLw1,
                 iLw2 = iLw2,
                 iLwC = iLwC))

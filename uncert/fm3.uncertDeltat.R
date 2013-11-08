@@ -23,22 +23,20 @@ fm3.uncertDeltat <- function(ccc){
     iLwC <-  res$iLwC
     iLw2 <-  res$iLw2
 
-
-
     ## gibt es für jeden pfill einen Leitwert
     ## gesamte Range
     ## Lw1:
 
     ## --- iLw1 --- gr.Lw ---
     if(length(iLw1) > 0 ){
-        u1     <-  getConstVal(a$cms,"fm3Deltat_u1")
+        u1     <- getConstVal(a$cms,"fm3Deltat_u1")
         u2List <- getSubList(a$cms,"fm3Deltat_u2")
         iu2    <- checkUncertRange(u2List, PFILL, iLw1)
-
+        
         if(length(iu2) > 0){
             u2             <- getConstVal(NA,NA,u2List)
             uncertRes[iu2] <- sqrt(u1^2 + u2^2)
-
+            
             msg <- paste(msg,
                          "points: ",
                          toString(iu2),

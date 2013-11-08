@@ -22,7 +22,7 @@ if(length(doc$Calibration) > 0){
     doc <- fm3.uncertDeltat(doc)
     doc <- fm3.uncertConstC(doc)
     
-    ##   doc <- fm3.uncertFmol(doc)
+    doc <- fm3.uncertFmol(doc)
     ##   doc <- fm3.uncertqpV(doc)
     ##   doc <- fm3.uncertCmol(doc)
     ##  
