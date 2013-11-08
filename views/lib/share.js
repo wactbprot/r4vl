@@ -1,4 +1,3 @@
-
 exports.test = "fffuuuu";
 
 var pad0 = function(n){

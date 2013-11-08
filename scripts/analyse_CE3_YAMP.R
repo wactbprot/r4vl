@@ -20,7 +20,8 @@ if(length(doc$Calibration) > 0){
     doc <- fm3.uncertDeltaV(doc)
     doc <- fm3.uncertDeltaVDeltat(doc)
     doc <- fm3.uncertDeltat(doc)
-
+    
+    doc <- fm3.uncertPres(doc)
     doc <- fm3.uncertConstC(doc)
         
     doc <- fm3.uncertqpV(doc)
