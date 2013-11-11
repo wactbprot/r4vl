@@ -12,9 +12,9 @@ getConstVal <- function(subList, type, resList=NULL){
   }
 
   if(!(length(resList$Value) == 0) ){
-      resVal <-  getValVect(resList$Value)
+      resVal <- getValVect(resList$Value)
   }else{
-      stop(paste("no Value in", type))
+      resVal <- NULL
   }
   return(resVal)
 }

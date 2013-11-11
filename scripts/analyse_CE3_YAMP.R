@@ -25,15 +25,14 @@ if(length(doc$Calibration) > 0){
     doc <- fm3.uncertConstC(doc)
         
     doc <- fm3.uncertqpV(doc)
-    
     ##  
-    ##   doc <- ce3.uncertCx(doc)
-    ##   doc <- ce3.uncertQsplit(doc)
-    ##   doc <- ce3.uncertTfm(doc)
-    ##   doc <- ce3.uncertTch(doc)
-    ##   doc <- ce3.uncertF(doc)
-    ##   doc <- ce3.uncertPcal(doc)
+    doc <- ce3.uncertCx(doc)
+    doc <- ce3.uncertQsplit(doc)
+    doc <- ce3.uncertTfm(doc)
+    doc <- ce3.uncertTch(doc)
+    doc <- ce3.uncertF(doc)
+    doc <- ce3.uncertPcal(doc)
     
-    ##  doc <- ce3.compareCDGs(doc)
+    doc <- ce3.compareCDGs(doc)
   
 }

@@ -41,10 +41,10 @@ ce3.uncertTch <- function(ccc){
                    "uncertainty vector don't cover entire Tch range ",
                    "use u=1 (100%) instead! ",
                    "replaced uncalculated value at point(s): ",
-                   iall )
-
+                   toString(iall))
+      
       uncertTSensCalib[iall] <- 1.0
-
+      
     }
     
     UNS1   <- getSubList(a$cms, "ce3Tch_u1")
@@ -58,11 +58,6 @@ ce3.uncertTch <- function(ccc){
       
       uges <- sqrt((uncertTSensCalib*Tch)^2 + u1^2 + u2^2 )/Tch
       
-    }else{
-      
-      uges <- 2/Tch ## muss weh tun!
-      msg  <- paste(msg,
-                    " uncert. contrib. units dont match! use 2K as uncertainty")
     }
     ccc$Calibration$Analysis$Values$Uncertainty <-
       setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
