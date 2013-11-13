@@ -19,23 +19,21 @@ getConductIndex <- function(ccc){
 
     
     ## --- LwC --- constLw ---
-    if(length(iLw2) > 0){
-        lwCList    <- getSubList(a$cms, "useLwC")
-        
-        iLwC       <- which(pfill > as.double(lwCList$From) &
-                            pfill < as.double(lwCList$To) )
-        
-        if(length(iLwC) > 0){
-            iout2 <- which(iLwC %in% iLw2)
-            if(length( iout2) == length(iLw2)){
-                iLw2 <- integer(0)
-            }else{
-                iLw2 <- iLw2[-iout2]
-            }
+    lwCList    <- getSubList(a$cms, "useLwC")
+    
+    iLwC       <- which(pfill > as.double(lwCList$From) &
+                        pfill < as.double(lwCList$To) )
+    
+    if(length(iLwC) > 0){
+        iout2 <- which(iLwC %in% iLw2)
+        if(length( iout2) == length(iLw2)){
+            iLw2 <- integer(0)
+        }else{
+            iLw2 <- iLw2[-iout2]
         }
     }
     ## -------------------
-
+    
     return(list(iLw1 = iLw1,
                 iLw2 = iLw2,
                 iLwC = iLwC))
