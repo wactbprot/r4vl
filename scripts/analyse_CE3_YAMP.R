@@ -1,6 +1,7 @@
 if(length(doc$Calibration) > 0){
     
     doc <- refreshAnalysis(cdb,doc)
+    doc <- refreshResults(cdb,doc)
     
     doc <- ce3.newCalT(doc)
     doc <- ce3.newCalPfill(doc)
@@ -34,5 +35,5 @@ if(length(doc$Calibration) > 0){
     doc <- ce3.uncertPcal(doc)
     
     doc <- ce3.compareCDGs(doc)
-  
+    doc <- writeRes(doc)
 }
