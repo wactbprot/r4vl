@@ -1,7 +1,7 @@
 if(length(doc$Calibration) > 0){
     
     doc <- refreshAnalysis(cdb,doc)
-    doc <- refreshResults(cdb,doc)
+    doc <- refreshResult(cdb,doc)
     
     doc <- ce3.newCalT(doc)
     doc <- ce3.newCalPfill(doc)

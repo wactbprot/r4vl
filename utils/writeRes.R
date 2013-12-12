@@ -9,38 +9,38 @@ writeRes <- function( ccc ){
       reType <- a$cpt$Type
       
       ## cal
-      pcal <- getSubList(a$cav$Pressure, "cal"),
-      pcal$HeadLine <- "$p_{cal}$"
-      pcal$UnitLine <- paste("in", pcal$Unit)
+      pcal <- getSubList(a$cav$Pressure, "cal")
+      pcal$HeadCell <- "$p_{cal}$"
+      pcal$UnitCell <- paste("in", pcal$Unit)
       ## ind
-      pind <- getSubList(a$cav$Pressure, "ind"),
-      pind$HeadLine <- "$p_{ind}$"
-      pind$UnitLine <- paste("in", pind$Unit)
+      pind <- getSubList(a$cav$Pressure, "ind")
+      pind$HeadCell <- "$p_{ind}$"
+      pind$UnitCell <- paste("in", pind$Unit)
       ## ind_offset
-      pindoffs <- getSubList(a$cav$Pressure, "ind"),
-      pindoffs$HeadLine <- "$p_r$"
-      pindoffs$UnitLine <- paste("in", pindoffs$Unit)
+      pindoffs <- getSubList(a$cav$Pressure, "ind_offset")
+      pindoffs$HeadCell <- "$p_r$"
+      pindoffs$UnitCell <- paste("in", pindoffs$Unit)
       ## ind_corr
-      pindcorr <- getSubList(a$cav$Pressure, "ind"),
-      pindcorr$HeadLine <- "$p_r$"
-      pindcorr$UnitLine <- paste("in", pindcorr$Unit)
+      pindcorr <- getSubList(a$cav$Pressure, "ind")
+      pindcorr$HeadCell <- "$p_r$"
+      pindcorr$UnitCell <- paste("in", pindcorr$Unit)
 
       if(reType =="error"){
           ## rel
-          prel <- getSubList(a$cav$Error, "relative"),
-          prel$HeadLine <- "$e$"
-          prel$UnitLine <- paste("in", prel$Unit)
-          
+          erel <- getSubList(a$cav$Error, "relative")
+          erel$HeadCell <- "$e$"
+          erel$UnitCell <- paste("in", erel$Unit)
+
           ## ---
           ## sort out function
           ## ---
-          
-          ccc$Calibration$Result$Values <- c(
-              list(Pressure=
-                   c(pcal,pind, pindoffs,pindcorr),
-                   Error=
-                   c(prel)))
-                                 
+
+          ccc$Calibration$Result$Table[[1]] <- pcal
+          ccc$Calibration$Result$Table[[2]] <- pind 
+          ccc$Calibration$Result$Table[[3]] <- pindoffs
+          ccc$Calibration$Result$Table[[4]] <- pindcorr
+          ccc$Calibration$Result$Table[[5]] <- erel  
+                    
       }
       
   }
