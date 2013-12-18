@@ -36,6 +36,16 @@ writeRes <- function( ccc ){
         pindcorr <- getConstVal(NA, NA, PINDcorr)
         PINDcorr$Value <- formatC(pindcorr, digits=2, format="E")
 
+        ## uncert_total
+        k <- 2
+        UT <- getSubList(a$cav$Uncertainty, "uncertTotal_rel")
+        UT$HeadCell <- paste("$U(k=",k,")$", sep="")
+        if(UT$Unit == "1"){
+            UT$UnitCell <- ""
+        }
+        ut <- getConstVal(NA, NA, UT) * k
+        UT$Value <- formatC(ut, digits=1, format="E")
+
         if(reType =="error"){
             ## rel
             EREL <- getSubList(a$cav$Error, "relative")
@@ -56,6 +66,7 @@ writeRes <- function( ccc ){
             ccc$Calibration$Result$Table[[3]] <- PINDoffs
             ccc$Calibration$Result$Table[[4]] <- PINDcorr
             ccc$Calibration$Result$Table[[5]] <- EREL
+            ccc$Calibration$Result$Table[[6]] <- UT
 
         }
 
