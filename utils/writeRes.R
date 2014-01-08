@@ -10,28 +10,28 @@ writeRes <- function( ccc ){
 
         ## cal
         PCAL <- getSubList(a$cav$Pressure, "cal")
-        PCAL$HeadCell <- "\\(p_{cal}\\)"
+        PCAL$HeadCell <- "{\\(p_{cal}\\)}"
         PCAL$UnitCell <- PCAL$Unit
         pcal <- getConstVal(NA, NA, PCAL)
         PCAL$Value <- formatC(pcal, digits=3, format="E")
 
         ## ind
         PIND <- getSubList(a$cav$Pressure, "ind")
-        PIND$HeadCell <- "\\(p_{ind}\\)"
+        PIND$HeadCell <- "{\\(p_{ind}\\)}"
         PIND$UnitCell <-  PIND$Unit
         pind <- getConstVal(NA, NA, PIND)
         PIND$Value <- formatC(pind, digits=2, format="E")
 
         ## ind_offset
         PINDoffs <- getSubList(a$cav$Pressure, "ind_offset")
-        PINDoffs$HeadCell <- "\\(p_r\\)"
+        PINDoffs$HeadCell <- "{\\(p_r\\)}"
         PINDoffs$UnitCell <-  PINDoffs$Unit
         pindoffs <- getConstVal(NA, NA, PINDoffs)
         PINDoffs$Value <- formatC(pindoffs, digits=2, format="E")
 
         ## ind_corr
         PINDcorr <- getSubList(a$cav$Pressure, "ind_corr")
-        PINDcorr$HeadCell <- "\\(p_{ind} - p_r\\)"
+        PINDcorr$HeadCell <- "{\\(p_{ind} - p_r\\)}"
         PINDcorr$UnitCell <- PINDcorr$Unit
         pindcorr <- getConstVal(NA, NA, PINDcorr)
         PINDcorr$Value <- formatC(pindcorr, digits=2, format="E")
@@ -39,7 +39,7 @@ writeRes <- function( ccc ){
         ## uncert_total
         k <- 2
         UT <- getSubList(a$cav$Uncertainty, "uncertTotal_rel")
-        UT$HeadCell <- paste("\\(U(k=",k,")\\)", sep="")
+        UT$HeadCell <- paste("{\\(U(k=",k,")\\)}", sep="")
         if(UT$Unit == "1"){
             UT$UnitCell <- ""
         }
@@ -52,7 +52,7 @@ writeRes <- function( ccc ){
             if(EREL$Unit == "1"){
                 EREL$Unit <- ""
             }
-            EREL$HeadCell <- "\\(e\\)"
+            EREL$HeadCell <- "{\\(e\\)}"
             EREL$UnitCell <- EREL$Unit
             erel <- getConstVal(NA, NA, EREL)
             EREL$Value <- formatC(erel, digits=1, width=2, format="E")

@@ -8,6 +8,11 @@ fm3.uncertPres <- function(ccc){
 
     UPRES     <- getSubList(a$cms, "fm3Pres_u1")
     upres      <- getConstVal(NA, NA, UPRES)
+    
+    if(length(upres) == 0){
+        upres      <-   2.5e-7
+        UPRES      <- list(Unit="mbar")
+    }
 
     uncertRes <- rep(1, length(pfill))
                      
