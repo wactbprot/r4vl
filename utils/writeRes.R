@@ -48,30 +48,36 @@ writeRes <- function( ccc ){
 
         if(reType =="error"){
             ## rel
-            EREL <- getSubList(a$cav$Error, "relative")
-            if(EREL$Unit == "1"){
-                EREL$Unit <- ""
+            RES <- getSubList(a$cav$Error, "relative")
+            if(RES$Unit == "1"){
+                RES$Unit <- ""
             }
-            EREL$HeadCell <- "{\\(e\\)}"
-            EREL$UnitCell <- EREL$Unit
-            erel <- getConstVal(NA, NA, EREL)
-            EREL$Value <- formatC(erel, digits=1, width=2, format="E")
-
-            ## ---
-            ## sort out function
-            ## ---
-
-            ccc$Calibration$Result$Table[[1]] <- PCAL
-            ccc$Calibration$Result$Table[[2]] <- PIND
-            ccc$Calibration$Result$Table[[3]] <- PINDoffs
-            ccc$Calibration$Result$Table[[4]] <- PINDcorr
-            ccc$Calibration$Result$Table[[5]] <- EREL
-            ccc$Calibration$Result$Table[[6]] <- UT
-
+            RES$HeadCell <- "{\\(e\\)}"
+            RES$UnitCell <- RES$Unit
+            erel <- getConstVal(NA, NA, RES)
+            RES$Value <- formatC(erel, digits=1, width=2, format="E")
         }
-
+        
+        if(reType =="sens"){
+            ## rel
+            RES <- getSubList(a$cav$Sensitivity, "gauge_sens")
+            
+            RES$HeadCell <- "{\\(S\\)}"
+            RES$UnitCell <- RES$Unit
+            erel <- getConstVal(NA, NA, RES)
+            RES$Value <- formatC(erel, digits=1, width=2, format="E")
+        }
+        
+        ## ---
+        ## sort out function
+        ## ---
+        
+        ccc$Calibration$Result$Table[[1]] <- PCAL
+        ccc$Calibration$Result$Table[[2]] <- PIND
+        ccc$Calibration$Result$Table[[3]] <- PINDoffs
+        ccc$Calibration$Result$Table[[4]] <- PINDcorr
+        ccc$Calibration$Result$Table[[5]] <- RES
+        ccc$Calibration$Result$Table[[6]] <- UT
     }
-
     return(ccc)
-
 }

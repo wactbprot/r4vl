@@ -13,17 +13,21 @@ cuco.uncertPOffset <- function(ccc){
   u  <- getConstVal(NA,NA, U)
 
   if(length(u) == 0){
-      u <- 1e-10
-      U <- list(Unit = "mbar")
+      if(PIND$Unit == "mbar"){
+          u <- 1e-10
+          U <- list(Unit = "mbar")
+      }
+      if(PIND$Unit == "A"){
+          u <- 1e-13
+          U <- list(Unit = "A")
+      }
   }
-
-  convu <- getConvFactor(ccc,PIND$Unit,U$Unit)
 
   ccc$Calibration$Analysis$Values$Uncertainty <-
       setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
              un,
              "1",
-             u * convu/pind,
+             u / pind,
              msg)
   return(ccc)
 }

@@ -13,7 +13,7 @@ cdb  <- cdbIni()
 cdb$DBName     <- "vaclab_db" ## DBName
 
 infList <- list()
-infList$srcPath     <-  "/usr/local/src/map/_attachments/"
+infList$srcPath     <-  "/usr/local/lib/r4vl"
 
 setwd(infList$srcPath)
 
@@ -23,6 +23,8 @@ source("load.R")
 ## devel/tests/calculations from here -----------------
 #"1f72ec47286b685511b3cc38f0094533"#"1f72ec47286b685511b3cc38f009ceeb"
 cdb$id     <- "171d3f673527b2564691cad26e0235e7"#
+cdb$id     <- "626b4724c118b38468fc7a15a36e3e52"
+if(FALSE){
 doc <- cdbGetDoc(cdb)$res
 doc <- refreshAnalysis(cdb,doc)
 
@@ -49,8 +51,8 @@ doc <- ce3.uncertTfm(doc)
 doc <- ce3.uncertTch(doc)
 doc <- ce3.uncertF(doc)
 doc <- ce3.uncertPcal(doc)
-
-                                        #cdb$dataList <- doc
-                                        #cdbUpdateDoc(cdb)
+}
+cdb$dataList <- doc
+res <- cdbUpdateDoc(cdb)$res
 ## ----------------------------------------------------
 Sys.setenv("no_proxy" = saveNoProxy)
