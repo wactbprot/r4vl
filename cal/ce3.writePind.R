@@ -12,6 +12,9 @@ ce3.writePind <- function(ccc){
         }
     }
 
+    CAL <- getSubList(a$cav, "cal")
+    cal <- getConstVal(NA,NA,CAL)
+    
     ## the tribut to god of schemeless design
     IND <- getSubList(a$cmv, "p_ind")
 
@@ -36,7 +39,7 @@ ce3.writePind <- function(ccc){
         ind <- getConstVal(NA,NA,IND) * getConvFactor(ccc,pUnit,IND$Unit)
         off <- getConstVal(NA,NA,OFF) * getConvFactor(ccc,pUnit,OFF$Unit)
     }
-    
+
     ## Strom (für Sensitivity)
     if(!is.null(IND) &
        !is.null(OFF) &
@@ -54,13 +57,10 @@ ce3.writePind <- function(ccc){
         ind <- getConstVal(NA,NA,IND)
         off <- getConstVal(NA,NA,OFF)
 
-        CAL <- getSubList(a$ca, "cal")
-        cal <- getConstVal(NA,NA,CAL)
-
         d     <- getConstVal(a$cmco1, "d")
         rho   <- getConstVal(a$cmco1,"rho" )
         sigma <- getConstVal(a$cmco1,"sigma" )
-        gas   <- a$cma$Gas
+
 
         dcr <- ind - off
 
@@ -72,19 +72,19 @@ ce3.writePind <- function(ccc){
         if(a$cs == "CE3"){
             T <- getConstVal(a$cav, "Tuhv")
         }
-        if(  gas == "Ar"){
+        if(  a$cmag == "Ar"){
             M <- getConstVal(a$cc, "molWeight_Ar" )
-            msg <- paste(msg, "; gas:", gas)
+            msg <- paste(msg, "; gas:", a$cmag)
         }
-        if(  gas == "N2"){
+        if(  a$cmag == "N2"){
             M <- getConstVal(a$cc, "molWeight_N2" )
-            msg <- paste(msg, "; gas:", gas)
+            msg <- paste(msg, "; gas:", a$cmag)
         }
-        if(  gas == "D2"){
+        if(  a$cmag == "D2"){
             M <- getConstVal(a$cc, "molWeight_D2" )
-            msg <- paste(msg, "; gas:", gas)
+            msg <- paste(msg, "; gas:", a$cmag)
         }
-        
+
         if(CAL$Unit == "mbar"){
 
             indUnit  <- "mbar"
@@ -95,22 +95,22 @@ ce3.writePind <- function(ccc){
 
         }
     }
-    
+
     if(length(ind) > 0 & length(off) > 0){
         ccc$Calibration$Analysis$Values$Pressure <-
             setCcl(ccc$Calibration$Analysis$Values$Pressure, "ind",
                    pUnit,
                    ind,
                    paste(msg)
-                       )
-        
+                   )
+
         ccc$Calibration$Analysis$Values$Pressure <-
             setCcl(ccc$Calibration$Analysis$Values$Pressure, "ind_offset",
                    pUnit,
                    off,
                    paste(msg)
                    )
-        
+
         ccc$Calibration$Analysis$Values$Pressure <-
             setCcl(ccc$Calibration$Analysis$Values$Pressure, "ind_corr",
                    pUnit,

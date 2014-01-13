@@ -9,9 +9,10 @@ if(length(doc$Calibration) > 0){
     doc <- ce3.extrapC(doc)
     doc <- ce3.calQ(doc)
     doc <- ce3.calMfp(doc)
-    doc <- ce3.writePind(doc)
     doc <- ce3.calPcal(doc)
-     ##  
+    ##
+    doc <- ce3.writePind(doc)
+    ##  
     doc <- dispatchResCal(doc)
   
 ## uncertainty ...
