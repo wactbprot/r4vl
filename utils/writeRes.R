@@ -4,10 +4,12 @@ writeRes <- function( ccc ){
     ## - round
 
     a <- abbrevList(ccc)
+
     if(length(a$cp) > 0 &
        length(a$cpt) > 0){
-        reType <- a$cpt$Type
 
+        reType  <- a$cpt$Type
+        reTable <- FALSE
         ## cal
         PCAL <- getSubList(a$cav$Pressure, "cal")
         PCAL$HeadCell <- "{\\(p_{cal}\\)}"
@@ -56,6 +58,7 @@ writeRes <- function( ccc ){
             RES$UnitCell <- RES$Unit
             erel <- getConstVal(NA, NA, RES)
             RES$Value <- formatC(erel, digits=1, width=2, format="E")
+            reTable <- TRUE
         }
         
         if(reType =="sens"){
@@ -66,18 +69,20 @@ writeRes <- function( ccc ){
             RES$UnitCell <- RES$Unit
             erel <- getConstVal(NA, NA, RES)
             RES$Value <- formatC(erel, digits=1, width=2, format="E")
+            reTable <- TRUE
         }
         
         ## ---
         ## sort out function
         ## ---
-        
+        if(reTable){
         ccc$Calibration$Result$Table[[1]] <- PCAL
         ccc$Calibration$Result$Table[[2]] <- PIND
         ccc$Calibration$Result$Table[[3]] <- PINDoffs
         ccc$Calibration$Result$Table[[4]] <- PINDcorr
         ccc$Calibration$Result$Table[[5]] <- RES
         ccc$Calibration$Result$Table[[6]] <- UT
+    }
     }
     return(ccc)
 }
