@@ -47,6 +47,21 @@
 	par(cex.main = 3)
         end.rcode-->
     
+    <h2 id="temp">Temperature
+      <sup><a href="#top">^</a></sup></h2>
+    <!--begin.rcode
+        withU    <- FALSE
+	upperLimit <- 24.0 +273.15
+	lowerLimit <- 22.0 +273.15
+	soll       <- 23.0 +273.15
+        Tfm3    <- getConstVal(a$cav$Temperature, "Tfm3")
+	Tpbox   <- getConstVal(a$cav$Temperature, "Tpbox")
+	Tuhv    <- getConstVal(a$cav$Temperature, "Tuhv")
+	Txhv    <- getConstVal(a$cav$Temperature, "Txhv")
+	Troom   <- getConstVal(a$cav$Temperature, "Troom")
+	N <- length(Tfm3)
+        end.rcode-->
+    
     <h3 id="tempFm3">T<sub>fm3</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode Temperature_FM3
