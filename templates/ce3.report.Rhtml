@@ -17,9 +17,7 @@
 
     <hr>
     <h1 id="top">CE3 Calibration Report</h1>
-
     <hr>
-
     <h2 id="header">Calibration Header</h2>
     <ul>
       <li>id: <!--rinline doc[["_id"]] --></li>
@@ -43,32 +41,23 @@
     </ul>
 
     <hr>
-
-    <h2 id="temp">Temperature
+    <h2 id="settings">global settings
       <sup><a href="#top">^</a></sup></h2>
     <!--begin.rcode
-        withU    <- FALSE
-	upperLimit <- 24.0 +273.15
-	lowerLimit <- 22.0 +273.15
-	soll       <- 23.0 +273.15
-
-        Tfm3  <- getConstVal(a$cav$Temperature, "Tfm3")
-	Tpbox   <- getConstVal(a$cav$Temperature, "Tpbox")
-	Tuhv    <- getConstVal(a$cav$Temperature, "Tuhv")
-	Txhv    <- getConstVal(a$cav$Temperature, "Txhv")
-	Troom    <- getConstVal(a$cav$Temperature, "Troom")
-	N <- length(Tfm3)
+	par(cex.main = 3)
         end.rcode-->
+    
     <h3 id="tempFm3">T<sub>fm3</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode Temperature_FM3
 	plot(1:N, 
-	Tfm3, 
+	Tfm3,
+	main="Temperature FM3",
 	xlab = "Messpkt.", 
 	ylab = "Tfm3 in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 	abline(h=soll, col="green")
@@ -82,7 +71,7 @@
 	ylab = "Tpbox in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
     type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 	abline(h=soll, col="green")
@@ -96,7 +85,7 @@
 	ylab = "Tuhv in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
     type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 	abline(h=soll, col="green")
@@ -110,7 +99,7 @@
 	ylab = "Txhv in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
     type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 	abline(h=soll, col="green")
@@ -125,7 +114,7 @@
 	ylab = "T room in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
     type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 	abline(h=soll, col="green")
@@ -164,7 +153,7 @@
 	xlab = "Messpkt.", 
 	ylab = "pfill",
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 	end.rcode-->
@@ -180,7 +169,7 @@
 	ylab = "pfill_offset/pfill",
 	ylim=c(lowerLimit*2, upperLimit*2),
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 
@@ -197,7 +186,7 @@
 	xlab = "Messpkt.", 
 	ylab = "dpC/pfill",
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 	}
@@ -220,7 +209,7 @@
 	xlab = "Messpkt.", 
 	ylab = "dp/dt / p",
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 	}
@@ -238,7 +227,7 @@
 	ylim=c(lowerLimit*2, upperLimit*2),
 	type="b", 
 	log="y")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
 	end.rcode-->
@@ -257,7 +246,7 @@
 	ylab = "p ind/ p cal-1",
 	ylim=c(M*(1 - span), M*(1 + span)),
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=M, col="green")
 	abline(h=M*(1 - span), col="red")
 	abline(h=M*(1 + span), col="red")	
@@ -270,7 +259,7 @@
 	ylab = "p ind/ p cal-1",
 	ylim=c(M*(1 - span), M*(1 + span)),
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=M, col="green")
 	abline(h=M*(1 - span), col="red")
 	abline(h=M*(1 + span), col="red")	
@@ -282,7 +271,7 @@
 	ylab = "p ind/ p cal-1",
 	ylim=c(M*(1 - span), M*(1 + span)),
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=M, col="green")
 	abline(h=M*(1 - span), col="red")
 	abline(h=M*(1 + span), col="red")	
@@ -294,7 +283,7 @@
 	ylab = "p ind/ p cal-1",
 	ylim=c(M*(1 - span), M*(1 + span)),
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=M, col="green")
 	abline(h=M*(1 - span), col="red")
 	abline(h=M*(1 + span), col="red")	
@@ -326,7 +315,7 @@
 	ylab = "Conductance in l/s",
 	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
 	## -- grLW
@@ -338,7 +327,7 @@
 	ylab = "Conductance in l/s",
 	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
 	par(mfrow=c(1,1))
@@ -356,7 +345,7 @@
 	ylab = "C nom / C fm3 -1",
 	ylim=c(lowerLimit*2, upperLimit*2),
 	type="b")
-	grid()
+	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
 	
