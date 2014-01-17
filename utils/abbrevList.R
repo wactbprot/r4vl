@@ -55,7 +55,6 @@ abbrevList <- function(ccc){
     a$dataAvailable <- TRUE
   }
 
-
   a$ca  <- a$c$Analysis
   a$cav <- a$ca$Values
   a$cr  <- a$c$Result
