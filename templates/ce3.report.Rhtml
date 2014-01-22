@@ -69,8 +69,8 @@
     <!--begin.rcode Temperature_FM3
 	plot(1:N, 
 	Tfm3,
-	main="Temperature FM3",
-	xlab = "Messpkt.", 
+	main="temperature FM3",
+	xlab = "point", 
 	ylab = "Tfm3 in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
 	type="b")
@@ -84,7 +84,8 @@
     <!--begin.rcode Temperature_Pbox
 	plot(1:N, 
 	Tpbox, 
-	xlab = "Messpkt.", 
+	main="temperature P-Box",
+	xlab = "point", 
 	ylab = "Tpbox in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
     type="b")
@@ -98,7 +99,8 @@
     <!--begin.rcode Temperature_uhv
 	plot(1:N, 
 	Tuhv, 
-	xlab = "Messpkt.", 
+	main="temperature UHV",
+	xlab = "point", 
 	ylab = "Tuhv in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
     type="b")
@@ -112,7 +114,8 @@
     <!--begin.rcode Temperature_xhv
 	plot(1:N, 
 	Txhv, 
-	xlab = "Messpkt.", 
+	main="temperature XHV",
+	xlab = "point", 
 	ylab = "Txhv in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
     type="b")
@@ -127,7 +130,8 @@
     <!--begin.rcode Temperature_room
 	plot(1:N, 
 	Troom, 
-	xlab = "Messpkt.", 
+	main="temperature Room",
+	xlab = "point", 
 	ylab = "T room in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
     type="b")
@@ -166,8 +170,9 @@
 	lowerLimit <- 1e-3
 	plot(1:N, 
 	pfill, 
+	main="filling pressure",
 	ylim=c(lowerLimit*(1-1e-2), upperLimit*(1+1e-2)),
-	xlab = "Messpkt.", 
+	xlab = "point", 
 	ylab = "pfill",
 	type="b")
 	grid(col=1)
@@ -181,8 +186,9 @@
 	upperLimit <- 1e-3
 	lowerLimit <- -1e-3
 	plot(1:N, 
+	main="offset / filling pressure",
 	pfillOffset/pfill, 
-	xlab = "Messpkt.", 
+	xlab = "point", 
 	ylab = "pfill_offset/pfill",
 	ylim=c(lowerLimit*2, upperLimit*2),
 	type="b")
@@ -199,8 +205,9 @@
 	lowerLimit <- -1e-2
 	plot(1:N, 
 	dpC/pfill, 
+	main="dp / filling pressure",
 	ylim=c(lowerLimit*2, upperLimit*2),
-	xlab = "Messpkt.", 
+	xlab = "point", 
 	ylab = "dpC/pfill",
 	type="b")
 	grid(col=1)
@@ -214,16 +221,16 @@
     <!--begin.rcode Pressure_rise
 	if(a$cmscok == "opK4"){
 	
-	
 	Dt <- (t.end - t.begin) / 1000
 	srg.dcr <- srg.fill.dcr - srg.offset.dcr
 
 	upperLimit <- 1e-4
 	lowerLimit <- -1e-4
-	plot(1:N, 
+	plot(1:N,
+	main="relative pressure rise",
 	prise*Dt/ srg.dcr, 
 	ylim=c(lowerLimit*2, upperLimit*2),
-	xlab = "Messpkt.", 
+	xlab = "point", 
 	ylab = "dp/dt / p",
 	type="b")
 	grid(col=1)
@@ -239,7 +246,8 @@
 	lowerLimit <- 1e-11
 	plot(1:N, 
 	pcal, 
-	xlab = "Messpkt.", 
+	main="calibration pressure",
+	xlab = "point", 
 	ylab = "cal",
 	ylim=c(lowerLimit*2, upperLimit*2),
 	type="b", 
@@ -253,57 +261,35 @@
  <h3 id="presindBycal">p<sub>ind_corr</sub>/p<sub>cal</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode Error
-	par(mfrow=c(2,2))
+	par(mfrow=c(2,1))
 	e <- pindcorr/pcal-1
-	span <- 0.5
-	M <- mean(e)
-	plot(1:N, 
-	e, 
-	xlab = "Messpkt.", 
-	ylab = "p ind/ p cal-1",
-	ylim=c(M*(1 - span), M*(1 + span)),
-	type="b")
-	grid(col=1)
-	abline(h=M, col="green")
-	abline(h=M*(1 - span), col="red")
-	abline(h=M*(1 + span), col="red")	
 
 	span <- 0.2
-	M <- mean(e)
+	M <- mean(e,na.rm = TRUE)
 	plot(1:N, 
 	e, 
-	xlab = "Messpkt.", 
-	ylab = "p ind/ p cal-1",
-	ylim=c(M*(1 - span), M*(1 + span)),
+	main="relative error of indication",
+	xlab = "point", 
+	ylab = "p ind/ p cal - 1",
+	ylim=c(M - span, M  + span),
 	type="b")
 	grid(col=1)
 	abline(h=M, col="green")
-	abline(h=M*(1 - span), col="red")
-	abline(h=M*(1 + span), col="red")	
-	
+	abline(h=M - span, col="red")
+	abline(h=M + span, col="red")	
+
 	span <- 0.1
+	M <- mean(e, na.rm = TRUE)
 	plot(1:N, 
 	e, 
-	xlab = "Messpkt.", 
-	ylab = "p ind/ p cal-1",
-	ylim=c(M*(1 - span), M*(1 + span)),
+	xlab = "point", 
+	ylab = "p ind/ p cal - 1",
+	ylim=c(M - span, M + span),
 	type="b")
 	grid(col=1)
 	abline(h=M, col="green")
-	abline(h=M*(1 - span), col="red")
-	abline(h=M*(1 + span), col="red")	
-	
-	span <- 0.05
-	plot(1:N, 
-	e, 
-	xlab = "Messpkt.", 
-	ylab = "p ind/ p cal-1",
-	ylim=c(M*(1 - span), M*(1 + span)),
-	type="b")
-	grid(col=1)
-	abline(h=M, col="green")
-	abline(h=M*(1 - span), col="red")
-	abline(h=M*(1 + span), col="red")	
+	abline(h=M - span, col="red")
+	abline(h=M + span, col="red")	
 	
 	par(mfrow=c(1,1))
 	end.rcode-->
@@ -322,13 +308,14 @@
     <h3 id="cond_cnom">C<sub>nom</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode Conductance_nom
-	par(mfrow=c(1,2))
+	par(mfrow=c(2,1))
 	## -- klLW
 	upperLimit <- 9e-7
 	lowerLimit <- 6e-7
 	plot(1:N, 
-	cnom, 
-	xlab = "Messpkt.", 
+	cnom,
+	main="conductance",
+	xlab = "point", 
 	ylab = "Conductance in l/s",
 	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
 	type="b")
@@ -340,7 +327,7 @@
 	lowerLimit <- 1e-5
 	plot(1:N, 
 	cnom, 
-	xlab = "Messpkt.", 
+	xlab = "point", 
 	ylab = "Conductance in l/s",
 	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
 	type="b")
@@ -357,8 +344,9 @@
 	upperLimit <- 1e-3
 	lowerLimit <- -1e-3
 	plot(1:N, 
+	main="relative conductance extrapolation",
 	cnom/cfm3 -1 , 
-	xlab = "Messpkt.", 
+	xlab = "point", 
 	ylab = "C nom / C fm3 -1",
 	ylim=c(lowerLimit*2, upperLimit*2),
 	type="b")
