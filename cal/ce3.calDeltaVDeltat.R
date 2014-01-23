@@ -10,15 +10,19 @@ ce3.calDeltaVDeltat <- function(ccc){
     
     
     if(a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"){
-                L       <-  NULL
+        L       <-  NULL
         sdL     <-  NULL
         lL      <-  NULL
         gamma   <-  NULL
         Mp      <-  NULL
         meanMp  <-  NULL
         sdMeanMp<-  NULL
-        gslope  <-  NULL
-                
+        gSlope  <-  NULL
+        minSlope<-  NULL
+        maxSlope<-  NULL
+        mSlope  <-  NULL
+       
+        
         DRIFT   <-  getSubList(a$cmv,"drift_slope_x")
         drift   <-  getConstVal(NA,NA,DRIFT)
 
@@ -82,8 +86,11 @@ ce3.calDeltaVDeltat <- function(ccc){
 
             ## Güte des SZ: Steigung mp ~ mt möglichst klein
             mts        <- mt * tconv
-            gslope[j]  <- as.numeric(lm(mp ~ mts)$coefficients[2])
-
+            gSlope[j]  <- as.numeric(lm(mp ~ mts)$coefficients[2])
+            mSlope[j]  <- mean(slope)
+            minSlope[j]<- min(slope)
+            maxSlope[j]<- max(slope)
+            
             ## delta V
             ## fn.Afit:
             ##
@@ -102,10 +109,10 @@ ce3.calDeltaVDeltat <- function(ccc){
             deltaV     <- A * (h[i2] - h[i1]) * vconv
 
             ## Leitwert = dV/dt
-
-            L[j]       <- mean(   deltaV / deltat)
-            sdL[j]     <- sd(     deltaV / deltat)
-            lL[j]      <- length( deltaV / deltat)
+            dVdt       <- deltaV / deltat
+            L[j]       <- mean(  dVdt )
+            sdL[j]     <- sd(    dVdt )
+            lL[j]      <- length(dVdt )
             ## ------------------------------------##
         }
 
@@ -134,27 +141,47 @@ ce3.calDeltaVDeltat <- function(ccc){
             setCcl(ccc$Calibration$Analysis$Values$Conductance,
                    "g_slope",
                    "mbar/ms",
-                   gslope,
-                   msg)
+                   gSlope)
+        
+        ccc$Calibration$Analysis$Values$Conductance <-
+            setCcl(ccc$Calibration$Analysis$Values$Conductance,
+                   "min_slope",
+                   "mbar/ms",
+                   minSlope)
+        
+        ccc$Calibration$Analysis$Values$Conductance <-
+            setCcl(ccc$Calibration$Analysis$Values$Conductance,
+                   "max_slope",
+                   "mbar/ms",
+                   maxSlope)
+        
+        ccc$Calibration$Analysis$Values$Conductance <-
+            setCcl(ccc$Calibration$Analysis$Values$Conductance,
+                   "mean_slope",
+                   "mbar/ms",
+                   mSlope)
 
+        ccc$Calibration$Analysis$Values$Conductance <-
+            setCcl(ccc$Calibration$Analysis$Values$Conductance,
+                   "drift_slope",
+                   "mbar/ms",
+                   drift)
+        
     } ## a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"
 
     if(a$cmscok == "opK4"){
-        
         if(PFILL$Unit == "mbar"){
-        
+            
             dv2MolCIntercept <-  getConstVal(a$cms$Constants, "dv2MolCIntercept")
             dv2MolCSlope  <-  getConstVal(a$cms$Constants, "dv2MolCSlope") 
-            
-
-            
-        ccc$Calibration$Analysis$Values$Conductance <-
-            setCcl(ccc$Calibration$Analysis$Values$Conductance,
-                   "cnom",
-                   "l/s",
-                   dv2MolCSlope * pfill + dv2MolCIntercept,
+                        
+            ccc$Calibration$Analysis$Values$Conductance <-
+                setCcl(ccc$Calibration$Analysis$Values$Conductance,
+                       "cnom",
+                       "l/s",
+                       dv2MolCSlope * pfill + dv2MolCIntercept,
                    msg)
-    }
+        }
     }
     return(ccc)
 }
