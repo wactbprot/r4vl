@@ -44,10 +44,11 @@
     <h2 id="settings">global settings
       <sup><a href="#top">^</a></sup></h2>
     <!--begin.rcode
-	par(cex.main = 3,
-	cex.axis     = 2,
-	cex.lab      = 2)
-        end.rcode-->
+    par(cex.main = 3,
+    cex.axis     = 2,
+    cex.lab      = 2,
+    cex=2)
+    end.rcode-->
     
     <h2 id="temp">Temperature
       <sup><a href="#top">^</a></sup></h2>
@@ -73,7 +74,8 @@
 	xlab = "point", 
 	ylab = "Tfm3 in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
-	type="b")
+	type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -88,7 +90,8 @@
 	xlab = "point", 
 	ylab = "Tpbox in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
-    type="b")
+        type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -103,7 +106,8 @@
 	xlab = "point", 
 	ylab = "Tuhv in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
-    type="b")
+        type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -118,7 +122,8 @@
 	xlab = "point", 
 	ylab = "Txhv in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
-    type="b")
+        type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -134,7 +139,8 @@
 	xlab = "point", 
 	ylab = "T room in K",
 	ylim=c(lowerLimit -0.5, upperLimit +0.5),
-    type="b")
+        type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -174,7 +180,8 @@
 	ylim=c(lowerLimit*(1-1e-2), upperLimit*(1+1e-2)),
 	xlab = "point", 
 	ylab = "pfill",
-	type="b")
+	type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -191,13 +198,14 @@
 	xlab = "point", 
 	ylab = "pfill_offset/pfill",
 	ylim=c(lowerLimit*2, upperLimit*2),
-	type="b")
+	type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
 
 	end.rcode-->
-  <h3 id="presFillBypdc">p<sub>dC</sub>/p<sub>fill</sub>
+    <h3 id="presFillBypdc">p<sub>dC</sub>/p<sub>fill</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode Pressure_dp_by_fill
 	if(a$cmscok != "opK4"){
@@ -209,7 +217,8 @@
 	ylim=c(lowerLimit*2, upperLimit*2),
 	xlab = "point", 
 	ylab = "dpC/pfill",
-	type="b")
+	type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -232,7 +241,8 @@
 	ylim=c(lowerLimit*2, upperLimit*2),
 	xlab = "point", 
 	ylab = "dp/dt / p",
-	type="b")
+	type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")
@@ -251,7 +261,8 @@
 	ylab = "cal",
 	ylim=c(lowerLimit*2, upperLimit*2),
 	type="b", 
-	log="y")
+	log="y",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
@@ -260,7 +271,7 @@
 
  <h3 id="presindBycal">p<sub>ind_corr</sub>/p<sub>cal</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode Error
+    <!--begin.rcode Error_N
 	par(mfrow=c(2,1))
 	e <- pindcorr/pcal-1
 
@@ -272,7 +283,9 @@
 	xlab = "point", 
 	ylab = "p ind/ p cal - 1",
 	ylim=c(M - span, M  + span),
-	type="b")
+	type="b",
+        pch=23, cex=2)
+
 	grid(col=1)
 	abline(h=M, col="green")
 	abline(h=M - span, col="red")
@@ -285,7 +298,9 @@
 	xlab = "point", 
 	ylab = "p ind/ p cal - 1",
 	ylim=c(M - span, M + span),
-	type="b")
+	type="b",
+        pch=23, cex=2)
+
 	grid(col=1)
 	abline(h=M, col="green")
 	abline(h=M - span, col="red")
@@ -293,6 +308,18 @@
 	
 	par(mfrow=c(1,1))
 	end.rcode-->
+	     
+	<!--begin.rcode Error_p
+	plot(pind, 
+	e, 
+	main="relative error of indication",
+	xlab = "p",
+	ylab = "p ind/ p cal - 1",
+	log="x",
+	pch=23, cex=2)
+	grid(col=1)
+	end.rcode-->
+
     
     <h2 id="cond">Conductance
       <sup><a href="#top">^</a></sup></h2>
@@ -302,6 +329,10 @@
 	sdcnom      <- getConstVal(a$cav$Conductance, "sd_cnom")
         cfm3        <- getConstVal(a$cav$Conductance, "cfm3")
 	diffhist    <- getConstVal(a$cav$Conductance, "diff_hist")
+	minSlope    <- getConstVal(a$cav$Conductance, "min_slope")
+	maxSlope    <- getConstVal(a$cav$Conductance, "max_slope")
+	mSlope      <- getConstVal(a$cav$Conductance, "mean_slope")
+	drift       <- getConstVal(a$cav$Conductance, "drift_slope")
 	}
 	end.rcode-->
     
@@ -318,7 +349,8 @@
 	xlab = "point", 
 	ylab = "Conductance in l/s",
 	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
-	type="b")
+	type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
@@ -330,7 +362,8 @@
 	xlab = "point", 
 	ylab = "Conductance in l/s",
 	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
-	type="b")
+	type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
@@ -349,11 +382,83 @@
 	xlab = "point", 
 	ylab = "C nom / C fm3 -1",
 	ylim=c(lowerLimit*2, upperLimit*2),
-	type="b")
+	type="b",
+        pch=23, cex=2)
 	grid(col=1)
 	abline(h=upperLimit, col="red")
 	abline(h=lowerLimit, col="red")	
 	
+	}
+	end.rcode-->
+
+     <h3 id="cond_diff_hist">difference to history
+      <sup><a href="#top">^</a></sup></h3>
+     See
+     <a href="http://a73435.berlin.ptb.de/thomas.bock/r4vl/blob/master/cal/ce3.calDeltaVDeltat.R"
+	target="_blank">function ce3.calDeltaVDeltat()</a>
+    <!--begin.rcode Conductance_diff_hist
+	if(a$cmscok == "opK1" | a$cmscok == "opK2" | a$cmscok == "opK3"){
+	upperLimit <- 1e-2
+	lowerLimit <- -1e-2
+	plot(1:N, 
+	main="difference to history",
+	diffhist, 
+	xlab = "point", 
+	ylab = "C nom / f(C nom) -1",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	
+	}
+	end.rcode-->
+
+    <h3 id="slope_params">saw tooth params
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Saw_tooth_params
+	if(a$cmscok == "opK1" | a$cmscok == "opK2" | a$cmscok == "opK3"){
+	upperLimit <- 0.05
+	lowerLimit <- -0.02
+
+	plot(1:N, 
+	main="saw tooth parameter",
+	(drift/mSlope), 
+	xlab = "point", 
+	ylab = "slope ratios",
+	ylim=c(lowerLimit, upperLimit),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	
+	points(1:N,
+	(maxSlope/mSlope -1),
+	col=2,
+	type="b")
+	
+	points(1:N,
+	(minSlope/mSlope -1),
+	col=3,
+	type="b",
+        pch=23, cex=2)
+		
+	points(1:N,
+	(sdcnom/cnom),
+	col=4,
+	type="b",
+        pch=23, cex=2)
+	legend(1,upperLimit, 
+	col=1:4,
+	pch=rep(1,4),
+	cex=1.2,
+	c("drift/mean(slopes)",
+	"max(slopes)/mean(slopes)",
+	"min(slopes)/mean(slopes)",
+	"sd(C)/C"))
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+
 	}
 	end.rcode-->
 
