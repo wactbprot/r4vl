@@ -22,8 +22,9 @@ source("load.R")
 
 ## devel/tests/calculations from here -----------------
 #"1f72ec47286b685511b3cc38f0094533"#"1f72ec47286b685511b3cc38f009ceeb"
-cdb$id     <- "171d3f673527b2564691cad26e0235e7"#
-cdb$id     <- "626b4724c118b38468fc7a15a36e3e52"
+# cdb$id     <- "171d3f673527b2564691cad26e0235e7"#
+# cdb$id     <- "626b4724c118b38468fc7a15a36e3e52"
+cdb$id     <- "7b797897f2572b681bb41c4a7b09766d"
 if(FALSE){
 doc <- cdbGetDoc(cdb)$res
 doc <- refreshAnalysis(cdb,doc)

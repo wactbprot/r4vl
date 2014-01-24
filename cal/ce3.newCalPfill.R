@@ -195,7 +195,8 @@ ce3.newCalPfill <- function(ccc){
         ## durch das Schließen des V22
         ## bei pfill ist das nicht dabei,
         ## weil hier V22 offen ist
-        pdriftfill <- pdriftfill + dpC
+        pdriftfill <- pdriftfill  + dpC
+        pfill      <- pfill + dpC
 
 
         ccc$Calibration$Analysis$Values$Pressure <-

@@ -76,10 +76,11 @@ if(!test){
  }
  outdb$fileName     <-  paste(reportName, ".html", sep="")
  resHtml            <- cdbAddAttachment(outdb)$res
- 
- if(test){
-     setwd(cwd)
- }
+
+
+if(test){
+    setwd(cwd)
+}
  
  cat(toJSON(list(resFigures = resFigures$ok,
                  resHtml = resHtml$ok)))

@@ -168,6 +168,7 @@
         pind         <- getConstVal(a$cav$Pressure, "ind")
         pindOffset   <- getConstVal(a$cav$Pressure, "ind_offset")
         pindcorr     <- getConstVal(a$cav$Pressure, "ind_corr")
+        dcorr     <- getConstVal(a$cav$Conductance, "drift_corr")
 	end.rcode-->
     <h3 id="presFill">p<sub>fill</sub>
       <sup><a href="#top">^</a></sup></h3>
@@ -272,52 +273,72 @@
  <h3 id="presindBycal">p<sub>ind_corr</sub>/p<sub>cal</sub>
       <sup><a href="#top">^</a></sup></h3>
     <!--begin.rcode Error_N
-	par(mfrow=c(2,1))
-	e <- pindcorr/pcal-1
 
-	span <- 0.2
+	par(mfrow=c(2,1))
+	
+	e <- pindcorr/pcal-1
+	
+	spanH <- 0.08
+	spanL <- 0.04
 	M <- mean(e,na.rm = TRUE)
 	plot(1:N, 
 	e, 
 	main="relative error of indication",
 	xlab = "point", 
 	ylab = "p ind/ p cal - 1",
-	ylim=c(M - span, M  + span),
+	ylim=c(M - spanH, M  + spanH),
 	type="b",
         pch=23, cex=2)
 
 	grid(col=1)
 	abline(h=M, col="green")
-	abline(h=M - span, col="red")
-	abline(h=M + span, col="red")	
+	abline(h=M - spanH, col="red")
+	abline(h=M + spanH, col="red")	
 
-	span <- 0.1
+
 	M <- mean(e, na.rm = TRUE)
 	plot(1:N, 
 	e, 
 	xlab = "point", 
 	ylab = "p ind/ p cal - 1",
-	ylim=c(M - span, M + span),
+	ylim=c(M - spanL, M + spanL),
 	type="b",
         pch=23, cex=2)
-
 	grid(col=1)
 	abline(h=M, col="green")
-	abline(h=M - span, col="red")
-	abline(h=M + span, col="red")	
+	abline(h=M - spanL, col="red")
+	abline(h=M + spanL, col="red")	
 	
-	par(mfrow=c(1,1))
+
 	end.rcode-->
 	     
 	<!--begin.rcode Error_p
+	par(mfrow=c(2,1))
 	plot(pind, 
 	e, 
-	main="relative error of indication",
+	main="relative error of indication ",
 	xlab = "p",
 	ylab = "p ind/ p cal - 1",
 	log="x",
+	ylim=c(M - spanH, M  + spanH),
 	pch=23, cex=2)
 	grid(col=1)
+	abline(h=M, col="green")
+	abline(h=M - spanH, col="red")
+	abline(h=M + spanH, col="red")	
+
+	plot(pind, 
+	e, 
+	xlab = "p",
+	ylab = "p ind/ p cal - 1",
+	log="x",
+	ylim=c(M - spanL, M  + spanL),
+	pch=23, cex=2)
+	grid(col=1)
+	abline(h=M, col="green")
+	abline(h=M - spanL, col="red")
+	abline(h=M + spanL, col="red")	
+	par(mfrow=c(1,1))
 	end.rcode-->
 
     

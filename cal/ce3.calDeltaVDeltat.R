@@ -21,7 +21,7 @@ ce3.calDeltaVDeltat <- function(ccc){
         minSlope<-  NULL
         maxSlope<-  NULL
         mSlope  <-  NULL
-       
+        dcorr   <-  NULL
         
         DRIFT   <-  getSubList(a$cmv,"drift_slope_x")
         drift   <-  getConstVal(NA,NA,DRIFT)
@@ -75,22 +75,23 @@ ce3.calDeltaVDeltat <- function(ccc){
             ## das ist der mittelwert der mittleren
             ## sz-Drücke; die "Extrapolationslänge"
             ## wird so minimal.
-            mt         <- mt  - min(mt)
             ## ------------------------------------##
-            corrSlope  <- slope  - drift[j]
-            ci         <- mp     - corrSlope *  mt
-            t0         <- (mean(mp) - ci) / corrSlope
+            mt         <- mt  - min(mt)
+            ci         <- mp - slope *  mt
+            t0         <- (mean(mp) - ci) / slope 
             nt         <- length(t0)
             deltat     <- diff(t0) * tconv
             ## ------------------------------------##
 
             ## Güte des SZ: Steigung mp ~ mt möglichst klein
-            mts        <- mt * tconv
-            gSlope[j]  <- as.numeric(lm(mp ~ mts)$coefficients[2])
+            gSlope[j]  <- as.numeric(lm(mp ~ mt)$coefficients[2])
             mSlope[j]  <- mean(slope)
             minSlope[j]<- min(slope)
             maxSlope[j]<- max(slope)
-            
+            ## In praktisch allen Fällen entsteht die Drift
+            ## durch Temperatur; dieser entspricht dann
+            ## kein Gasfluß; dcorr berücksichtigt das:
+            dcorr[j]   <- drift[j]/mSlope[j] 
             ## delta V
             ## fn.Afit:
             ##
@@ -108,8 +109,8 @@ ce3.calDeltaVDeltat <- function(ccc){
             A          <- (fn.Afit(cf,h[i2]) - fn.Afit(cf,h[i1]))/(h[i2] - h[i1])
             deltaV     <- A * (h[i2] - h[i1]) * vconv
 
-            ## Leitwert = dV/dt
-            dVdt       <- deltaV / deltat
+            ## Leitwert = dV/dt - drift
+            dVdt       <- deltaV / deltat * (1 - dcorr[j])
             L[j]       <- mean(  dVdt )
             sdL[j]     <- sd(    dVdt )
             lL[j]      <- length(dVdt )
@@ -166,6 +167,12 @@ ce3.calDeltaVDeltat <- function(ccc){
                    "drift_slope",
                    "mbar/ms",
                    drift)
+
+        ccc$Calibration$Analysis$Values$Conductance <-
+            setCcl(ccc$Calibration$Analysis$Values$Conductance,
+                   "drift_corr",
+                   "1",
+                   dcorr)
         
     } ## a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"
 
