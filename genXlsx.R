@@ -88,4 +88,8 @@ if(test){
     setwd(cwd)
 }
 
+## delete folder
+setwd("..")
+unlink( outPath,recursive=TRUE)
+
 cat(toJSON(list( resXlsx= resXlsx$ok)))
