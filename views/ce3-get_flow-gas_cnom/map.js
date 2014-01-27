@@ -8,6 +8,7 @@ function(doc) {
             if(ca && cm){
 
                 var cav  = ca.Values,
+		cmv  = cm.Values,
                 cad  = ca.Date,
                 cms  = cm.SequenceControl;
 
