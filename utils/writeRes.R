@@ -117,6 +117,7 @@ writeRes <- function( ccc ){
                                         toString(i.take[i.out]))
                     }
                 }
+                
                 td.pcal[i]     <- mean(pcal[i.take])
                 td.pind[i]     <- mean(pind[i.take])
                 td.pindoffs[i] <- mean(pindoffs[i.take])

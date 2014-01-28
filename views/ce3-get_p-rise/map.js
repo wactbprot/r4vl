@@ -30,31 +30,34 @@ function(doc) {
 		    if(dcmap[i].Type == "srg_p_rise"){
 			
 			if(share.isArray(dcmap[i].Value)){
-			    priseArr = dcmap[i].Value;
-			    prise = priseArr[priseArr.length -1];
+			    var priseArr = dcmap[i].Value;
+			    var prise = priseArr[priseArr.length -1];
 			}else{
-			    prise = dcmap[i].Value;
+			    var prise = dcmap[i].Value;
 			}
 		    }
 		}
 	    }//pressure
 	    var dcmat = dcm.AuxValues.Time;
 	    if(dcmat &&  share.isArray(dcmat)){
+		var tbegin = "",
+		tend       = "";
+		
 		for(var i = 0; i < dcmat.length; ++i){
 		    if(dcmat[i].Type == "begin_constC"){
-			tbegin = dcmat[i].Value
+			tbegin = dcmat[i].Value;
 		    }
 		    if(dcmat[i].Type == "end_constC"){
-			tend = dcmat[i].Value
+			tend = dcmat[i].Value;
 		    }
 		}
 	    }//time
-	    if(tbegin && tend && prise &&
+	    if(tbegin != ""  && tend != "" && prise &&
 	       (tbegin.length == tend.length) &&
 	       tbegin.length > 0){
 		for(var j=0; j< tbegin.length; ++j){
-		    var dts = (parseInt(tend[j],10) - parseInt(tbegin[j],10))/1000 
-		    emit(dcmdv, dts*prise) 
+		    var dts = (parseInt(tend[j],10) - parseInt(tbegin[j],10))/1000; 
+		    emit(dcmdv, dts*prise); 
 		} 
 	    }
 	}
