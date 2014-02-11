@@ -31,7 +31,8 @@ ccc <- frs5.calPfrs5(ccc)
 ccc <- frs5.uncertPfrs5(ccc)
 ccc <- se2.calPfill(ccc)
 ccc <- se2.calRGC(ccc)
-
+ccc <- calfFrs5Se2(ccc)
+ccc <- se2.calAddVolume(ccc)
 ##  cdb$dataList <- ccc
 ##  res <- cdbAddDoc(cdb)$res
 
