@@ -30,7 +30,7 @@ ccc <- frs5_se2.yamp.calT(ccc)
 ccc <- frs5.calPfrs5(ccc)
 ccc <- frs5.uncertPfrs5(ccc)
 ccc <- se2.calPfill(ccc)
-
+ccc <- se2.calRGC(ccc)
 
 ##  cdb$dataList <- ccc
 ##  res <- cdbAddDoc(cdb)$res
