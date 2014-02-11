@@ -8,7 +8,7 @@ frs5.calPfrs5 <- function(ccc){
   resType <- "cal"
   ## aber:
   if(a$ct == "VG" |  a$ct == "IK"){
-    resType <- "frs5"
+      resType <- "frs5"
   }
   ## --   R.cal <- 2.290320
   ## --   m.cal <- 1038.867
@@ -21,52 +21,41 @@ frs5.calPfrs5 <- function(ccc){
   ## --
   ## --   mult <- m.cal*g.cal*rho.corr/R.cal/A.0/theta.corr/10
 
-  G      <- getSubList(a$cc,    "g")      ## in m/s^2
-  ## Temperature vvvvvvvvvvvv
-  frs5Tch <- "203"
-  TFRS      <-  getSubList(a$cmv$Temperature, paste("keithley_ch",frs5Tch,sep=""))
-  corrTFrs5 <-  getConstVal(a$cmco,paste("keithley_corr_ch",frs5Tch,sep=""))
-  Tfrs   <- getConstVal(NA,NA,TFRS)  + corrTFrs5
-  ##            ^^^^^^^^^^
-  RCAL   <- getSubList(a$cms$Constants,    "R_cal") ## in lb
-     
-  MCAL   <- getSubList(a$cms$Constants,    "m_cal") ## in in kg
+  G         <- getSubList(a$cc,    "g")      ## in m/s^2
 
-  AEFF   <- getSubList(a$cms$Constants,    "A_eff") ## in in m^2
-
-  RHOFrs <-  getSubList(a$cms$Constants,    "rho_frs") ## in in kg/m^3
-  RHOGas <-  getSubList(a$cms$Constants,    "rho_gas") ## in in kg/m^3
-  AB     <-  getSubList(a$cms$Constants,    "alpha_beta_frs") ## in in kg/m^3
+  TFRS      <- getSubList(a$cav$Temperature, "frs5")
+  Tfrs      <-  getConstVal(NA, NA, TFRS)
+  
+  RCAL      <- getSubList(a$cms,    "R_cal") ## in lb
+  MCAL      <- getSubList(a$cms,    "m_cal") ## in in kg
+  AEFF      <- getSubList(a$cms,    "A_eff") ## in in m^2
+  RHOFrs    <- getSubList(a$cms,   "rho_frs") ## in in kg/m^3
+  RHOGas    <- getSubList(a$cms,   "rho_gas") ## in in kg/m^3
+  AB        <- getSubList(a$cms,   "alpha_beta_frs") ## in in kg/m^3
   ## check der Einheiten
-  g      <- getConstVal(NA,NA,G) * getConvFactor(ccc,"m/s^2",G$Unit)
+  g         <- getConstVal(NA,NA,G) * getConvFactor(ccc,"m/s^2",G$Unit)
 
-  Rcal   <- getConstVal(NA,NA,RCAL) * getConvFactor(ccc,RUnit,RCAL$Unit)
-  mcal   <- getConstVal(NA,NA,MCAL) * getConvFactor(ccc,"kg",MCAL$Unit)
-  Aeff   <- getConstVal(NA,NA,AEFF) * getConvFactor(ccc,"m^2",AEFF$Unit)
+  Rcal      <- getConstVal(NA,NA,RCAL) * getConvFactor(ccc,RUnit,RCAL$Unit)
+  mcal      <- getConstVal(NA,NA,MCAL) * getConvFactor(ccc,"kg",MCAL$Unit)
+  Aeff      <- getConstVal(NA,NA,AEFF) * getConvFactor(ccc,"m^2",AEFF$Unit)
 
-  rhoFrs <- getConstVal(NA,NA,RHOFrs) * getConvFactor(ccc,"kg/m^3",RHOFrs$Unit)
-  rhoGas <- getConstVal(NA,NA,RHOGas) * getConvFactor(ccc,"kg/m^3",RHOGas$Unit)
+  rhoFrs    <- getConstVal(NA,NA,RHOFrs) * getConvFactor(ccc,"kg/m^3",RHOFrs$Unit)
+  rhoGas    <- getConstVal(NA,NA,RHOGas) * getConvFactor(ccc,"kg/m^3",RHOGas$Unit)
 
-  alphaBeta <- getConstVal(NA,NA,AB) * getConvFactor(ccc,"1/C",AB$Unit)
+  alphbet   <- getConstVal(NA,NA,AB) * getConvFactor(ccc,"1/C",AB$Unit)
 
- 
-
-  RFRS    <- getSubList(a$cmv,    "frs_p") ## in lb
-  RFRSZc  <- getSubList(a$cmv,    "frs_zc_p") ## in lb
-  RFRSZc0 <- getSubList(a$cma,    "frs_zc0_p") ## in lb
+  RFRS      <- getSubList(a$cmv,    "frs_p") ## in lb
+  RFRSZc    <- getSubList(a$cmv,    "frs_zc_p") ## in lb
+  RFRSZc0   <- getSubList(a$cma,    "frs_zc0_p") ## in lb
 
   Rfrs      <- getConstVal(NA,NA,RFRS) * getConvFactor(ccc,RUnit,RFRS$Unit)
   RfrsZc    <- getConstVal(NA,NA,RFRSZc) * getConvFactor(ccc,RUnit,RFRSZc$Unit)
   RfrsZc0   <- getConstVal(NA,NA,RFRSZc0) * getConvFactor(ccc,RUnit,RFRSZc0$Unit)
 
   rhoCorr <- (1-rhoGas/rhoFrs)
-  alphaBetaCorr<- (1 + alphaBeta*(Tfrs - 20))
+  alphbetCorr<- (1 + alphbet*(Tfrs - 20))
 
-  ## ---------vvv--------ToDo--------
-  ## s. Ticket #79
-  ## pres
-  ## das srg- Problem löse ich später
-  ## hier reicht Faktor 27 an die dcr- Werte zu multiplizieren
+  
   srgD        <- getConstVal(a$cmco,  "d")              ## in m
   srgRho      <- getConstVal(a$cmco,  "rho")            ## in kg/m^3
   srgSigma    <- getConstVal(a$cmco,  "sigma_eff_N2")   ##
@@ -87,7 +76,7 @@ frs5.calPfrs5 <- function(ccc){
   R0        <- RfrsZc - RfrsZc0
   R         <- Rfrs - R0
 
-  pfrs <- R/Rcal*mcal*g/Aeff*rhoCorr*alphaBetaCorr + pres ## liefert Pa
+  pfrs <- R/Rcal*mcal*g/Aeff*rhoCorr*alphbetCorr + pres ## liefert Pa
 
 
   ccc$Calibration$Analysis$Values$Pressure <-
@@ -103,14 +92,8 @@ frs5.calPfrs5 <- function(ccc){
            "frs5_res",
            calUnit,
            pres,
-           paste(msg,"constants:",srgD, srgRho,srgSigma,molWeightN2,srgR,Tsrg, srgK))
- 
- ccc$Calibration$Analysis$Values$Temperature <-
-    setCcl(ccc$Calibration$Analysis$Values$Temperature,
-           "frs5",
-           "C",
-           Tfrs,
-           paste(msg,"correcteed with T_ch + ",corrTFrs5, "with ch = ", frs5Tch))
+           paste(msg,"constants (srgD, srgRho, srgSigma, molWeightN2, srgR, Tsrg, srgK):",
+                 srgD ,",", srgRho,",", srgSigma,",", molWeightN2, ",", srgR, ",",Tsrg,",", srgK))
   
   return(ccc)
 }
