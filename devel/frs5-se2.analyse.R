@@ -23,15 +23,14 @@ for (k in 1:length(fn)) source(paste(srcPath,fn[k],sep=""))
 
 ccc <- cdbGetDoc(cdb)$res
 
-if(length(ccc$Calibration) > 0){
+ccc <- refreshAnalysis(cdb,ccc)
 
-  ccc <- refreshAnalysis(cdb,ccc)
+ccc <- frs5_se2.yamp.calT(ccc)
 
-  ccc <- frs5.calPcal(ccc)
-#  ccc <- frs5.uncertPfrs5(ccc)
+ccc <- frs5.calPfrs5(ccc)
+ccc <- frs5.uncertPfrs5(ccc)
 
 
-  ##  cdb$dataList <- ccc
+##  cdb$dataList <- ccc
+##  res <- cdbAddDoc(cdb)$res
 
-  ##  res <- cdbAddDoc(cdb)$res
-}
