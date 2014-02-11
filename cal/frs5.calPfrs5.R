@@ -4,7 +4,7 @@ frs5.calPfrs5 <- function(ccc){
 
   TUnit   <- "C"
   RUnit   <- "lb"
-  calUnit <- "Pa"
+  calUnit <- "mbar"
   resType <- "cal"
   ## aber:
   if(a$ct == "VG" |  a$ct == "IK"){
@@ -64,26 +64,27 @@ frs5.calPfrs5 <- function(ccc){
 
   Tsrg        <- Tfrs + getConvFactor(ccc,"K",TFRS$Unit)
   
-  srgK        <- (8*srgR*Tsrg/(pi*molWeightN2))^0.5*pi*srgD*srgRho/20
+  srgK        <- (8*srgR*Tsrg/(pi*molWeightN2))^0.5*pi*srgD*srgRho/2000 #mbar
   
   pdcrOff     <- getConstVal(a$cma,"frs_res_off")
   pdcr        <- getConstVal(a$cmv,"frs_res")
 
-  pres <- (pdcr - pdcrOff) * srgK / srgSigma ##  ~Umrechnung dcr in Pa bei 23C und N2
+  pres <- (pdcr - pdcrOff) * srgK / srgSigma ##  ~Umrechnung dcr in mbar bei 23C und N2
   ## ---------^^^--------ToDo--------
 
 
   R0        <- RfrsZc - RfrsZc0
   R         <- Rfrs - R0
 
-  pfrs <- R/Rcal*mcal*g/Aeff*rhoCorr*alphbetCorr + pres ## liefert Pa
+  pfrs      <- R/Rcal*mcal*g/Aeff*rhoCorr*alphbetCorr + pres ## liefert Pa
 
+  conv      <- getConvFactor(ccc,calUnit,"Pa")
 
   ccc$Calibration$Analysis$Values$Pressure <-
     setCcl(ccc$Calibration$Analysis$Values$Pressure,
            resType,
            calUnit,
-           pfrs,
+           pfrs * conv,
            msg)
 
 
