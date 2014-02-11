@@ -38,14 +38,17 @@ abbrevList <- function(ccc){
       a$cmag <- a$cma$Gas 
   }
 
-### VG Dkm Frs-spezifisch
-  if(a$cs =="DKM|FRS5" | a$cs == "FRS5" | a$cs == "DKM"){
-
-    if(!(length(a$cm$SequenceControl) == 0)){
-      a$cmsc   <- a$cm$SequenceControl
-    }
+### VG spezifisch
+  if(a$cs =="FRS5|SE2" |
+     a$cs =="DKM|FRS5" |
+     a$cs == "FRS5"    |
+     a$cs == "DKM"){
+      
+      if(!(length(a$cm$SequenceControl) == 0)){
+          a$cmsc   <- a$cm$SequenceControl
+      }
   }
-
+  
   if((is.list(a$cmsc) )){
     a$cmscoi <- a$cmsc$outIndex
   }
