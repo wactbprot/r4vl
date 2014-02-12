@@ -19,8 +19,8 @@ se2.calAddVolume <- function(ccc){
     
     ccc$Calibration$Analysis$Values$Volume <-
         setCcl(ccc$Calibration$Analysis$Values$Volume,
-               "add",
-               "1",
+               "additional",
+               volUnit,
                Vz,
                msg)
       

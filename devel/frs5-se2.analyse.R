@@ -4,7 +4,7 @@ library(R4CouchDB,
 
 cdb <- cdbIni()
 
-cdb$id     <- "7f696c493207f8d813f3b4e1f037207b"
+cdb$id     <- "7f696c493207f8d813f3b4e1f03b0720"
 cdb$DBName <- "vaclab_db"
 
 ## ----------------
@@ -31,8 +31,12 @@ ccc <- frs5.calPfrs5(ccc)
 ccc <- frs5.uncertPfrs5(ccc)
 ccc <- se2.calPfill(ccc)
 ccc <- se2.calRGC(ccc)
-ccc <- calfFrs5Se2(ccc)
 ccc <- se2.calAddVolume(ccc)
+
+ccc <- calfFrs5Se2(ccc)
+ccc$Calibration$Analysis$Values$Expansion
+
+
 ##  cdb$dataList <- ccc
 ##  res <- cdbAddDoc(cdb)$res
 
