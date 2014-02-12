@@ -6,6 +6,8 @@ se2.calPfill <- function(ccc){
   
   PFILL       <- getSubList(a$cmv, "fill") ##kPa
   pfill       <- getConstVal(NA, NA, PFILL)
+
+  N           <- length(pfill)
   
   PFILLOFFSET <- getSubList(a$cma, "fill_offset") ##kPa
   offs        <- getConstVal(NA, NA, PFILLOFFSET)
@@ -25,12 +27,12 @@ se2.calPfill <- function(ccc){
   }else{
       offset <- rep(offs, N)
   }
-  
+ 
   cfQbs        <- list()
   cfQbs$a      <- getConstVal(  a$cmco,"qbsCorrA")
   cfQbs$b      <- getConstVal(  a$cmco,"qbsCorrB")
   cfQbs$c      <- getConstVal(  a$cmco,"qbsCorrC")
-  cfQbs$c      <- getConstVal(  a$cmco,"qbsCorrD")
+  cfQbs$d      <- getConstVal(  a$cmco,"qbsCorrD")
 
   pfill.uncorr.mbar   <- (pfill - offset) * getConvFactor(ccc, pUnit,  PFILL$Unit)
   

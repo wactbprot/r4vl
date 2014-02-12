@@ -11,12 +11,12 @@ se2.calRGC <- function(ccc){
   SP    <-  getSubList(a$cc, "standardPressure")
   SV    <-  getSubList(a$cc, "standardVolumen" )
   
-  
+
   if((VC$Unit == "cm^3/mol") & (SV$Unit == "cm^3")){
 
     conv <- getConvFactor(ccc,PFILL,SP) 
     msg  <- paste(msg, "converted", SP$Unit, "to", PFILL$Unit, "with", conv)
-    
+
     sp   <- getConstVal(NA,NA,SP) * conv
     
     sv   <- getConstVal(NA,NA,SV)

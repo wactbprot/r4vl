@@ -78,26 +78,8 @@ frs5_se2.yamp.calT <- function(ccc){
   
   
   ## T_before ---------------------------------v
-  if(length(if1) > 0){
-      channelsBefore <- c("102", "103")
-      resBeforeAgile[if1] <- getTemperatureVec(a,N,channelsBefore,baseTName,baseCorrName, "_before")[if1] + C2K
-  }
-  if(length(if2) > 0){
-      channelsBefore <- c("101")
-      resBeforeAgile[if2] <- getTemperatureVec(a,N,channelsBefore,baseTName,baseCorrName, "_before")[if2] + C2K
-  }
-  if(length(if5) > 0){
-      channelsBefore <- c("104")
-      resBeforeAgile[if5] <- getTemperatureVec(a,N,channelsBefore,baseTName,baseCorrName, "_before")[if5] + C2K
-  }
-  if(length(if3) > 0){
-      channelsBefore <- c("102", "103")
-      resBeforeAgile[if3] <- getTemperatureVec(a,N,channelsBefore,baseTName,baseCorrName, "_before")[if3] + C2K
-  }
-  if(length(if4) > 0){
-      channelsBefore <- c("101")
-      resBeforeAgile[if4] <- getTemperatureVec(a,N,channelsBefore,baseTName,baseCorrName, "_before")[if4] + C2K
-  }
+      channelsBefore <- c("101", "102", "103", "104" )
+      resBeforeAgile <- getTemperatureVec(a,N,channelsBefore,baseTName,baseCorrName, "_before") + C2K
   ## T_before ---------------------------------^
   
   ccc$Calibration$Analysis$Values$Temperature <-
