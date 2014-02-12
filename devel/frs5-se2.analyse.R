@@ -4,7 +4,7 @@ library(R4CouchDB,
 
 cdb <- cdbIni()
 
-cdb$id     <- "7f696c493207f8d813f3b4e1f03b0720"
+cdb$id     <- "7f696c493207f8d813f3b4e1f03ed200"
 cdb$DBName <- "vaclab_db"
 
 ## ----------------
@@ -34,7 +34,12 @@ ccc <- se2.calRGC(ccc)
 ccc <- se2.calAddVolume(ccc)
 
 ccc <- calfFrs5Se2(ccc)
-ccc$Calibration$Analysis$Values$Expansion
+
+a <- abbrevList(ccc)
+f.alt <- 9.1854e-3
+f.neu <- getConstVal(a$cav, "f_pure")
+
+f.neu/f.alt -1
 
 
 ##  cdb$dataList <- ccc
