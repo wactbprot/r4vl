@@ -4,7 +4,7 @@ library(R4CouchDB,
 
 cdb <- cdbIni()
 
-cdb$id     <- "7f696c493207f8d813f3b4e1f03ed200"
+cdb$id     <- "7f696c493207f8d813f3b4e1f05355c2"
 cdb$DBName <- "vaclab_db"
 
 ## ----------------
