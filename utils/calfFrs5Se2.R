@@ -4,26 +4,32 @@ calfFrs5Se2 <- function(ccc){
 
     calUnit <- "mbar"
 
-    pnd     <- getConstVal(a$cmv, "nd")
-    pndoff  <- getConstVal(a$cmv, "nd_offset")
-    cf      <- getConstVal(a$cmco, "rangeConversionFactor")
-    
-    nd.Torr <- (pnd - pndoff) * cf ## liefert Torr
-    nd      <- nd.Torr * getConvFactor(ccc, calUnit, "Torr")
+    ## Nullindicator
+    convFact <- getConstVal(a$cmco, "rangeConversionFactor")
+    unitConf <- getConvFactor(ccc, calUnit, "Torr")
+    pnd      <- getConstVal(a$cmv, "nd") * convFact * unitConf
+    pndoff   <- getConstVal(a$cmv, "nd_offset") * convFact * unitConf
 
+    nd      <- pnd - pndoff
 
+    ## Temperatur
     Tbefore <- getConstVal(a$cav$Temperature, "before")
     Tafter  <- getConstVal(a$cav$Temperature, "after")
+    
     rg      <- getConstVal(a$cav$Correction,  "rg")
 
+                                        # Druck FRS
     PFRS    <- getSubList(a$cav$Pressure, "frs5")
-    pfrs    <- getConstVal(NA, NA, PFRS) * getConvFactor(ccc,calUnit,PFRS$Unit)
+    pfrs    <- getConstVal(NA, NA, PFRS) *
+        getConvFactor(ccc,calUnit,PFRS$Unit)
 
+    ## Druck Ruska
     PFILL   <- getSubList(a$cav, "fill")
-    pfill   <- getConstVal(NA,NA,PFILL) * getConvFactor(ccc,calUnit,PFILL$Unit)
+    pfill   <- getConstVal(NA,NA,PFILL) *
+        getConvFactor(ccc,calUnit,PFILL$Unit)
 
+    ## Expansion
     N       <- length(pfill)
-
     exName  <- getSubList(a$cmv$Expansion, "name")$Value
     if1     <- which(exName == "f1")
     if2     <- which(exName == "f2")
@@ -31,6 +37,7 @@ calfFrs5Se2 <- function(ccc){
     if4     <- which(exName == "f4")
     if5     <- which(exName == "f5")
 
+    ## Startvolumen
     V.start <- rep(NA,N)
     V.add   <- getConstVal(a$cav$Volume, "additional")
 
@@ -49,24 +56,43 @@ calfFrs5Se2 <- function(ccc){
     if(length(if5) > 0){
         V.start[if5] <- getConstVal(a$cms, "V5")
     }
-    print(rg)
+
+
+    ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     f.prime <- (pfrs - nd) * Tbefore/((1 - rg) * pfill * Tafter)
     f.pure  <- 1/(1/f.prime - V.add/V.start)
-    
+    ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    ccc$Calibration$Analysis$Values$Pressure <-
+        setCcl(ccc$Calibration$Analysis$Values$Pressure,
+               "nd_corr",
+               calUnit,
+               nd,
+               msg)
+    ccc$Calibration$Analysis$Values$Pressure <-
+        setCcl(ccc$Calibration$Analysis$Values$Pressure,
+               "nd",
+               calUnit,
+               pnd,
+               msg)
+    ccc$Calibration$Analysis$Values$Pressure <-
+        setCcl(ccc$Calibration$Analysis$Values$Pressure,
+               "nd_offset",
+               calUnit,
+               pndoff,
+               msg)
     ccc$Calibration$Analysis$Values$Expansion <-
         setCcl(ccc$Calibration$Analysis$Values$Expansion,
                "f_pure",
                "1",
                f.pure,
                paste(msg, "um Zusatzvolumen korregierter Wert"))
-    
     ccc$Calibration$Analysis$Values$Expansion <-
         setCcl(ccc$Calibration$Analysis$Values$Expansion,
                "f_prime",
                "1",
                f.prime,
                "Zusatzvolumen noch nicht korregierter")
-    
-    
+
     return(ccc)
 }

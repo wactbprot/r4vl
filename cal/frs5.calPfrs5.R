@@ -24,37 +24,53 @@ frs5.calPfrs5 <- function(ccc){
   G         <- getSubList(a$cc,    "g")      ## in m/s^2
 
   TFRS      <- getSubList(a$cav$Temperature, "frs5")
-  Tfrs      <-  getConstVal(NA, NA, TFRS)
-  
-  RCAL      <- getSubList(a$cms,    "R_cal") ## in lb
-  MCAL      <- getSubList(a$cms,    "m_cal") ## in in kg
-  AEFF      <- getSubList(a$cms,    "A_eff") ## in in m^2
+  Tfrs      <- getConstVal(NA, NA, TFRS)
+  RCAL      <- getSubList(a$cms,   "R_cal") ## in lb
+  MCAL      <- getSubList(a$cms,   "m_cal") ## in in kg
+  AEFF      <- getSubList(a$cms,   "A_eff") ## in in m^2
   RHOFrs    <- getSubList(a$cms,   "rho_frs") ## in in kg/m^3
   RHOGas    <- getSubList(a$cms,   "rho_gas") ## in in kg/m^3
   AB        <- getSubList(a$cms,   "alpha_beta_frs") ## in in kg/m^3
   ## check der Einheiten
-  g         <- getConstVal(NA,NA,G) * getConvFactor(ccc,"m/s^2",G$Unit)
-
-  Rcal      <- getConstVal(NA,NA,RCAL) * getConvFactor(ccc,RUnit,RCAL$Unit)
-  mcal      <- getConstVal(NA,NA,MCAL) * getConvFactor(ccc,"kg",MCAL$Unit)
-  Aeff      <- getConstVal(NA,NA,AEFF) * getConvFactor(ccc,"m^2",AEFF$Unit)
+  g         <- getConstVal(NA,NA,G)      * getConvFactor(ccc,"m/s^2",G$Unit)
+  Rcal      <- getConstVal(NA,NA,RCAL)   * getConvFactor(ccc,RUnit,RCAL$Unit)
+  mcal      <- getConstVal(NA,NA,MCAL)   * getConvFactor(ccc,"kg",MCAL$Unit)
+  Aeff      <- getConstVal(NA,NA,AEFF)   * getConvFactor(ccc,"m^2",AEFF$Unit)
 
   rhoFrs    <- getConstVal(NA,NA,RHOFrs) * getConvFactor(ccc,"kg/m^3",RHOFrs$Unit)
   rhoGas    <- getConstVal(NA,NA,RHOGas) * getConvFactor(ccc,"kg/m^3",RHOGas$Unit)
-
-  alphbet   <- getConstVal(NA,NA,AB) * getConvFactor(ccc,"1/C",AB$Unit)
+  alphbet   <- getConstVal(NA,NA,AB)     * getConvFactor(ccc,"1/C",AB$Unit)
 
   RFRS      <- getSubList(a$cmv,    "frs_p") ## in lb
-  RFRSZc    <- getSubList(a$cmv,    "frs_zc_p") ## in lb
-  RFRSZc0   <- getSubList(a$cma,    "frs_zc0_p") ## in lb
-
   Rfrs      <- getConstVal(NA,NA,RFRS) * getConvFactor(ccc,RUnit,RFRS$Unit)
+  
+  RFRSZc    <- getSubList(a$cmv,    "frs_zc_p") ## in lb
   RfrsZc    <- getConstVal(NA,NA,RFRSZc) * getConvFactor(ccc,RUnit,RFRSZc$Unit)
-  RfrsZc0   <- getConstVal(NA,NA,RFRSZc0) * getConvFactor(ccc,RUnit,RFRSZc0$Unit)
 
+  RFRSZc0   <- getSubList(a$cma,    "frs_zc0_p") ## in lb
+  rfrsZc0   <- getConstVal(NA,NA,RFRSZc0) * getConvFactor(ccc,RUnit,RFRSZc0$Unit)
+
+  ## initialaer ZC kann mehrmals gemessen werden
+  ## über die Zeiten amt_(absolute measure time)_offset
+  ## wird der gültige ermittelt
+  omt       <- getConstVal(a$cma, "amt_offset")
+  bmt       <- getConstVal(a$cmv, "amt_before")
+  N         <- length(bmt)
+  
+  if(!is.null(omt) & !is.null(bmt) & 
+     (length(omt) > 1) & (length(bmt) > 1)){
+        RfrsZc0 <- rep(NA,N)
+        for(i in 1:length(omt)){
+          k         <- which(bmt > omt[i])
+          RfrsZc0[k] <- rfrsZc0[i] 
+      }
+  }else{
+      RfrsZc0 <- rep(rfrsZc0, N)
+  }
+  
   rhoCorr <- (1-rhoGas/rhoFrs)
   alphbetCorr<- (1 + alphbet*(Tfrs - 20))
-
+  
   
   srgD        <- getConstVal(a$cmco,  "d")              ## in m
   srgRho      <- getConstVal(a$cmco,  "rho")            ## in kg/m^3
