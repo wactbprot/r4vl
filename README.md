@@ -27,7 +27,7 @@ The following R-packages are needed:
 
 To install ``` bitops ``` and ```RCurl``` one need to install
 
-        zypper in R-base-devel libcurl-devel 
+        zypper in gcc-c++ R-base-devel libcurl-devel 
 
 ### java needed for xlsx
 
