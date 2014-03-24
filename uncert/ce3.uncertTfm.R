@@ -41,7 +41,7 @@ ce3.uncertTfm <- function(ccc){
                    "uncertainty vector don't cover entire Tfm range ",
                    "use u=1 (100%) instead! ",
                    "replaced uncalculated value at point(s): ",
-                   iall )
+                   toString(iall))
 
       uncertTSensCalib[iall] <- 1.0
 
@@ -61,20 +61,16 @@ ce3.uncertTfm <- function(ccc){
     
     uges <- sqrt((uncertTSensCalib*Tfm)^2 + u1^2 + u2^2 + u3^2)/Tfm
 
-  }else{
-    
-    uges <- 2/Tfm ## muss weh tun!
-    
-    msg <- paste(msg, " uncert. contrib. units dont match! use 2K as uncertainty")
   }
+    
     ccc$Calibration$Analysis$Values$Uncertainty <-
-      setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
-             "uncertTfm",
-             "1",
-              uges,
-             msg)
+        setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
+               "uncertTfm",
+               "1",
+               uges,
+               msg)
   }## no ofCo<2
-
+  
   return(ccc)
 }
 

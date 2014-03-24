@@ -17,9 +17,7 @@
 
     <hr>
     <h1 id="top">CE3 Calibration Report</h1>
-
     <hr>
-
     <h2 id="header">Calibration Header</h2>
     <ul>
       <li>id: <!--rinline doc[["_id"]] --></li>
@@ -37,165 +35,453 @@
     <hr>
 
     <ul>
+      <li><a href="#temp">Temperature</a></li>
+      <li><a href="#pres">Pressure</a></li>
       <li><a href="#cond">Conductance</a></li>
-      <ul>
-        <li><a href="#condCnom">C<sub>nom</sub></a></li>
-      </ul>
-      <li><a href="#temp">Temperatures</a></li>
-      <li><a href="#pres">Pressures</a></li>
     </ul>
 
     <hr>
+    <h2 id="settings">global settings
+      <sup><a href="#top">^</a></sup></h2>
+    <!--begin.rcode
+    par(cex.main = 3,
+    cex.axis     = 2,
+    cex.lab      = 2,
+    cex=2)
+    end.rcode-->
+    
+    <h2 id="temp">Temperature
+      <sup><a href="#top">^</a></sup></h2>
+    <!--begin.rcode
+        withU    <- FALSE
+	upperLimit <- 24.0 +273.15
+	lowerLimit <- 22.0 +273.15
+	soll       <- 23.0 +273.15
+        Tfm3    <- getConstVal(a$cav$Temperature, "Tfm3")
+	Tpbox   <- getConstVal(a$cav$Temperature, "Tpbox")
+	Tuhv    <- getConstVal(a$cav$Temperature, "Tuhv")
+	Txhv    <- getConstVal(a$cav$Temperature, "Txhv")
+	Troom   <- getConstVal(a$cav$Temperature, "Troom")
+	N <- length(Tfm3)
+        end.rcode-->
+    
+    <h3 id="tempFm3">T<sub>fm3</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Temperature_FM3
+	plot(1:N, 
+	Tfm3,
+	main="temperature FM3",
+	xlab = "point", 
+	ylab = "Tfm3 in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
+    <h3 id="tempPbox">T<sub>pbox</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Temperature_Pbox
+	plot(1:N, 
+	Tpbox, 
+	main="temperature P-Box",
+	xlab = "point", 
+	ylab = "Tpbox in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+        type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
+    <h3 id="tempUhv">T<sub>uhv</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Temperature_uhv
+	plot(1:N, 
+	Tuhv, 
+	main="temperature UHV",
+	xlab = "point", 
+	ylab = "Tuhv in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+        type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
+    <h3 id="tempXhv">T<sub>xhv</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Temperature_xhv
+	plot(1:N, 
+	Txhv, 
+	main="temperature XHV",
+	xlab = "point", 
+	ylab = "Txhv in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+        type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
 
+    <h3 id="tempRoom">T<sub>Room</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Temperature_room
+	plot(1:N, 
+	Troom, 
+	main="temperature Room",
+	xlab = "point", 
+	ylab = "T room in K",
+	ylim=c(lowerLimit -0.5, upperLimit +0.5),
+        type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	abline(h=soll, col="green")
+	end.rcode-->
+    
+    <h2 id="pres">Pressure
+      <sup><a href="#top">^</a></sup></h2>
+    <!--begin.rcode
+	if(a$cmscok == "opK4"){
+	 prise          <- getConstVal(a$cma, "srg_p_rise")
+	 t.begin        <- getConstVal(a$cma, "begin_constC")
+	 t.end          <- getConstVal(a$cma, "end_constC")
+	 srg.offset.dcr <- getConstVal(a$cmv, "srg_offset")
+	 srg.fill.dcr   <- getConstVal(a$cmv, "srg_fill")
+	}else{
+         plw          <- getConstVal(a$cav$Pressure, "lw")
+	 dpC          <- getConstVal(a$cav$Pressure, "dpC")
+	}
+	
+        pfill        <- getConstVal(a$cav$Pressure, "fill")
+        pfillOffset  <- getConstVal(a$cav$Pressure, "fill_offset")
+
+        pcal         <- getConstVal(a$cav$Pressure, "cal")
+        pind         <- getConstVal(a$cav$Pressure, "ind")
+        pindOffset   <- getConstVal(a$cav$Pressure, "ind_offset")
+        pindcorr     <- getConstVal(a$cav$Pressure, "ind_corr")
+        dcorr     <- getConstVal(a$cav$Conductance, "drift_corr")
+	end.rcode-->
+    <h3 id="presFill">p<sub>fill</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Pressure_fill
+	upperLimit <- 400
+	lowerLimit <- 1e-3
+	plot(1:N, 
+	pfill, 
+	main="filling pressure",
+	ylim=c(lowerLimit*(1-1e-2), upperLimit*(1+1e-2)),
+	xlab = "point", 
+	ylab = "pfill",
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	end.rcode-->
+
+    <h3 id="presFillByOffset">p<sub>fill_offset</sub>/p<sub>fill</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Pressure_offset_by_fill
+	upperLimit <- 1e-3
+	lowerLimit <- -1e-3
+	plot(1:N, 
+	main="offset / filling pressure",
+	pfillOffset/pfill, 
+	xlab = "point", 
+	ylab = "pfill_offset/pfill",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+
+	end.rcode-->
+    <h3 id="presFillBypdc">p<sub>dC</sub>/p<sub>fill</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Pressure_dp_by_fill
+	if(a$cmscok != "opK4"){
+	upperLimit <- 1e-2
+	lowerLimit <- -1e-2
+	plot(1:N, 
+	dpC/pfill, 
+	main="dp / filling pressure",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	xlab = "point", 
+	ylab = "dpC/pfill",
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	}
+	end.rcode-->
+    
+    <h3 id="prise">p<sub>rise</sub>/p<sub>srg</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Pressure_rise
+	if(a$cmscok == "opK4"){
+	
+	Dt <- (t.end - t.begin) / 1000
+	srg.dcr <- srg.fill.dcr - srg.offset.dcr
+
+	upperLimit <- 1e-4
+	lowerLimit <- -1e-4
+	plot(1:N,
+	main="relative pressure rise",
+	prise*Dt/ srg.dcr, 
+	ylim=c(lowerLimit*2, upperLimit*2),
+	xlab = "point", 
+	ylab = "dp/dt / p",
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")
+	}
+	end.rcode-->
+
+ <h3 id="prescal">p<sub>cal</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Pressure_cal
+	upperLimit <- 1e-3
+	lowerLimit <- 1e-11
+	plot(1:N, 
+	pcal, 
+	main="calibration pressure",
+	xlab = "point", 
+	ylab = "cal",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	type="b", 
+	log="y",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	end.rcode-->
+
+
+ <h3 id="presindBycal">p<sub>ind_corr</sub>/p<sub>cal</sub>
+      <sup><a href="#top">^</a></sup></h3>
+    <!--begin.rcode Error_N
+
+	par(mfrow=c(2,1))
+	
+	e <- pindcorr/pcal-1
+	
+	spanH <- 0.08
+	spanL <- 0.04
+	M <- mean(e,na.rm = TRUE)
+	plot(1:N, 
+	e, 
+	main="relative error of indication",
+	xlab = "point", 
+	ylab = "p ind/ p cal - 1",
+	ylim=c(M - spanH, M  + spanH),
+	type="b",
+        pch=23, cex=2)
+
+	grid(col=1)
+	abline(h=M, col="green")
+	abline(h=M - spanH, col="red")
+	abline(h=M + spanH, col="red")	
+
+
+	M <- mean(e, na.rm = TRUE)
+	plot(1:N, 
+	e, 
+	xlab = "point", 
+	ylab = "p ind/ p cal - 1",
+	ylim=c(M - spanL, M + spanL),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=M, col="green")
+	abline(h=M - spanL, col="red")
+	abline(h=M + spanL, col="red")	
+	
+
+	end.rcode-->
+	     
+	<!--begin.rcode Error_p
+	par(mfrow=c(2,1))
+	plot(pind, 
+	e, 
+	main="relative error of indication ",
+	xlab = "p",
+	ylab = "p ind/ p cal - 1",
+	log="x",
+	ylim=c(M - spanH, M  + spanH),
+	pch=23, cex=2)
+	grid(col=1)
+	abline(h=M, col="green")
+	abline(h=M - spanH, col="red")
+	abline(h=M + spanH, col="red")	
+
+	plot(pind, 
+	e, 
+	xlab = "p",
+	ylab = "p ind/ p cal - 1",
+	log="x",
+	ylim=c(M - spanL, M  + spanL),
+	pch=23, cex=2)
+	grid(col=1)
+	abline(h=M, col="green")
+	abline(h=M - spanL, col="red")
+	abline(h=M + spanL, col="red")	
+	par(mfrow=c(1,1))
+	end.rcode-->
+
+    
     <h2 id="cond">Conductance
       <sup><a href="#top">^</a></sup></h2>
     <!--begin.rcode
-        withU     <- FALSE
-        cnom           <- getConstVal(a$cav$Conductance, "cnom")
-	sdcnom         <- getConstVal(a$cav$Conductance, "sd_cnom")
-        cfm3           <- getConstVal(a$cav$Conductance, "cfm3")
-        diffhist       <- getConstVal(a$cav$Conductance, "diff_hist")
-
-        iout <- which((abs(diffhist) > 0.5) | cnom < 1e-8 | is.na(cfm3))
-        skipVals <- length(iout) > 0
-
-        if(length( a$cav$Uncertainty) > 0){
-        withU     <- TRUE
-        uDV       <- getConstVal(a$cav$Uncertainty, "uncertDeltaV")
-        uDVDt     <- getConstVal(a$cav$Uncertainty, "uncertDeltaVDeltat")
-        uDt       <- getConstVal(a$cav$Uncertainty, "uncertDeltat")
-        }
-
-        if(skipVals){
-        iout
-        cnom      <-  cnom[-iout]
-        sdcnom    <-  sdcnom[-iout]
-        cfm3      <-  cfm3[-iout]
-        diffhist  <-  diffhist[-iout]
-        if(withU){
-        uDV      <-   uDV[-iout]
-        uDVDt    <-   uDVDt[-iout]
-        uDt      <-   uDt[-iout]
-        }
-        }
-	N <- length(cnom)
-        end.rcode-->
-    <h3 id="condCnom">C<sub>nom</sub>
+	cnom        <- getConstVal(a$cav$Conductance, "cnom")
+	if(a$cmscok == "opK1" | a$cmscok == "opK2" | a$cmscok == "opK3"){
+	sdcnom      <- getConstVal(a$cav$Conductance, "sd_cnom")
+        cfm3        <- getConstVal(a$cav$Conductance, "cfm3")
+	diffhist    <- getConstVal(a$cav$Conductance, "diff_hist")
+	minSlope    <- getConstVal(a$cav$Conductance, "min_slope")
+	maxSlope    <- getConstVal(a$cav$Conductance, "max_slope")
+	mSlope      <- getConstVal(a$cav$Conductance, "mean_slope")
+	drift       <- getConstVal(a$cav$Conductance, "drift_slope")
+	}
+	end.rcode-->
+    
+    <h3 id="cond_cnom">C<sub>nom</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
-	qplot(1:N, 
+    <!--begin.rcode Conductance_nom
+	par(mfrow=c(2,1))
+	## -- klLW
+	upperLimit <- 9e-7
+	lowerLimit <- 6e-7
+	plot(1:N, 
+	cnom,
+	main="conductance",
+	xlab = "point", 
+	ylab = "Conductance in l/s",
+	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	## -- grLW
+	upperLimit <- 3e-5
+	lowerLimit <- 1e-5
+	plot(1:N, 
 	cnom, 
-	log  = "xy", 
-	xlab = "Messpkt.", 
-	ylab = paste("C in", getSubList(a$cav$Conductance, "cnom")$Unit))
+	xlab = "point", 
+	ylab = "Conductance in l/s",
+	ylim=c(lowerLimit*(1-0.1), upperLimit*(1+0.1)),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	par(mfrow=c(1,1))
 	end.rcode-->
 
-    <h3 id="condSum">Conductance Summary
+    <h3 id="cond_cnomcfm3">C<sub>nom</sub>C<sub>fm3</sub>
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
-        format(data.frame(sdcnom/cnom), scientific=TRUE)
-        end.rcode-->
+    <!--begin.rcode Conductance_ratio
+	if(a$cmscok == "opK1" | a$cmscok == "opK2" | a$cmscok == "opK3"){
+	upperLimit <- 1e-3
+	lowerLimit <- -1e-3
+	plot(1:N, 
+	main="relative conductance extrapolation",
+	cnom/cfm3 -1 , 
+	xlab = "point", 
+	ylab = "C nom / C fm3 -1",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	
+	}
+	end.rcode-->
 
-    <!--begin.rcode
-        format(data.frame(cfm3/cnom -1), scientific=TRUE)
-        end.rcode-->
-
-    <!--begin.rcode
-        format(data.frame((uDV^2 +uDt^2 +uDVDt^2)^.5), scientific=TRUE)
-        end.rcode-->
-
-    <h3 id="condDiag">Conductance Diagram
+     <h3 id="cond_diff_hist">difference to history
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode conductance-plot, echo=FALSE
-        pltc
-        end.rcode-->
+     See
+     <a href="http://a73435.berlin.ptb.de/thomas.bock/r4vl/blob/master/cal/ce3.calDeltaVDeltat.R"
+	target="_blank">function ce3.calDeltaVDeltat()</a>
+    <!--begin.rcode Conductance_diff_hist
+	if(a$cmscok == "opK1" | a$cmscok == "opK2" | a$cmscok == "opK3"){
+	upperLimit <- 1e-2
+	lowerLimit <- -1e-2
+	plot(1:N, 
+	main="difference to history",
+	diffhist, 
+	xlab = "point", 
+	ylab = "C nom / f(C nom) -1",
+	ylim=c(lowerLimit*2, upperLimit*2),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
+	
+	}
+	end.rcode-->
 
-    <h2 id="temp">Temperatures
-      <sup><a href="#top">^</a></sup></h2>
-    <!--begin.rcode
-        source("../chunks/ce3.temperature.R")
-        N
-        iout
-        end.rcode-->
-    <h3 id="tempTab">Table
+    <h3 id="slope_params">saw tooth params
       <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
-        format(df.temperature)
-        end.rcode-->
+    <!--begin.rcode Saw_tooth_params
+	if(a$cmscok == "opK1" | a$cmscok == "opK2" | a$cmscok == "opK3"){
+	upperLimit <- 0.05
+	lowerLimit <- -0.02
 
-    <h3 id="tempSum">Summary
-      <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
+	plot(1:N, 
+	main="saw tooth parameter",
+	(drift/mSlope), 
+	xlab = "point", 
+	ylab = "slope ratios",
+	ylim=c(lowerLimit, upperLimit),
+	type="b",
+        pch=23, cex=2)
+	grid(col=1)
+	
+	points(1:N,
+	(maxSlope/mSlope -1),
+	col=2,
+	type="b")
+	
+	points(1:N,
+	(minSlope/mSlope -1),
+	col=3,
+	type="b",
+        pch=23, cex=2)
+		
+	points(1:N,
+	(sdcnom/cnom),
+	col=4,
+	type="b",
+        pch=23, cex=2)
+	legend(1,upperLimit, 
+	col=1:4,
+	pch=rep(1,4),
+	cex=1.2,
+	c("drift/mean(slopes)",
+	"max(slopes)/mean(slopes)",
+	"min(slopes)/mean(slopes)",
+	"sd(C)/C"))
+	abline(h=upperLimit, col="red")
+	abline(h=lowerLimit, col="red")	
 
-        summary(Tpbox)
-        end.rcode-->
-
-    <!--begin.rcode
-        summary(Troom)
-        end.rcode-->
-
-    <!--begin.rcode
-        summary(Txhv)
-        end.rcode-->
-
-    <!--begin.rcode
-        summary(Tuhv)
-        end.rcode-->
-
-    <!--begin.rcode
-        summary(Tfm3)
-        end.rcode-->
-
-    <h3 id="tempDiag" >Diagram
-      <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode temperature-plot, echo=TRUE
-        plt
-        end.rcode-->
-
-    <h2 id="pres">Pressures
-      <sup><a href="#top">^</a></sup></h2>
-    <!--begin.rcode
-        source("../chunks/ce3.pressure.R")
-        N
-        iout
-        end.rcode-->
-    <h3 id="presTab">Pressure Table
-      <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
-
-        format(df.pressure.fill.offs, scientific=TRUE, digits=5)
-        format(df.pressure.fill, scientific=TRUE, digits=5)
-        format(df.pressure.cal, scientific=TRUE, digits=5)
-        end.rcode-->
-
-    <h3 id="presSum">Pressure Summary
-      <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode
-
-        format(data.frame(pfill.offset/pfill), scientific=TRUE)
-
-        format(data.frame(pdpC/pfill), scientific=TRUE)
-
-        format(data.frame(pfill/plw -1), scientific=TRUE)
-
-        format(data.frame(pcorrind/pcal - 1), scientific=TRUE)
-
-        end.rcode-->
-
-    <h3 id="presDiag">Pressure Diagram
-      <sup><a href="#top">^</a></sup></h3>
-    <!--begin.rcode  pfill-plot, echo=FALSE
-        pltfill
-        end.rcode-->
-
-    <!--begin.rcode  pfilloffset-plot, echo=FALSE
-        pltfilloffs
-        end.rcode-->
-
-    <!--begin.rcode  pcal-plot, echo=FALSE
-        pltcal
-        end.rcode-->
-
+	}
+	end.rcode-->
 
   </body>
 </html>

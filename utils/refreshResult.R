@@ -2,7 +2,7 @@ refreshResult <- function(cdb,ccc){
 
   ## Result immer neu anfangen!!
   ccc$Calibration$Result <- list()
-  ccc$Calibration$Result$Values <- list()
+  ccc$Calibration$Result$Table <- list()
 
   ccc$Calibration$Result$Maintainer <- toString(Sys.getenv("USER"))
   ## demnächst über eine Sys.--- function

@@ -1,82 +1,95 @@
+## dringend aufräumen!
+
 ce3.newCalPfill <- function(ccc){
     msg    <- "calculated by ce3.newCalPfill"
     
     a      <- abbrevList(ccc)
     pUnit  <- "mbar"
     gas    <- a$cmscg
+    
+    ## muss noch aus db kommen
+    srg.border     <- 1e-2
+    
+    cdgax001border <- 0.10
+    cdgax01border  <- 1.33
+    cdgax1border   <- 13.3
+
+    cdgbx001border <- cdgax1border
+    cdgbx01border  <- 133
+    cdgbx1border   <- 1330
+
+    ## NB:
+    ## das ganze Verfahren wie der pfill
+    ## nach analyse kommt (offset korr. ...)
+    ## muss evtl nochmal überarb. werden
+    ## todo!
+    apre <- "cdga_"
+    bpre <- "cdgb_"
+    cpre <- "cdgc_"
+    suf  <- "_offset"
+
+    sVpoax001 <-  getConstVal(a$cma$Pressure, paste(apre,"x0.01",suf,sep=""))
+    sVpoax01  <-  getConstVal(a$cma$Pressure, paste(apre,"x0.1" ,suf,sep=""))
+    sVpoax1   <-  getConstVal(a$cma$Pressure, paste(apre,"x1"   ,suf,sep=""))
+
+    sVpobx001 <-  getConstVal(a$cma$Pressure, paste(bpre,"x0.01",suf,sep=""))
+    sVpobx01  <-  getConstVal(a$cma$Pressure, paste(bpre,"x0.1" ,suf,sep=""))
+    sVpobx1   <-  getConstVal(a$cma$Pressure, paste(bpre,"x1"   ,suf,sep=""))
+
+    sVpocx001 <-  getConstVal(a$cma$Pressure, paste(cpre,"x0.01",suf,sep=""))
+    sVpocx01  <-  getConstVal(a$cma$Pressure, paste(cpre,"x0.1" ,suf,sep=""))
+    sVpocx1   <-  getConstVal(a$cma$Pressure, paste(cpre,"x1"   ,suf,sep=""))
+
+    ## der offset kann mehrmals gemessen werden
+    ## welcher für welchen benutzt wird
+    ## wird über die Zeit entschieden
 
     if(a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"){
-
-        ## muss noch aus db kommen
-        cdgax001border <- 0.10
-        cdgax01border  <- 1.33
-        cdgax1border   <- 13.3
-
-        cdgbx001border <- cdgax1border
-        cdgbx01border  <- 133
-        cdgbx1border   <- 1330
-
-        ## NB:
-        ## das ganze Verfahren wie der pfill
-        ## nach analyse kommt (offset korr. ...)
-        ## muss evtl nochmal überarb. werden
-        ## todo!
-        apre <- "cdga_"
-        bpre <- "cdgb_"
-        cpre <- "cdgc_"
-        suf  <- "_offset"
-
-        sVpoax001 <-  getConstVal(a$cma$Pressure, paste(apre,"x0.01",suf,sep=""))
-        sVpoax01  <-  getConstVal(a$cma$Pressure, paste(apre,"x0.1" ,suf,sep=""))
-        sVpoax1   <-  getConstVal(a$cma$Pressure, paste(apre,"x1"   ,suf,sep=""))
-
-        sVpobx001 <-  getConstVal(a$cma$Pressure, paste(bpre,"x0.01",suf,sep=""))
-        sVpobx01  <-  getConstVal(a$cma$Pressure, paste(bpre,"x0.1" ,suf,sep=""))
-        sVpobx1   <-  getConstVal(a$cma$Pressure, paste(bpre,"x1"   ,suf,sep=""))
-
-        sVpocx001 <-  getConstVal(a$cma$Pressure, paste(cpre,"x0.01",suf,sep=""))
-        sVpocx01  <-  getConstVal(a$cma$Pressure, paste(cpre,"x0.1" ,suf,sep=""))
-        sVpocx1   <-  getConstVal(a$cma$Pressure, paste(cpre,"x1"   ,suf,sep=""))
-
-        ## der offset kann mehrmals gemessen werden
-        ## welcher für welchen benutzt wird
-        ## wird über die Zeit entschieden
         ofMt      <- getConstVal(a$cma$Time, "offset_mt")
         lwMt      <- getConstVal(a$cma$Time, "start_lw")
+    } 
 
-        navec     <- rep(NA,length(lwMt))
+    if(a$cmscok == "opK4"){
+        ofMt      <- getConstVal(a$cma$Time, "offset_mt")
+        lwMt      <- getConstVal(a$cma$Time, "begin_constC")
+        
+    } 
 
-        poax001 <- navec
-        poax01  <- navec
-        poax1   <- navec
-        pobx001 <- navec
-        pobx01  <- navec
-        pobx1   <- navec
-        pocx001 <- navec
-        pocx01  <- navec
-        pocx1   <- navec
+    navec     <- rep(NA,length(lwMt))
 
-        for(k in 1:length(ofMt)){
-            ##
-            u               <- which( lwMt > ofMt[k])
+    poax001 <- navec
+    poax01  <- navec
+    poax1   <- navec
+    pobx001 <- navec
+    pobx01  <- navec
+    pobx1   <- navec
+    pocx001 <- navec
+    pocx01  <- navec
+    pocx1   <- navec
+   
+    for(k in 1:length(ofMt)){
+        ##
+        u               <- which( lwMt > ofMt[k])
+        ## wo Messzeitpunkt größer Offsetmesszeit
+        
+        poax001[u]      <-  sVpoax001[k]
+        poax01[u]       <-  sVpoax01[k]
+        poax1[u]        <-  sVpoax1[k]
+        pobx001[u]      <-  sVpobx001[k]
+        pobx01[u]       <-  sVpobx01[k]
+        pobx1[u]        <-  sVpobx1[k]
+        pocx001[u]      <-  sVpocx001[k]
+        pocx01[u]       <-  sVpocx01[k]
+        pocx1[u]        <-  sVpocx1[k]
+    }
+   
+    ## gemessen direkt nach usr-input ok
+    PF    <- getSubList(a$cmv, "fill")
+    pfill <- getConstVal(NA, NA, PF)
 
-            poax001[u]      <-  sVpoax001[k]
-            poax01[u]       <-  sVpoax01[k]
-            poax1[u]        <-  sVpoax1[k]
-            pobx001[u]      <-  sVpobx001[k]
-            pobx01[u]       <-  sVpobx01[k]
-            pobx1[u]        <-  sVpobx1[k]
-            pocx001[u]      <-  sVpocx001[k]
-            pocx01[u]       <-  sVpocx01[k]
-            pocx1[u]        <-  sVpocx1[k]
-        }
+    pfilloffset <- rep(NA,length(pfill))
 
-        ## gemessen direkt nach usr-input ok
-        PF    <- getSubList(a$cmv, "fill")
-        pfill <- getConstVal(NA, NA, PF)
-
-        pfilloffset <- rep(NA,length(pfill))
-
+    if(a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"){
         ## zur Korr. der Druckdiff. beim Schließen des V22
         ## (dpC wird nur in X1 Range gemessen
         dpC <- getConstVal(a$cmv,"drift_mean_p") - pocx1
@@ -182,7 +195,8 @@ ce3.newCalPfill <- function(ccc){
         ## durch das Schließen des V22
         ## bei pfill ist das nicht dabei,
         ## weil hier V22 offen ist
-        pdriftfill <- pdriftfill + dpC
+        pdriftfill <- pdriftfill  + dpC
+        pfill      <- pfill + dpC
 
 
         ccc$Calibration$Analysis$Values$Pressure <-
@@ -212,38 +226,79 @@ ce3.newCalPfill <- function(ccc){
                    PF$Unit,
                    dpC,
                    msg)
-    } ## a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"
+    }
 
     if(a$cmscok == "opK4"){
-        ## opk4: sehr kleine Fülldrücke die erst noch
+
+        
+        
+        icdga      <- which( pfill <= cdgax1border)
+        isrg       <- which(pfill  <= srg.border)
+        ## ------------ CDGA 10T 
+        if(length(icdga > 0)){
+            
+            msg      <- paste(msg,"assume cdga for points:", toString(icdga))
+            ix001    <- which(pfill < cdgax001border)
+
+
+            if(length(ix001)>0){
+                pfill[ix001]          <- pfill[ix001]     -  poax001[ix001]
+                pfilloffset[ix001]    <- poax001[ix001]
+                msg <- paste(msg, "assume Range X0.01 for points:", toString(icdga))
+            }
+            
+            if(gas == "Ar" || gas == "N2"){
+                g <- gas
+            }else{
+                g <- "N2"
+                msg <- paste(msg,
+                             "no calibration for CDGA for gas: ",
+                             g,
+                             ". Use N2 instead")
+            }
+            
+            cfcdga    <- list()
+            cfcdga$a  <- getConstVal(  a$cmco, paste("cdgaCorrA_",g,sep=""))
+            cfcdga$b  <- getConstVal(  a$cmco, paste("cdgaCorrB_",g,sep=""))
+            cfcdga$c  <- getConstVal(  a$cmco, paste("cdgaCorrC_",g,sep=""))
+            cfcdga$d  <- getConstVal(  a$cmco, paste("cdgaCorrD_",g,sep=""))
+            cfcdga$e  <- getConstVal(  a$cmco, paste("cdgaCorrE_",g,sep=""))
+            cfcdga$f  <- getConstVal(  a$cmco, paste("cdgaCorrF_",g,sep=""))
+            
+            F             <- fn.7904(cfcdga,pfill[icdga])
+            pfill[icdga]  <- pfill[icdga]/(F + 1)
+        }
+
+        ## SRG F11
+        ##
+        ## opK4: sehr kleine Fülldrücke die erst noch
         ## berechnet/korrigiert werden müssen
         ##
-        ## wert ist in Standard$SequenzControl zentral def.
-        cdg.srg  <- 0.012 ## mbar für p > cdg.srg wird cdg für pfill benutzt
-        ## --> anpassen!!
+        
         noOfViscIter <- 5 ## Anzahl der Iterationen zu visc. Korrektur
 
         srgInd   <- getSubList(a$cm, "srg_fill")
-        srgOff   <- getSubList(a$cm, "srg_fill_offset")
+        srgOff   <- getSubList(a$cm, "srg_offset")
 
-        if(length(srgInd$Value) > 0 & length(srgInd$Value) ){
+        if(length(srgInd$Value) > 0){
 
-            if((srgInd$Unit == "dcr") | (srgInd$Unit == "DCR")){
-
+            if((srgInd$Unit == "DCR")){
+                
                 d            <- getConstVal(a$cmco,"d")
                 rho          <- getConstVal(a$cmco,"rho")
                 R            <- getConstVal(a$cc,"R")
                 
-                pfill        <- getConstVal(NA,NA,srgInd) - getConstVal(NA,NA,srgOff) # in DCR
-
+                pfillDCR        <- getConstVal(NA,NA,srgInd) 
+                poffsetDCR      <- getConstVal(NA,NA,srgOff) # in DCR
+                
                 if(a$cmscg =="N2"){
                     sigma      <- getConstVal(a$cmco,"sigma_N2")
                     slope      <- getConstVal(a$cmco,"slope_N2")
-                    
+
                     M          <- getConstVal(a$cc,"molWeight_N2")
                     visc       <- getConstVal(a$cc,"visc_N2")
                 }
-                
+
                 if(a$cmscg =="Ar"){
                     M           <- getConstVal(a$cc,"molWeight_Ar")
                     visc        <- getConstVal(a$cc,"visc_Ar")
@@ -253,36 +308,41 @@ ce3.newCalPfill <- function(ccc){
 
                 T     <- getConstVal(a$ca,"Tfm3")
 
-                
-                pfill <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/sigma/2000*pfill ## mbar
+                K <- sqrt(8*R*(T)/(pi*M))*pi*d*rho/sigma/2000
+                pfillMbar <- K * pfillDCR ## mbar
+                poffsetMbar <- K * poffsetDCR ## mbar
 
-                panz      <- pfill
+                panz      <- pfillMbar - poffsetMbar 
                 pfillKorr <- panz
 
                 for(i in 1:noOfViscIter){
 
                     pfillKorr <- panz * sigma/(slope * pfillKorr + sigma)
-
+                   
                 }
-                
-                pfillSRG <- pfillKorr
+
+                pfill[isrg] <- pfillKorr[isrg]
                 msg <- paste(msg,
                              " from dcr values with ",
                              noOfViscIter,
                              " iterations for viscosity correction" )
-
-                
-                
-                ccc$Calibration$Analysis$Values$Pressure <-
-                    setCcl(ccc$Calibration$Analysis$Values$Pressure,
-                           "fill",
-                           "mbar",
-                           pfillSRG,
-                           msg)
-            }## Unit dcr           
+            }## Unit dcr
         }
+        ccc$Calibration$Analysis$Values$Pressure <-
+            setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                   "fill",
+                   PF$Unit,
+                   pfill,
+                   msg)
+        
+        ccc$Calibration$Analysis$Values$Pressure <-
+            setCcl(ccc$Calibration$Analysis$Values$Pressure,
+                   "fill_offset",
+                   PF$Unit,
+                   pfilloffset,
+                   "pfill is already corrected by fill_offset")
+        
     } ## a$cmscok == "opK4"
     
     return(ccc)
 }
-    

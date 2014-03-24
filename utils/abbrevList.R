@@ -24,25 +24,39 @@ abbrevList <- function(ccc){
 
 ### ce3-spezifisch
   if(a$cs =="CE3"){
+<<<<<<< HEAD
    
       a$cmsc   <- a$cm$SequenceControl
       a$cmscok <- a$cmsc$operationKind
       a$cmscg  <- a$cmsc$Gas
       a$cmscp  <- a$cmsc$calPort
+=======
+    a$cmsc   <- a$cm$SequenzControl
+    if(is.null( a$cmsc )){
+      a$cmsc <- a$cm$SequenceControl
+    }
+    a$cmscok <- a$cmsc$operationKind
+    a$cmscg  <- a$cmsc$Gas
+    a$cmag   <- a$cmscg
+    a$cmscp  <- a$cmsc$calPort
+>>>>>>> dbddc1e4b228d5429b5a8251b020ce2940cc4964
   }
 ### se1-spezifisch
   if(a$cs =="SE1"){
       a$cmag <- a$cma$Gas 
   }
 
-### VG Dkm Frs-spezifisch
-  if(a$cs =="DKM|FRS5" | a$cs == "FRS5" | a$cs == "DKM"){
-
-    if(!(length(a$cm$SequenceControl) == 0)){
-      a$cmsc   <- a$cm$SequenceControl
-    }
+### VG spezifisch
+  if(a$cs =="FRS5|SE2" |
+     a$cs =="DKM|FRS5" |
+     a$cs == "FRS5"    |
+     a$cs == "DKM"){
+      
+      if(!(length(a$cm$SequenceControl) == 0)){
+          a$cmsc   <- a$cm$SequenceControl
+      }
   }
-
+  
   if((is.list(a$cmsc) )){
     a$cmscoi <- a$cmsc$outIndex
   }
@@ -51,7 +65,6 @@ abbrevList <- function(ccc){
   if(length(a$cmv) > 0){
     a$dataAvailable <- TRUE
   }
-
 
   a$ca  <- a$c$Analysis
   a$cav <- a$ca$Values

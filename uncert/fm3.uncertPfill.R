@@ -36,20 +36,7 @@ fm3.uncertPfill <- function(ccc){
         }
       }
     }
-    ## gibt es NA's in uncertPfillRes?
-    iall <- which(is.na(uncertPfillRes))
-
-    if(length(iall) > 0){
-      
-      msg <- paste(msg,
-                   " uncertainty vector don't cover entire pfill range ",
-                   " replaced uncalculated value at point(s) ",
-                   iall,
-                   " with 1 (100%)")
-      
-      uncertPfillRes[iall] <- 1.0
- 
-    }
+    
     ccc$Calibration$Analysis$Values$Uncertainty <-
       setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
              "uncertPfill",

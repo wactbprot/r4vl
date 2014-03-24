@@ -1,60 +1,149 @@
 writeRes <- function( ccc ){
-  msg <- "set by writeRes"
+    msg <- "set by writeRes"
+    ## - data reduction as given by ToDo
+    ## - round
+    
+    a <- abbrevList(ccc)
 
-  a <- abbrevList(ccc)
+    if(length(a$cp) > 0 &
+       length(a$cpt) > 0){
 
-  mbar2Pa       <- getConstVal(a$cc,"mbar_2_Pa")
+        reType  <- a$cpt$Type
+        reTable <- FALSE
+        ## cal
+        PCAL <- getSubList(a$cav$Pressure, "cal")
+        PCAL$HeadCell <- "{\\(p_{cal}\\)}"
+        PCAL$UnitCell <- PCAL$Unit
+        pcal <- getConstVal(NA, NA, PCAL)
+        
+        ## ind
+        PIND <- getSubList(a$cav$Pressure, "ind")
+        PIND$HeadCell <- "{\\(p_{ind}\\)}"
+        PIND$UnitCell <-  PIND$Unit
+        pind <- getConstVal(NA, NA, PIND)
+        
 
-  ## tested und bereitet rudimentäre Listen vor
-  ccc$Calibration$Result        <-  checkSetList(ccc$Calibration$Result)
-  ccc$Calibration$Result$Values <-  checkSetList(ccc$Calibration$Result$Values)
-
-  if(length(a$cp) > 0){
-
-    if(length(a$cpt) > 0){
-      if((length(a$cpt$Result)) > 0){
-
-        namesRes  <- names(a$cpt$Result)
-        noOfNames <- length(namesRes)
-        targetUnit <- a$cpt
-
-        for(i in namesRes){ ## das ist z.B. Pressure
-
-          resTypes <- a$cpt$Result[[i]]
-
-          for(j in resTypes){## das ist z.B. ind
-            ## msg in for loops immer wieder neu
-            ## wenn auch die setCcl in der for loop steht
-            msg <- "set by writeRes"
-
-            resToWrite <- getConstVal(a$cav[[i]], j)
-            ## autoConversion
+        ## ind_offset
+        PINDoffs <- getSubList(a$cav$Pressure, "ind_offset")
+        PINDoffs$HeadCell <- "{\\(p_r\\)}"
+        PINDoffs$UnitCell <-  PINDoffs$Unit
+        pindoffs <- getConstVal(NA, NA, PINDoffs)
 
 
-            if(resToWrite$Unit == "mbar"){
+        ## ind_corr
+        PINDcorr <- getSubList(a$cav$Pressure, "ind_corr")
+        PINDcorr$HeadCell <- "{\\(p_{ind} - p_r\\)}"
+        PINDcorr$UnitCell <- PINDcorr$Unit
+        pindcorr <- getConstVal(NA, NA, PINDcorr)
 
-              resToWrite$Value <- resToWrite$Value * mbar2Pa
-              resToWrite$Unit <- "Pa"
 
-              msg <- paste(msg,"converted to Pa with: ", mbar2Pa)
+        ## uncert_total
+        k <- 2
+        UT <- getSubList(a$cav$Uncertainty, "uncertTotal_rel")
+        UT$HeadCell <- paste("{\\(U(k=",k,")\\)}", sep="")
+        if(UT$Unit == "1"){
+            UT$UnitCell <- ""
+        }
+        ut <- getConstVal(NA, NA, UT) * k
+
+
+        if(reType =="error"){
+            ## rel
+            RES <- getSubList(a$cav$Error, "relative")
+            if(RES$Unit == "1"){
+                RES$Unit <- ""
+            }
+            RES$HeadCell <- "{\\(e\\)}"
+            RES$UnitCell <- RES$Unit
+            erel <- getConstVal(NA, NA, RES)
+            
+            reTable <- TRUE
+        }
+        
+        if(reType =="sens"){
+            ## rel
+            RES <- getSubList(a$cav$Sensitivity, "gauge_sens")
+            
+            RES$HeadCell <- "{\\(S\\)}"
+            RES$UnitCell <- RES$Unit
+            erel <- getConstVal(NA, NA, RES)
+
+            reTable <- TRUE
+        }
+        
+        ## ---
+        ## pressure 
+        ## ---
+
+        if(length(a$cpt$Values$Pressure) > 0 &
+           length(a$cpt$Values$Pressure$Value) > 0){
+            p.target <- as.numeric(a$cpt$Values$Pressure$Value)
+            maxdev   <- as.numeric(a$cpt$MaxDev)
+
+            ## Ergebnisstabelle soll gleiche Länge wie
+            ## target vekcor haben
+            td.pcal     <- p.target
+            td.pind     <- p.target
+            td.pindoffs <- p.target
+            td.pindcorr <- p.target
+            td.ut       <- p.target
+            td.erel     <- p.target
+            
+            for(i in 1:length(p.target)){
+                i.take <- which(pcal >  p.target[i] *(1- maxdev) & 
+                             pcal <  p.target[i] *(1+ maxdev))
+                
+                
+                if(length(i.take) > 2){
+                    u.border <- 0.01
+                    e.delta  <- abs(mean(erel[i.take]) - erel[i.take])
+
+                    msg <- paste(msg,
+                                 "; For target pressure:",
+                                 p.target[i],
+                                 "I take points:",
+                                 toString(i.take))
+                    
+                    ## Alles was mehr als die Unsicherheit k=1
+                    ## abweicht wird nicht mitgenommen
+
+                    i.out  <- which(e.delta > mean(ut[i.take])/2)
+                    
+                    if(length(i.out) > 0){
+                        
+                        i.take <- i.take[-i.out]
+                        msg    <- paste(msg,
+                                        "from these I skip points: ",
+                                        toString(i.take[i.out]))
+                    }
+                }
+                
+                td.pcal[i]     <- mean(pcal[i.take])
+                td.pind[i]     <- mean(pind[i.take])
+                td.pindoffs[i] <- mean(pindoffs[i.take])
+                td.pindcorr[i] <- mean(pindcorr[i.take])
+                td.ut[i]       <- mean(ut[i.take])
+                td.erel[i]     <- mean(erel[i.take])
             }
 
+             PCAL$Value      <- formatC(td.pcal, digits=3, format="E")
+             PIND$Value      <- formatC(td.pind, digits=2, format="E")
+             PINDoffs$Value  <- formatC(td.pindoffs, digits=2, format="E")
+             PINDcorr$Value  <- formatC(td.pindcorr, digits=2, format="E")            
+             UT$Value        <- formatC(td.ut, digits=1, format="E")
+             RES$Value       <- formatC(td.erel, digits=1, width=2, format="E") 
 
-            ccc$Calibration$Result$Values[[i]] <-
-              setCcl(ccc$Calibration$Result$Values[[i]] ,
-                     resToWrite$Type,
-                     resToWrite$Unit,
-                     resToWrite$Value,
-                     msg)
-          }## for resType
+            PCAL$Comment     <- msg
+            
+             if(reTable){
+                ccc$Calibration$Result$Table[[1]] <- PCAL
+                ccc$Calibration$Result$Table[[2]] <- PIND
+                ccc$Calibration$Result$Table[[3]] <- PINDoffs
+                ccc$Calibration$Result$Table[[4]] <- PINDcorr
+                ccc$Calibration$Result$Table[[5]] <- RES
+                ccc$Calibration$Result$Table[[6]] <- UT
+            }
         }
-      }
     }
-  }
-
-
-
-
-return(ccc)
-
+    return(ccc)
 }

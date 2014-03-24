@@ -4,17 +4,19 @@
 test       <- FALSE
 tmpPath    <- "/tmp/"
 extdb      <- "vaclab_ext"
+futonStr   <- "http://a73434.berlin.ptb.de:5984/_utils/document.html?vaclab_db/"
+valTypes   <- c("Measurement","Analysis")
+instPath   <- "/usr/local/lib/r4vl/"
 
 if(!test){
+    ##
     infList             <- list()
     infList$args        <- commandArgs(TRUE) 
     noOfArgs            <- length(infList$args)
-}
-
-if(!test){
-    instPath            <- "/usr/local/lib/r4vl/"
+    
     setwd(instPath)
     source("load.R")
+
     cdb                 <- cdbIni()
     cdb$serverName      <- infList$args[noOfArgs - 2]
     cdb$DBName          <- infList$args[noOfArgs - 1]
@@ -34,44 +36,47 @@ if(!test){
 
 doc                 <- cdbGetDoc(cdb)$res
 a                   <- abbrevList(doc)
+
+measDates           <- toString(unlist(a$cm$Date[[1]]$Value))
 reportName          <- paste(a$cy,a$ct,a$cs,a$csi, sep="-")
 outPath             <- paste(tmpPath, reportName,"/", sep="")
 
 setwd(outPath)
-## -----------excel-land:
-for(structName in c("Measurement","Analysis")){
-    xlsxName <- paste(reportName, structName, "xlsx", sep=".")
-    if(file.exists(xlsxName)){
-        ## immer neu
-        file.remove(xlsxName)
-        headDf <- data.frame(id   = doc[["_id"]],
-                             rev  = doc[["_rev"]],
-                             sign = a$csi,
-                             type = a$ct,
-                             year = a$cy,
-                             futonUrl = paste("http://a73434.berlin.ptb.de:5984/_utils/document.html?vaclab_db/",doc[["_id"]],sep="")) 
 
-        write.xlsx(t(headDf),
-                   xlsxName,
-                   sheetName="Header")
+
+## -*- excel-land:
+for(structName in valTypes){
+    xlsxName <- paste(reportName, structName, "xlsx", sep=".")
+    
+    ## immer neue files
+    if(file.exists(xlsxName)){
+        file.remove(xlsxName)
     }
+    ## head data frame
+    headDf <- data.frame(id       = doc[["_id"]],
+                         rev      = doc[["_rev"]],
+                         sign     = a$csi,
+                         type     = a$ct,
+                         year     = a$cy,
+                         measDate = measDates,
+                         futonUrl = paste(futonStr, doc[["_id"]],sep="")) 
+    ## head schreiben
+    write.xlsx(t(headDf),
+               xlsxName,
+               sheetName="Header")
+    
     valList  <- a$c[[structName]]$Values
     
     lnames   <- names(valList)
     for(sheetName in lnames){
         
         df <- makeDf(valList[[sheetName]])
-
-        if(file.exists(xlsxName)){
-            af = TRUE
-        }else{
-            af = FALSE
-        }
-        
+        ## weil head schon geschrieben,
+        ## kann immer angehangen werden
         write.xlsx(df,
                    xlsxName,
                    sheetName=sheetName,
-                   append=af)
+                   append=TRUE)
     }
     if(!test){
         outdb$fileName     <- xlsxName
@@ -83,5 +88,8 @@ if(test){
     setwd(cwd)
 }
 
-cat(toJSON(list( resXlsx= resXlsx$ok)))
+## delete folder
+setwd("..")
+unlink( outPath,recursive=TRUE)
 
+cat(toJSON(list( resXlsx= resXlsx$ok)))

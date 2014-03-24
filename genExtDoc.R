@@ -4,15 +4,11 @@
 
 test  <- FALSE
 extdb <- "vaclab_ext"
+
 if(!test){
     infList             <- list()
     infList$args        <- commandArgs(TRUE) 
     noOfArgs            <- length(infList$args)
-}
-
-tmpPath                 <- "/tmp/"
-
-if(!test){
     instPath            <- "/usr/local/lib/r4vl/"
     setwd(instPath)
     source("load.R")
@@ -25,20 +21,12 @@ if(!test){
     cwd                 <- getwd()
     cdb                 <- cdbIni()
     cdb$DBName          <- "vaclab_db" 
-#    cdb$id              <- "f481e565fd252673c6a6e7b6b8003f05" #CE3
+### cdb$id              <- "f481e565fd252673c6a6e7b6b8003f05" #CE3
     cdb$id              <- "4a279906e8f7855fea31e7a18c044774" #SE1
 }
 
 doc                 <- cdbGetDoc(cdb)$res
 a                   <- abbrevList(doc)
-
-reportName          <- paste(a$cy,a$ct,a$cs,a$csi, sep="-")
-outPath             <- paste(tmpPath, reportName,"/", sep="")
-dir.create(outPath,
-           showWarnings = FALSE,
-           mode = "0777")
-
-setwd(outPath)
 
 ## build new doc
 ndoc           <- list()

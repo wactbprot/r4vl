@@ -16,8 +16,7 @@ ce3.calTsensKorr <- function(ccc){
                   "109",
                   "110")
     
-    normName <- "f250"
- 
+    normName <- "f250" 
     nVal <-  getConstVal(a$cmv,normName)
     ## Die Auslese des F250 funktioniert nicht stabil
     ## deshalb die folgende Reihe von Kriterien zum
