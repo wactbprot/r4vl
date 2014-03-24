@@ -25,6 +25,9 @@ The following R-packages are needed:
        RCurl   
        R4CouchDB
 
+To install ``` bitops ``` and ```RCurl``` one need to install
+
+        zypper in R-base-devel libcurl-devel 
 
 ### java needed for xlsx
 
