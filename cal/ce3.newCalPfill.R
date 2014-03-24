@@ -1,6 +1,6 @@
 ce3.newCalPfill <- function(ccc){
-    msg   <- "calculated by ce3.newCalPfill"
-
+    msg    <- "calculated by ce3.newCalPfill"
+    
     a      <- abbrevList(ccc)
     pUnit  <- "mbar"
     gas    <- a$cmscg
@@ -234,8 +234,7 @@ ce3.newCalPfill <- function(ccc){
                 rho          <- getConstVal(a$cmco,"rho")
                 R            <- getConstVal(a$cc,"R")
                 
-                pfill        <- getConstVal(NA,NA,srgInd) -
-                    getConstVal(NA,NA,srgOff) # in DCR
+                pfill        <- getConstVal(NA,NA,srgInd) - getConstVal(NA,NA,srgOff) # in DCR
 
                 if(a$cmscg =="N2"){
                     sigma      <- getConstVal(a$cmco,"sigma_N2")
