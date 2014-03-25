@@ -42,13 +42,6 @@ ce3.calDeltaVDeltat <- function(ccc){
         j       <- 0
         noOfSZ  <-  length(lwstart)
 
-        ## nicht nach p=0 extrap.
-        ## sondern t bei p_mean
-        ## ermitteln weil
-        ## sonst der Hebel
-        ## der Extrapolation und damit die
-        ## Streuung zu groß  wird
-
         for(i in lwstart){
             j <- j+1
             stype      <- paste("slope_x_",i, sep="")
