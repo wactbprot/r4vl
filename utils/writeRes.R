@@ -103,7 +103,7 @@ writeRes <- function( ccc ){
                         msg <- paste(msg,
                                      "; For target pressure:",
                                      p.target[i],
-                                     "I take points:",
+                                     "I take the points:",
                                      toString(i.take))
 
                         ## Alles was mehr als die Unsicherheit k=1
@@ -115,7 +115,7 @@ writeRes <- function( ccc ){
 
                             i.take <- i.take[-i.out]
                             msg    <- paste(msg,
-                                            "from these I skip points: ",
+                                            "from these I skip the points: ",
                                             toString(i.take[i.out]))
                         }
                     }

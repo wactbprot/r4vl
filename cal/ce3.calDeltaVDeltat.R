@@ -88,9 +88,7 @@ ce3.calDeltaVDeltat <- function(ccc){
             mSlope[j]  <- mean(slope)
             minSlope[j]<- min(slope)
             maxSlope[j]<- max(slope)
-            ## In praktisch allen Fällen entsteht die Drift
-            ## durch Temperatur; dieser entspricht dann
-            ## kein Gasfluß; dcorr berücksichtigt das:
+            ## s. http://a73434.berlin.ptb.de/mediawiki/index.php
             dcorr[j]   <- drift[j]/mSlope[j] 
             ## delta V
             ## fn.Afit:
@@ -109,7 +107,7 @@ ce3.calDeltaVDeltat <- function(ccc){
             A          <- (fn.Afit(cf,h[i2]) - fn.Afit(cf,h[i1]))/(h[i2] - h[i1])
             deltaV     <- A * (h[i2] - h[i1]) * vconv
 
-            ## Leitwert = dV/dt - drift
+            ## Leitwert = dV/dt *(1- m.D/m.SZ)
             dVdt       <- deltaV / deltat * (1 - dcorr[j])
             L[j]       <- mean(  dVdt )
             sdL[j]     <- sd(    dVdt )

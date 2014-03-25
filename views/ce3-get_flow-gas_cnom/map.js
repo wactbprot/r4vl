@@ -9,6 +9,7 @@ function(doc) {
 
                 var cav  = ca.Values,
 		cmv  = cm.Values,
+		cma  = cm.AuxValues,
                 cad  = ca.Date,
                 cms  = cm.SequenceControl;
 
@@ -16,16 +17,43 @@ function(doc) {
 
                     var gas  = cms.Gas,
                     cadv = cad.Value,
+		    cmvd = cmv.Drift, 
+		    cmac = cma.Conductance,
                     cavc = cav.Conductance,
                     cavp = cav.Pressure,
                     cavt = cav.Temperature;
 
-                    if(gas && cavc && cavp && cavt){
+                    if(gas && cavc && cavp && cavt && cmac){
 
-                        var Ncond  = 0,
-			Nsdcond =0,
-                        Ntemp  = 0,
-                        Npfill = 0;
+                        var SZslopes=[],  
+			Ncond   = 0,
+			Nsdcond = 0,
+                        Ntemp   = 0,
+                        Ndrift  = 0,
+                        Nszlope = 0,
+                        Npfill  = 0;
+			
+			for(var k = 0; k < cmac.length; k++){
+			    
+			    if(cmac[k].Type.search("lope_x") > 0){
+				
+				var ss = 0;
+				
+				for(var j = 0; j < cmac[k].Value.length; j++){
+				    ss = ss + parseFloat(cmac[k].Value[j]);
+				}
+				SZslopes.push(ss/(j + 1));
+			    } 
+			}
+
+			Nszlope = SZslopes.length;
+
+                        for(i in cmvd){
+                            if(cmvd[i].Type == "drift_slope_x"){
+                                var drift  = cmvd[i].Value;
+                                Ndrift     = drift.length;
+                            }
+                        }
 
                         for(i in cavt){
                             if(cavt[i].Type == "Tfm3"){
@@ -51,13 +79,26 @@ function(doc) {
                                 Npfill    = pfill.length;
                             }
                         }
-                        if(Npfill > 0         && 
-			   Npfill == Ncond    && 
-			   Npfill == Nsdcond  && 
-			   Ntemp == Npfill){
+                        if(Npfill  >  0       && 
+			   Npfill  == Ncond   &&
+			   Nszlope == Ncond   &&
+			   Ndrift  == Ncond   && 
+			   Npfill  == Nsdcond && 
+			   Ntemp   == Npfill){
                             for(var j = 0; j < Npfill; j++){
-                                emit( [gas, cond[j]] , // key
-				      [cadv, cond[j], pfill[j], temp[j], sdcond[j]] // value
+                                emit( [
+					  gas, 
+					  cond[j]
+				      ] , // key
+				      [
+					  cadv, 
+					  cond[j], 
+					  pfill[j], 
+					  temp[j], 
+					  sdcond[j],
+				      	  SZslopes[j], 
+					  drift[j] 
+				      ] // value
 				    );
                             }
                         }

@@ -38,12 +38,12 @@ se1.calPfill <- function(ccc){
         cfcdg10$a      <- getConstVal(  a$cmco, paste("cdg10CorrA_",g,sep=""))
         cfcdg10$b      <- getConstVal(  a$cmco, paste("cdg10CorrB_",g,sep=""))
         cfcdg10$c      <- getConstVal(  a$cmco, paste("cdg10CorrC_",g,sep=""))
-        cfcdg10$d      <- 0
-        cfcdg10$e      <- 0
+        cfcdg10$d      <- getConstVal(  a$cmco, paste("cdg10CorrD_",g,sep=""))
+        cfcdg10$e      <- getConstVal(  a$cmco, paste("cdg10CorrE_",g,sep=""))
         cfcdg10$f      <- 0
 
         p.fill.10.uncorr.mbar   <- cdg.pfill.10.mbar - cdg.offset.10.mbar
-        pfill.10.mbar           <- p.fill.10.uncorr.mbar/(fn.7904(cfcdg10, p.fill.10.uncorr.mbar)/100 + 1)
+        pfill.10.mbar           <- p.fill.10.uncorr.mbar/(fn.4403(cfcdg10, p.fill.10.uncorr.mbar)/100 + 1)
 
         RANGE.10       <- getSubList(a$cmco, "cdg10UseDev")
         
@@ -70,14 +70,14 @@ se1.calPfill <- function(ccc){
 
         cfcdg100       <- list()
         cfcdg100$a     <- getConstVal(a$cmco, "cdg100CorrA")
-        cfcdg100$b     <- 0
-        cfcdg100$c     <- 0
-        cfcdg100$d     <- 0
-        cfcdg100$e     <- 0
+        cfcdg100$b     <- getConstVal(a$cmco, "cdg100CorrB")
+        cfcdg100$c     <- getConstVal(a$cmco, "cdg100CorrC")
+        cfcdg100$d     <- getConstVal(a$cmco, "cdg100CorrD")
+        cfcdg100$e     <- getConstVal(a$cmco, "cdg100CorrE")
         cfcdg100$f     <- 0
 
         p.fill.100.uncorr.mbar  <- cdg.pfill.100.mbar - cdg.offset.100.mbar
-        pfill.100.mbar          <- p.fill.100.uncorr.mbar/(fn.7904(cfcdg100, p.fill.100.uncorr.mbar)/100 + 1)
+        pfill.100.mbar          <- p.fill.100.uncorr.mbar/(fn.4403(cfcdg100, p.fill.100.uncorr.mbar)/100 + 1)
 
         RANGE.100      <- getSubList(a$cmco, "cdg100UseDev")
         
@@ -103,14 +103,14 @@ se1.calPfill <- function(ccc){
 
         cfcdg1000       <- list()
         cfcdg1000$a     <- getConstVal(a$cmco, "cdg1000CorrA")
-        cfcdg1000$b     <- 0
-        cfcdg1000$c     <- 0
-        cfcdg1000$d     <- 0
-        cfcdg1000$e     <- 0
+        cfcdg1000$b     <- getConstVal(a$cmco, "cdg1000CorrB")
+        cfcdg1000$c     <- getConstVal(a$cmco, "cdg1000CorrC")
+        cfcdg1000$d     <- getConstVal(a$cmco, "cdg1000CorrD")
+        cfcdg1000$e     <- getConstVal(a$cmco, "cdg1000CorrE")
         cfcdg1000$f     <- 0
 
         p.fill.1000.uncorr.mbar  <- cdg.pfill.1000.mbar - cdg.offset.1000.mbar
-        pfill.1000.mbar          <- p.fill.1000.uncorr.mbar/(fn.7904(cfcdg1000, p.fill.1000.uncorr.mbar)/100 + 1)
+        pfill.1000.mbar          <- p.fill.1000.uncorr.mbar/(fn.4403(cfcdg1000, p.fill.1000.uncorr.mbar)/100 + 1)
 
         RANGE.1000      <- getSubList(a$cmco, "cdg1000UseDev")
         
