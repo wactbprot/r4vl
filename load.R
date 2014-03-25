@@ -1,10 +1,8 @@
 ## --
-## wactbprot/2012-08-14
+## wactbprot/2014-03-25
 ## --
 library(xlsx,     quietly =TRUE)
 library(knitr,    quietly =TRUE)
-library(reshape2, quietly =TRUE)
-library(ggplot2,  quietly =TRUE)
 library(methods,  quietly =TRUE)
 library(bitops,   quietly =TRUE)
 library(RJSONIO,  quietly =TRUE)

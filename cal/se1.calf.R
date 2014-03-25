@@ -1,57 +1,33 @@
 se1.calf <- function(ccc){
   msg     <- "calculated by se1.calf()"
   volUnit <- "cm^3" 
-  
-  a    <- abbrevList(ccc)
-  ## -------------------- zusatzvolumen aufaddieren  v 
-  if( length(a$cmsc$Volume$Type) == 0){
-    Vz <- 0
-    for(i in 1:length(a$cmsc$Volume)){
-      
-      fromUnit <- a$cmsc$Volume[[i]]$Unit
-      conv     <- getConvFactor(ccc,volUnit, fromUnit)
-      msg      <- paste(msg, "used", conv, "to convert from",fromUnit, "to", volUnit)
+  Vz      <- 0  
+  a       <- abbrevList(ccc)
 
-      ## ---> ToDo: testen
-      ##  Vz   <- Vz + a$cmsc$Volume[[i]]$Value[length(a$cmsc$Volume[[i]]$Value)]
-      ##
-      Vz       <- Vz + getConstVal(NA,NA,a$cmsc$Volume[[i]]) * conv
-    }
+  ## -------------------- Zusatzvolumen aufaddieren  v 
+  for(i in 1:length(a$cma$Volume)){
     
-  }else{
-    
-    fromUnit <- a$cmsc$Volume$Unit
-    conv     <- getConvFactor(ccc,volUnit,  fromUnit)
+    fromUnit <- a$cma$Volume[[i]]$Unit
+    conv     <- getConvFactor(ccc,volUnit, fromUnit)
     msg      <- paste(msg, "used", conv, "to convert from",fromUnit, "to", volUnit)
     
-    Vz       <- getConstVal(NA,NA,a$cmsc$Volume) * conv
+    nV       <- getConstVal(NA,NA,a$cma$Volume[[i]])
+    lnV      <- length(nV) # nur die letzte Eingabe zählt
     
+    Vz       <- Vz + nV[lnV] * conv
   }
+
+  ## -------------------- f gibts in yamp for free
+  f        <- getConstVal(a$cmv$Expansion, "ratio_uncorr")
   
-  ## -------------------- vector mit expansiossequenzen erzeugen
+  SV       <- getSubList(a$cmv$Expansion, "volume_start")
+  fromUnit <- SV$Unit
+  conv     <- getConvFactor(ccc,volUnit, fromUnit)
   
-  N  <- length(a$cmscex)
-  f  <- rep(NA,N)
-  sv <- rep(NA,N) ## start volumen
+  sV       <- getConstVal(NA,NA,SV)*conv
   
-  if(length(a$cmscex) > 0){
-    for(i in 1:N){
-      ## die ges. substruktur
-      SCI <- getSubList(a$cms,a$cmscex[[i]])
-      ## der Value
-      f[i] <- getConstVal(NA,NA,SCI)
-      ## Startvolumen mit ber. der Einheiten
-      
-      SV   <- getSubList(a$cms, SCI$StartVolume)
-      conv <- getConvFactor(ccc,volUnit, SV$Unit)
-      
-      sv[i] <- getConstVal(NA,NA,SV) * conv
-      
-      
-      fp <- 1/(1/f + Vz/sv)
-      
-    }
-     
+  fp       <- 1/(1/f + Vz/sV)
+  
     ccc$Calibration$Analysis$Values$Expansion <-
       setCcl(ccc$Calibration$Analysis$Values$Expansion,
              "corr",
@@ -60,5 +36,5 @@ se1.calf <- function(ccc){
              msg)
     
     return(ccc)
-  }
+
 }
