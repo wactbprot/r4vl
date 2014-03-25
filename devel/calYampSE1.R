@@ -29,6 +29,7 @@ doc <- se1.calRGC(doc)
 doc <- se1.calPcal(doc)
 
 doc <- se1.uncertPfill(doc)
+doc <- se1.uncertf(doc)
 
 doc <- dispatchResCal( doc )
 

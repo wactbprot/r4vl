@@ -10,7 +10,10 @@ if(length(doc$Calibration) > 0){
   doc <- se1.calf(doc)
   doc <- se1.calRGC(doc)
   doc <- se1.calPcal(doc)
-  
+
   doc <- dispatchResCal( doc )
+
   
+  doc <- se1.uncertPfill(doc)
+  doc <- se1.uncertf(doc)
 }

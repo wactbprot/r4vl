@@ -29,26 +29,20 @@ To install ``` bitops ``` and ```RCurl``` one need to install
 
         zypper in gcc-c++ R-base-devel libcurl-devel 
 
-### java needed for xlsx
+A java installation is needed for xlsx. It turned out to be a good idea to
 
-It turned out to be a good idea to
-
-        zypper in java-1.7.0-openjdk-devel
-
-and 
-
-        zypper in java-devel
+        zypper in java-1.7.0-openjdk java-1.7.0-openjdk-devel
 
 followed by
 
         R CMD javareconf
 
-Afterwards (at least here) I could  install the xlsx stuff. 
+in the directory ```/usr/lib/R/library```. Afterwards (at least here) I could  install the xlsx stuff. 
 
 ### r4vl
 
        cd /usr/local/lib 
-       git clone http://wellknowngitblitserver:8080/gitblit/git/r4vl.git 
+       git clone github_or_gitlab/r4vl.git 
 
 Thats it.
 

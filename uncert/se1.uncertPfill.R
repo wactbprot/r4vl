@@ -19,10 +19,6 @@ se1.uncertPfill <- function(ccc){
                               (pfill < as.numeric(RANGE.100$To)))
       i.1000         <- which((pfill > as.numeric(RANGE.1000$From)) &
                               (pfill < as.numeric(RANGE.1000$To)))
-      print(i.10)
-      print(i.100)
-      print(i.1000)
-
       
       ## --- 10Torr CDG --- wie in QS 2/14 vorgegeben
       if(length(i.10) > 0){
