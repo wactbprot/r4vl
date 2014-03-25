@@ -2,7 +2,7 @@ writeRes <- function( ccc ){
     msg <- "set by writeRes"
     ## - data reduction as given by ToDo
     ## - round
-    
+
     a <- abbrevList(ccc)
 
     if(length(a$cp) > 0 &
@@ -15,13 +15,13 @@ writeRes <- function( ccc ){
         PCAL$HeadCell <- "{\\(p_{cal}\\)}"
         PCAL$UnitCell <- PCAL$Unit
         pcal <- getConstVal(NA, NA, PCAL)
-        
+
         ## ind
         PIND <- getSubList(a$cav$Pressure, "ind")
         PIND$HeadCell <- "{\\(p_{ind}\\)}"
         PIND$UnitCell <-  PIND$Unit
         pind <- getConstVal(NA, NA, PIND)
-        
+
 
         ## ind_offset
         PINDoffs <- getSubList(a$cav$Pressure, "ind_offset")
@@ -56,86 +56,87 @@ writeRes <- function( ccc ){
             RES$HeadCell <- "{\\(e\\)}"
             RES$UnitCell <- RES$Unit
             erel <- getConstVal(NA, NA, RES)
-            
+
             reTable <- TRUE
         }
-        
+
         if(reType =="sens"){
             ## rel
             RES <- getSubList(a$cav$Sensitivity, "gauge_sens")
-            
+
             RES$HeadCell <- "{\\(S\\)}"
             RES$UnitCell <- RES$Unit
             erel <- getConstVal(NA, NA, RES)
 
             reTable <- TRUE
         }
-        
-        ## ---
-        ## pressure 
-        ## ---
 
-        if(length(a$cpt$Values$Pressure) > 0 &
-           length(a$cpt$Values$Pressure$Value) > 0){
-            p.target <- as.numeric(a$cpt$Values$Pressure$Value)
-            maxdev   <- as.numeric(a$cpt$MaxDev)
+        if(reTable){
 
-            ## Ergebnisstabelle soll gleiche Länge wie
-            ## target vekcor haben
-            td.pcal     <- p.target
-            td.pind     <- p.target
-            td.pindoffs <- p.target
-            td.pindcorr <- p.target
-            td.ut       <- p.target
-            td.erel     <- p.target
-            
-            for(i in 1:length(p.target)){
-                i.take <- which(pcal >  p.target[i] *(1- maxdev) & 
-                             pcal <  p.target[i] *(1+ maxdev))
-                
-                
-                if(length(i.take) > 2){
-                    u.border <- 0.01
-                    e.delta  <- abs(mean(erel[i.take]) - erel[i.take])
+            ## ---
+            ## pressure
+            ## ---
 
-                    msg <- paste(msg,
-                                 "; For target pressure:",
-                                 p.target[i],
-                                 "I take points:",
-                                 toString(i.take))
-                    
-                    ## Alles was mehr als die Unsicherheit k=1
-                    ## abweicht wird nicht mitgenommen
+            if(length(a$cpt$Values$Pressure) > 0 &
+               length(a$cpt$Values$Pressure$Value) > 0){
+                p.target <- as.numeric(a$cpt$Values$Pressure$Value)
+                maxdev   <- as.numeric(a$cpt$MaxDev)
 
-                    i.out  <- which(e.delta > mean(ut[i.take])/2)
-                    
-                    if(length(i.out) > 0){
-                        
-                        i.take <- i.take[-i.out]
-                        msg    <- paste(msg,
-                                        "from these I skip points: ",
-                                        toString(i.take[i.out]))
+                ## Ergebnisstabelle soll gleiche Länge wie
+                ## target vekcor haben
+                td.pcal     <- p.target
+                td.pind     <- p.target
+                td.pindoffs <- p.target
+                td.pindcorr <- p.target
+                td.ut       <- p.target
+                td.erel     <- p.target
+
+                for(i in 1:length(p.target)){
+                    i.take <- which(pcal >  p.target[i] *(1- maxdev) &
+                                    pcal <  p.target[i] *(1+ maxdev))
+
+
+                    if(length(i.take) > 2){
+                        u.border <- 0.01
+                        e.delta  <- abs(mean(erel[i.take]) - erel[i.take])
+
+                        msg <- paste(msg,
+                                     "; For target pressure:",
+                                     p.target[i],
+                                     "I take the points:",
+                                     toString(i.take))
+
+                        ## Alles was mehr als die Unsicherheit k=1
+                        ## abweicht wird nicht mitgenommen
+
+                        i.out  <- which(e.delta > mean(ut[i.take])/2)
+
+                        if(length(i.out) > 0){
+
+                            i.take <- i.take[-i.out]
+                            msg    <- paste(msg,
+                                            "from these I skip the points: ",
+                                            toString(i.take[i.out]))
+                        }
                     }
+                    td.pcal[i]     <- mean(pcal[i.take])
+                    td.pind[i]     <- mean(pind[i.take])
+                    td.pindoffs[i] <- mean(pindoffs[i.take])
+                    td.pindcorr[i] <- mean(pindcorr[i.take])
+                    td.ut[i]       <- mean(ut[i.take])
+                    td.erel[i]     <- mean(erel[i.take])
                 }
-                
-                td.pcal[i]     <- mean(pcal[i.take])
-                td.pind[i]     <- mean(pind[i.take])
-                td.pindoffs[i] <- mean(pindoffs[i.take])
-                td.pindcorr[i] <- mean(pindcorr[i.take])
-                td.ut[i]       <- mean(ut[i.take])
-                td.erel[i]     <- mean(erel[i.take])
-            }
 
-             PCAL$Value      <- formatC(td.pcal, digits=3, format="E")
-             PIND$Value      <- formatC(td.pind, digits=2, format="E")
-             PINDoffs$Value  <- formatC(td.pindoffs, digits=2, format="E")
-             PINDcorr$Value  <- formatC(td.pindcorr, digits=2, format="E")            
-             UT$Value        <- formatC(td.ut, digits=1, format="E")
-             RES$Value       <- formatC(td.erel, digits=1, width=2, format="E") 
+                PCAL$Value      <- formatC(td.pcal, digits=3, format="E")
+                PIND$Value      <- formatC(td.pind, digits=2, format="E")
+                PINDoffs$Value  <- formatC(td.pindoffs, digits=2, format="E")
+                PINDcorr$Value  <- formatC(td.pindcorr, digits=2, format="E")
+                UT$Value        <- formatC(td.ut, digits=1, format="E")
+                RES$Value       <- formatC(td.erel, digits=1, width=2, format="E")
 
-            PCAL$Comment     <- msg
-            
-             if(reTable){
+                PCAL$Comment     <- msg
+
+
                 ccc$Calibration$Result$Table[[1]] <- PCAL
                 ccc$Calibration$Result$Table[[2]] <- PIND
                 ccc$Calibration$Result$Table[[3]] <- PINDoffs

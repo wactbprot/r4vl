@@ -1,30 +1,22 @@
 ## --
-## wactbprot/2011-05-25
+## wactbprot/2014-03-25
 ## --
-library(methods,  quietly =TRUE)
-library(bitops,   quietly =TRUE)
-library(RJSONIO,  quietly =TRUE)
-library(RCurl,    quietly =TRUE)
-library(R4CouchDB,quietly =TRUE)
 
-cdb  <- cdbIni()
-
-
-cdb$DBName     <- "uml_test" ## DBName
-
-infList <- list()
-infList$srcPath     <-  "/usr/local/src/map/_attachments/"
-
+infList             <- list()
+infList$srcPath     <-  "/usr/local/lib/r4vl"
 setwd(infList$srcPath)
 
 source("load.R")
 
+cdb            <- cdbIni()
+cdb$DBName     <- "vaclab_test" ## DBName
+
 
 ## devel/tests/calculations from here -----------------
-#"1f72ec47286b685511b3cc38f0094533"#"1f72ec47286b685511b3cc38f009ceeb"
-
-cdb$id     <- "5c9f2659545fe56374723402d2038d50"
-
+                                        #"1f72ec47286b685511b3cc38f0094533"
+                                        #"1f72ec47286b685511b3cc38f009ceeb"
+                                        # "5c9f2659545fe56374723402d2038d50"
+cdb$id     <- "2d54e68feffe46b5fa0ecf788a0bc0f2" # ITRC SRG 2013
 doc <- cdbGetDoc(cdb)$res
 
 doc <- refreshAnalysis(cdb,doc)
@@ -36,8 +28,12 @@ doc <- se1.calf(doc)
 doc <- se1.calRGC(doc)
 doc <- se1.calPcal(doc)
 
+doc <- se1.uncertPfill(doc)
+doc <- se1.uncertf(doc)
+
 doc <- dispatchResCal( doc )
-                                        #cdb$dataList <- doc
-                                        #cdbUpdateDoc(cdb)
-## ----------------------------------------------------
-Sys.setenv("no_proxy" = saveNoProxy)
+
+
+###cdb$dataList <- doc
+###cdbUpdateDoc(cdb)
+
