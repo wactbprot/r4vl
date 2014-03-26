@@ -1,5 +1,5 @@
 se1.uncertAds <- function(ccc){
-    msg   <- "calculated by  se1.uncertCorr()"
+    msg   <- "calculated by  se1.uncertAds()"
     a     <- abbrevList(ccc)
 
     pcal  <- getConstVal(a$cav, "cal") # in mbar

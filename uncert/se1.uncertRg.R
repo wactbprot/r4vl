@@ -1,5 +1,5 @@
 se1.uncertRg <- function(ccc){
-    msg   <- "calculated by  se1.uncertCorr()"
+    msg   <- "calculated by  se1.uncertRg()"
     a     <- abbrevList(ccc)
 
 
