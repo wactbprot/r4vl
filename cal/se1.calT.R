@@ -1,5 +1,5 @@
 se1.calT <- function(ccc) {
-  msg <- "calculated by calT"
+  msg <- "calculated by se1.calT()"
   
   a <- abbrevList( ccc )
   
@@ -13,19 +13,20 @@ se1.calT <- function(ccc) {
     ## abwickeln
     
     ## a$cmscex steht für SequenceControll/Expansion
-    N <- length(a$cmscex)
+    exNames <- getSubList(a$cmv, "name")$Value
     
-    baseCorrName        <- "keithley_corr_ch" ## die neuen Namen
+    N <- length(exNames)
+    
+    baseCorrName        <- "keithley_corr_ch" 
     baseTNameAfter      <- "keithley_T_after_ch"
-
-    baseTNameRoom      <- baseTNameAfter
+    baseTNameRoom       <- "keithley_T_room_ch"
     baseTNameBefore     <- "keithley_T_before_ch" 
     expansionBaseName   <- "Expansion_" ## 
 
-    ## T_after ---------------------------------v
+    ## T_room ---------------------------------v
     channelsRoom <- c("110")
     roomRes <- getTemperatureVec(a,N,channelsRoom,baseTNameRoom,baseCorrName) + C2K
-    ## T_after ---------------------------------^
+    ## T_room ---------------------------------^
 
     
     ## T_after ---------------------------------v
@@ -34,11 +35,12 @@ se1.calT <- function(ccc) {
     ## T_after ---------------------------------^
     
     ## T_before ---------------------------------v
-    iA <- which(a$cmscex == paste(expansionBaseName, "A", sep=""))
-    iB <- which(a$cmscex == paste(expansionBaseName, "B", sep=""))
-    iC <- which(a$cmscex == paste(expansionBaseName, "C", sep=""))
-    iD <- which(a$cmscex == paste(expansionBaseName, "D", sep=""))
-    iE <- which(a$cmscex == paste(expansionBaseName, "E", sep=""))
+
+    iA <- which(exNames == paste(expansionBaseName, "A", sep=""))
+    iB <- which(exNames == paste(expansionBaseName, "B", sep=""))
+    iC <- which(exNames == paste(expansionBaseName, "C", sep=""))
+    iD <- which(exNames == paste(expansionBaseName, "D", sep=""))
+    iE <- which(exNames == paste(expansionBaseName, "E", sep=""))
     
     resBefore <- rep(NA,N)
     
