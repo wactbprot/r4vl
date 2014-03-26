@@ -31,6 +31,9 @@ doc <- se1.calPcal(doc)
 doc <- se1.uncertPfill(doc)
 doc <- se1.uncertf(doc)
 doc <- se1.uncertdT(doc)
+doc <- se1.uncertT1(doc)
+doc <- se1.uncertRg(doc)
+doc <- se1.uncertAds(doc)
 
 doc <- dispatchResCal( doc )
 
