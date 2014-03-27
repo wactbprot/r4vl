@@ -1,4 +1,4 @@
-se1.uncertComb <- function(ccc){
+se1.uncertTotal <- function(ccc){
     msg   <- "calculated by  se1.uncertComb()"
     a     <- abbrevList(ccc)
     

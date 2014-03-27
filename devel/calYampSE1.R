@@ -41,7 +41,7 @@ doc <- se1.uncertValve(doc)
 doc <- se1.uncertInh(doc)
 doc <- se1.uncertPres(doc)
 doc <- se1.uncertRep(doc)
-doc <- se1.uncertComb(doc)
+doc <- se1.uncertTotal(doc)
 
 doc <- dispatchResCal( doc )
 
