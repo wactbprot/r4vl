@@ -49,6 +49,7 @@ if(a$cs == "SE1" & a$cpt$Type == "srg_error"){
     doc <- cuco.uncertPOffset(doc)
     doc <- cuco.uncertOffsetDrift(doc)
     doc <- cuco.uncertExpSd(doc)
+    doc <- cuco.uncertPrise(doc)
 }
 
 doc <- se1.uncertPcal(doc)

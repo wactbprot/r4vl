@@ -28,7 +28,7 @@ cuco.uncertPind <- function(ccc){
         u4 <- getConstVal(a$cav$Uncertainty, "uncertOffset")
         u5 <- getConstVal(a$cav$Uncertainty, "uncertVisc")
         u6 <- getConstVal(a$cav$Uncertainty, "uncertPrise")
-        
+               
         uncertges <- sqrt(u1^2 +
                           u2^2 +
                           u3^2 +
@@ -37,6 +37,8 @@ cuco.uncertPind <- function(ccc){
                           u6^2)
     } ## se1 srg_error
 
+
+    
     ccc$Calibration$Analysis$Values$Uncertainty <-
         setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
                "uncertPind_rel",
