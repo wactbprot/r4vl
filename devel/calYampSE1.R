@@ -27,6 +27,7 @@ doc <- se1.calPfill(doc)
 doc <- se1.calf(doc)
 doc <- se1.calRGC(doc)
 doc <- se1.calPcal(doc)
+doc <- se1.writePind(doc)
 
 doc <- se1.uncertPfill(doc)
 doc <- se1.uncertf(doc)
@@ -41,6 +42,18 @@ doc <- se1.uncertValve(doc)
 doc <- se1.uncertInh(doc)
 doc <- se1.uncertPres(doc)
 doc <- se1.uncertRep(doc)
+
+if(a$cs == "SE1" & a$cpt$Type == "srg_error"){
+    doc <- cuco.uncertVisc(doc)
+    doc <- cuco.uncertDigit(doc)
+    doc <- cuco.uncertPOffset(doc)
+    doc <- cuco.uncertOffsetDrift(doc)
+    doc <- cuco.uncertExpSd(doc)
+}
+
+doc <- se1.uncertPcal(doc)
+doc <- cuco.uncertPind(doc)
+
 doc <- se1.uncertTotal(doc)
 
 doc <- dispatchResCal( doc )

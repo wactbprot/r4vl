@@ -1,26 +1,28 @@
 se1.uncertTotal <- function(ccc){
     msg   <- "calculated by  se1.uncertComb()"
     a     <- abbrevList(ccc)
-    
-    uc <- sqrt(
-        getConstVal(a$cav$Uncertainty, "uncertPfill")   ^2 +  
-        getConstVal(a$cav$Uncertainty, "uncertf")       ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertdT")      ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertT1")      ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertRg")      ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertAds")     ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertVz")      ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertGas")     ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertAtm")     ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertValve")   ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertPres")    ^2 + 
-        getConstVal(a$cav$Uncertainty, "uncertRep")     ^2 )
+
+    PCAL  <- getSubList(a$cav$Pressure, "cal")
+    pcal  <- getConstVal(NA, NA, PCAL)
+
+    u1    <- getConstVal(a$cav$Uncertainty, "uncertPcal_rel")
+    u2    <- getConstVal(a$cav$Uncertainty, "uncertPind_rel")
+
+    u     <- sqrt(u1^2+u2^2)
     
     ccc$Calibration$Analysis$Values$Uncertainty <-
         setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
-               "uncertComb",
-               "1",		
-               uc,
-               paste(msg, "u(k=1)"))
+               "uncertTotal_rel",
+               "1",
+               u,
+               paste(msg, " (k=1)"))
+    
+    ccc$Calibration$Analysis$Values$Uncertainty <-
+        setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
+               "uncertTotal_abs",
+               PCAL$Unit,
+               u * pcal,
+               paste(msg, " (k=1)"))
+
     return(ccc)
 }

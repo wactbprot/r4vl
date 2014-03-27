@@ -22,5 +22,12 @@ if(length(doc$Calibration) > 0){
 
     ## ... customer calibration object (cuco) related
 
-    doc <- se1.uncertTotal(doc)    
+    
+    
+  
+    }
+    doc <- se1.uncertTotal(doc)
+    
+    ## misc
+    doc <- writeRes(doc)
 }
