@@ -9,16 +9,18 @@ cuco.uncertDigit <- function(ccc){
   pind  <- getConstVal(NA,NA,PIND)
   
   digit  <- getConstVal(a$cmco1, un)
-  
+  print(digit)
   if(length(digit) == 0){
       digit <- 0.02
   }
 
   fp <- formatC(pind,format="E")
+  di <- formatC(digit,format="f")
   
   m <- regexec("E[+-][0-9]*$",fp)
-  u <- as.numeric(paste(digit,unlist(regmatches(fp, m)), sep=""))*0.29 
+  u <- as.numeric(paste(di,unlist(regmatches(fp, m)), sep=""))*0.29 
 
+  
   ccc$Calibration$Analysis$Values$Uncertainty <-
       setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
              "uncertDigit",
