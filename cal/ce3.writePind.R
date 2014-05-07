@@ -41,9 +41,11 @@ ce3.writePind <- function(ccc){
     }
 
     ## Strom (für Sensitivity)
-    if(!is.null(IND) &
-       !is.null(OFF) &
-       IND$Unit == "A"){
+    if(!is.null(IND)  &
+       !is.null(OFF)  &
+       IND$Unit == "A"&
+       OFF$Unit == "A"){
+        pUnit <- "A"
         ind <- getConstVal(NA,NA,IND)
         off <- getConstVal(NA,NA,OFF)
     }

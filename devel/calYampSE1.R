@@ -59,6 +59,7 @@ doc <- se1.uncertTotal(doc)
 
 doc <- dispatchResCal( doc )
 
+doc <- writeRes(doc)
 
 ###cdb$dataList <- doc
 ###cdbUpdateDoc(cdb)

@@ -4,7 +4,7 @@ getConductIndex <- function(ccc){
     lwUnit   <- "l/s"
     pfill    <- getConstVal(a$cav, "fill")
     cnom     <- getConstVal(a$cav, "cnom")
-    
+ 
     ## --- Lw2 --- kl. Lw ---
     lw2List  <- getSubList(a$cms, "useLw2")
 

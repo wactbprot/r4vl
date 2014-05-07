@@ -22,7 +22,7 @@ ce3.calQ <- function(ccc){
   ## da alles aus Analysis kommt
   ## also schon über outIndex gelaufen ist
   qmol  <- Cdv * pfill /( R * (TFm))
-  
+
   ## qpVFd gab es bisher nicht ist aber vertretbar
   qpVFd <-  qmol* (TXhv+TUhv)/2 * R
 

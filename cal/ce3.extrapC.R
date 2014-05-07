@@ -54,7 +54,7 @@ ce3.extrapC <- function(ccc){
                 ##' Hier noch die Differenz zur Fitfunktion
                 dh[ilw$iLw2]    <- cnom[ilw$iLw2]/fn.2162(cf,plw[ilw$iLw2]) - 1
             }
-
+            print(ilw)
             if(length(ilw$iLw1) > 0){
                 cf$a  <-  getConstVal(a$cms, paste("grLw_",gas,"_A", sep=""))
                 cf$b  <-  getConstVal(a$cms, paste("grLw_",gas,"_B", sep=""))
