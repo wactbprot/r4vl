@@ -88,7 +88,6 @@ ce3.writePind <- function(ccc){
             corrind  <- K * dcr/sigma
             ind      <- K * ind
             off      <- K * off
-
         }
     }
 
