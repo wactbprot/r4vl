@@ -17,10 +17,12 @@ cuco.uncertExpSd <- function(ccc){
       u <- 0.008
       U$Unit <- "1"
   }
-   if(U$Unit == "mbar"){
-        u <- u/pind
-    }
-   
+  if(U$Unit == "mbar"){
+      u <- u/pind
+  }
+  if(length(u) == 1){
+      u <- rep(u, length(pind))
+  }
   ccc$Calibration$Analysis$Values$Uncertainty <-
       setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
              un,

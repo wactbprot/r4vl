@@ -20,6 +20,23 @@ cuco.uncertPind <- function(ccc){
                           u5^2 +
                           u6^2)
     } ## ce3 error
+    if(a$cs == "CE3" & a$cpt$Type == "sens"){
+        u1 <- getConstVal(a$cav$Uncertainty, "uncertDigit")
+        u2 <- getConstVal(a$cav$Uncertainty, "uncertExpSd")
+        u3 <- getConstVal(a$cav$Uncertainty, "uncertGasPurity")
+        u4 <- getConstVal(a$cav$Uncertainty, "uncertOffsetDrift")
+        u5 <- getConstVal(a$cav$Uncertainty, "uncertOffset")
+        u6 <- getConstVal(a$cav$Uncertainty, "uncertSync")
+        u7 <- getConstVal(a$cav$Uncertainty, "uncertEmis")
+        
+        uncertges <- sqrt(u1^2 +
+                          u2^2 +
+                          u3^2 +
+                          u4^2 +
+                          u5^2 +
+                          u6^2 +
+                          u7^2)
+    } ## ce3 sens
 
     if(a$cs == "SE1" & a$cpt$Type == "srg_error"){
         u1 <- getConstVal(a$cav$Uncertainty, "uncertDigit")

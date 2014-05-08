@@ -1,5 +1,7 @@
 dispatchResCal <- function(ccc){
     a <- abbrevList(ccc)
+
+   
     if(length(a$cp) > 0){
         if(length(a$cpt) > 0){
 
