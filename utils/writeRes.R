@@ -170,7 +170,7 @@ writeRes <- function( ccc ){
                 }
                 if(reType == "sens"){
                     PIND$Value      <- formatC(td.pind,     digits=2, format="E")
-                    PINDoffs$Value  <- formatC(td.pindoffs, digits=2, format="E")
+                    PINDoffs$Value  <- formatC(td.pindoffs, digits=1, format="E")
                     PINDcorr$Value  <- formatC(td.pindcorr, digits=2, format="E")
                     RES$Value       <- formatC(td.result, digits=1, width=3, format="f")
                 }
