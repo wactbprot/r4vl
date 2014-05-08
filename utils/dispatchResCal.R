@@ -1,30 +1,36 @@
 dispatchResCal <- function(ccc){
-  a <- abbrevList(ccc)
-  if(length(a$cp) > 0){
-    if(length(a$cpt) > 0){
+    a <- abbrevList(ccc)
 
-      resType <- a$cpt$Type
+   
+    if(length(a$cp) > 0){
+        if(length(a$cpt) > 0){
 
-      if(resType == "sigma"){
-        ccc <-  calSigma(ccc)
-       }
-      
-      if(resType == "error"){
-        ccc <-  calError(ccc)
-       }
+            resType <- a$cpt$Type
 
-       if(resType == "ratio"){
-         ccc <-  calRatio(ccc)
-       }
+            if(resType == "sigma"){
+                ccc <-  calSigma(ccc)
+            }
 
-      if(resType == "sens"){
-         ccc <-  calSens(ccc)
-       }
+            if(resType == "error"){
+                ccc <-  calError(ccc)
+            }
 
-       if(resType == "correctionFactor"){
-         ccc <-  calCf(ccc)
-       }
+            if(resType == "srg_error"){
+                ccc <-  calError(ccc)
+            }
+
+            if(resType == "ratio"){
+                ccc <-  calRatio(ccc)
+            }
+
+            if(resType == "sens"){
+                ccc <-  calSens(ccc)
+            }
+
+            if(resType == "correctionFactor"){
+                ccc <-  calCf(ccc)
+            }
+        }
     }
-  }
-  return(ccc)
+    return(ccc)
 }

@@ -36,16 +36,16 @@ if(length(doc$Calibration) > 0){
      doc <- ce3.uncertPcal(doc)
   
     ## ... customer calibration object (cuco) related
-     doc <- cuco.uncertDigit(doc)
-     doc <- cuco.uncertPOffset(doc)
-     doc <- cuco.uncertOffsetDrift(doc)
-     doc <- cuco.uncertSync(doc)
-     doc <- cuco.uncertExpSd(doc)
-     doc <- cuco.uncertGasPurity(doc)
-     doc <- cuco.uncertPind(doc)
+    doc <- cuco.uncertDigit(doc)
+    doc <- cuco.uncertPOffset(doc)
+    doc <- cuco.uncertOffsetDrift(doc)
+    doc <- cuco.uncertSync(doc)
+    doc <- cuco.uncertExpSd(doc)
+    doc <- cuco.uncertGasPurity(doc)
+    doc <- cuco.uncertPind(doc)
   
     ## all 
-     doc <- ce3.uncertTotal(doc)
+    doc <- ce3.uncertTotal(doc)
     
     ## misc
     doc <- ce3.compareCDGs(doc)

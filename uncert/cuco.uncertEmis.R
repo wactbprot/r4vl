@@ -1,23 +1,21 @@
-cuco.uncertGasPurity <- function(ccc){
-  msg <- "calculated by cuco.uncertGasPurity"
+cuco.uncertEmis <- function(ccc){
+  msg <- "calculated by cuco.uncertExpSd"
 
   a   <- abbrevList(ccc)
 
-  un <- "uncertGasPurity"
+  un <- "uncertEmis"
   
   
   PIND  <- getSubList(a$cav, "ind")
   pind  <- getConstVal(NA,NA,PIND)
+
   
   U  <- getSubList(a$cmco1, un)
   u  <- getConstVal(NA, NA, U)
-
+  
   if(length(u) == 0){
-        u <- 0.005 
-        U$Unit <- "1"
-    }
-  if(U$Unit == "mbar"){
-      u <- u/pind
+      u <- 0.002
+      U$Unit <- "1"
   }
   if(length(u) == 1){
       u <- rep(u, length(pind))

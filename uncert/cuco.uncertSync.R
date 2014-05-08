@@ -11,6 +11,7 @@ cuco.uncertSync <- function(ccc){
     
     U  <- getSubList(a$cmco1, un)
     u  <- getConstVal(NA, NA, U)
+    
     if(length(u) == 0){
         u <- 0.005 
         U$Unit <- "1"
@@ -18,7 +19,9 @@ cuco.uncertSync <- function(ccc){
     if(U$Unit == "mbar"){
         u <- u/pind
     }
-    
+    if(length(u) == 1){
+        u <- rep(u, length(pind))
+    }
     ccc$Calibration$Analysis$Values$Uncertainty <-
         setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
                un,
@@ -26,5 +29,5 @@ cuco.uncertSync <- function(ccc){
                u,
                msg)
     
-  return(ccc)
+    return(ccc)
 }

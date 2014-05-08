@@ -7,7 +7,7 @@ ce3.calDeltaVDeltat <- function(ccc){
 
     PFILL   <- getSubList(a$cav, "fill")
     pfill   <- getConstVal(NA, NA, PFILL)
-    
+
     
     if(a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"){
         L       <-  NULL
