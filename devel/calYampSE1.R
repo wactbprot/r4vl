@@ -9,17 +9,21 @@ setwd(infList$srcPath)
 source("load.R")
 
 cdb            <- cdbIni()
-cdb$DBName     <- "vaclab_test" ## DBName
+cdb$DBName     <- "vaclab_work" ## DBName
 
 
 ## devel/tests/calculations from here -----------------
                                         #"1f72ec47286b685511b3cc38f0094533"
                                         #"1f72ec47286b685511b3cc38f009ceeb"
                                         # "5c9f2659545fe56374723402d2038d50"
-cdb$id     <- "2d54e68feffe46b5fa0ecf788a0bc0f2" # ITRC SRG 2013
+#cdb$id     <- "2d54e68feffe46b5fa0ecf788a0bc0f2" # ITRC SRG 2013
+cdb$id     <- "f5de71877189703b76447b49f833b551" # ITRC SRG 2014
 doc <- cdbGetDoc(cdb)$res
 
 doc <- refreshAnalysis(cdb,doc)
+doc <- refreshResult(cdb,doc)
+ 
+a   <- abbrevList(doc)
 
 doc <- se1.calTime(doc)
 doc <- se1.calT(doc)
