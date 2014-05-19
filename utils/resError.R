@@ -97,7 +97,7 @@ resError <- function(ccc){
         td.pindoffs[i]  <- unlist(mean(pindoffs[i.take]))
         td.pindcorr[i]  <- unlist(mean(pindcorr[i.take]))
     } #for
-    
+
     PCAL$Value      <- formatC(td.pcal, digits=3, format="E")
     UT$Value        <- formatC(td.ut, digits=1, format="E")
     PIND$Value      <- formatC(td.pind,     digits=2, format="E")
@@ -114,3 +114,8 @@ resError <- function(ccc){
     ccc$Calibration$Result$Table[[6]] <- UT
 
     ccc$Calibration$Result$Table[[5]]$Comment <- msg
+
+
+        
+    return(ccc)
+}

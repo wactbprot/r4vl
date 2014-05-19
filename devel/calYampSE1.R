@@ -27,10 +27,12 @@ a   <- abbrevList(doc)
 
 doc <- se1.calTime(doc)
 doc <- se1.calT(doc)
+doc <- se1.calPrise(doc)
 doc <- se1.calPfill(doc)
 doc <- se1.calf(doc)
 doc <- se1.calRGC(doc)
 doc <- se1.calPcal(doc)
+
 doc <- se1.writePind(doc)
 
 doc <- se1.uncertPfill(doc)
@@ -61,9 +63,8 @@ doc <- cuco.uncertPind(doc)
 
 doc <- se1.uncertTotal(doc)
 
-doc <- dispatchResCal( doc )
-
-doc <- writeRes(doc)
+doc <- dispatchResCal(doc)
+doc <- dispatchResSum(doc)
 
 ###cdb$dataList <- doc
 ###cdbUpdateDoc(cdb)
