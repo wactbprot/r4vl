@@ -15,8 +15,8 @@ if(length(doc$Calibration) > 0){
     ##  
     doc <- dispatchResCal(doc)
   
-## uncertainty ...
-     ## ... fm3 related
+# uncertainty ...
+#    ## ... fm3 related
      doc <- fm3.uncertPfill(doc)
      doc <- fm3.uncertDPfill(doc)
      doc <- fm3.uncertDeltaV(doc)

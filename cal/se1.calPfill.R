@@ -43,7 +43,8 @@ se1.calPfill <- function(ccc){
         cfcdg10$f      <- 0
 
         p.fill.10.uncorr.mbar   <- cdg.pfill.10.mbar - cdg.offset.10.mbar
-        pfill.10.mbar           <- p.fill.10.uncorr.mbar/(fn.4403(cfcdg10, p.fill.10.uncorr.mbar)/100 + 1)
+        E.10                    <- fn.4403(cfcdg10, p.fill.10.uncorr.mbar)
+        pfill.10.mbar           <- p.fill.10.uncorr.mbar/(E.10/100 + 1)
 
         RANGE.10       <- getSubList(a$cmco, "cdg10UseDev")
         
@@ -77,7 +78,8 @@ se1.calPfill <- function(ccc){
         cfcdg100$f     <- 0
 
         p.fill.100.uncorr.mbar  <- cdg.pfill.100.mbar - cdg.offset.100.mbar
-        pfill.100.mbar          <- p.fill.100.uncorr.mbar/(fn.4403(cfcdg100, p.fill.100.uncorr.mbar)/100 + 1)
+        E.100                   <- fn.4403(cfcdg100, p.fill.100.uncorr.mbar)
+        pfill.100.mbar          <- p.fill.100.uncorr.mbar/(E.100/100 + 1)
 
         RANGE.100      <- getSubList(a$cmco, "cdg100UseDev")
         
@@ -110,7 +112,8 @@ se1.calPfill <- function(ccc){
         cfcdg1000$f     <- 0
 
         p.fill.1000.uncorr.mbar  <- cdg.pfill.1000.mbar - cdg.offset.1000.mbar
-        pfill.1000.mbar          <- p.fill.1000.uncorr.mbar/(fn.4403(cfcdg1000, p.fill.1000.uncorr.mbar)/100 + 1)
+        E.1000                   <- fn.4403(cfcdg1000, p.fill.1000.uncorr.mbar)
+        pfill.1000.mbar          <- p.fill.1000.uncorr.mbar/(E.1000/100 + 1)
 
         RANGE.1000      <- getSubList(a$cmco, "cdg1000UseDev")
         
@@ -159,6 +162,27 @@ se1.calPfill <- function(ccc){
                    pUnit,
                    pfill.10.mbar,
                    paste(msg, "Übereinstimmung der CDGs"))
+
+        ccc$Calibration$Analysis$Values$Error <-
+            setCcl(ccc$Calibration$Analysis$Values$Error,
+                   "e_fill_10",
+                   "%",
+                   E.10,
+                   paste(msg, "e in % des pfill"))
+
+        ccc$Calibration$Analysis$Values$Error <-
+            setCcl(ccc$Calibration$Analysis$Values$Error,
+                   "e_fill_100",
+                   "%",
+                   E.100,
+                   paste(msg, "e in % des pfill"))
+
+        ccc$Calibration$Analysis$Values$Error <-
+            setCcl(ccc$Calibration$Analysis$Values$Error,
+                   "e_fill_1000",
+                   "%",
+                   E.1000,
+                   paste(msg, "e in % des pfill"))
 
 
         

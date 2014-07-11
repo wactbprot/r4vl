@@ -1,5 +1,7 @@
 if(length(doc$Calibration) > 0){
 
+
+
     doc <- se1.calTime(doc)
     doc <- se1.calT(doc)
     doc <- se1.calPfill(doc)
@@ -7,6 +9,8 @@ if(length(doc$Calibration) > 0){
     doc <- se1.calRGC(doc)
     doc <- se1.calPcal(doc)
     doc <- se1.writePind(doc)
+
+    doc <- dispatchResCal(doc)
 
     doc <- se1.uncertPfill(doc)
     doc <- se1.uncertf(doc)
@@ -22,19 +26,21 @@ if(length(doc$Calibration) > 0){
     doc <- se1.uncertPres(doc)
     doc <- se1.uncertRep(doc)
 
-    if(a$cs == "SE1" & a$cpt$Type == "srg_error"){
-        doc <- cuco.uncertVisc(doc)
-        doc <- cuco.uncertDigit(doc)
-        doc <- cuco.uncertPOffset(doc)
-        doc <- cuco.uncertOffsetDrift(doc)
-        doc <- cuco.uncertExpSd(doc)
-        doc <- cuco.uncertPrise(doc)
-    }
-
-    doc <- se1.uncertPcal(doc)
-    doc <- cuco.uncertPind(doc)
+    a   <- abbrevList( doc )
     
-    doc <- se1.uncertTotal(doc)
-    ## misc
-    doc <- writeRes(doc)
+   if(a$cs == "SE1" & a$cpt$Type == "srg_error"){
+       doc <- cuco.uncertVisc(doc)
+       doc <- cuco.uncertDigit(doc)
+       doc <- cuco.uncertPOffset(doc)
+       doc <- cuco.uncertOffsetDrift(doc)
+       doc <- cuco.uncertExpSd(doc)
+       doc <- cuco.uncertPrise(doc)
+   }
+
+#    doc <- se1.uncertPcal(doc)
+#    doc <- cuco.uncertPind(doc)
+#    
+#    doc <- se1.uncertTotal(doc)
+#    ## misc
+#    doc <- writeRes(doc)
 }
