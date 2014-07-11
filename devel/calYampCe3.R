@@ -46,25 +46,25 @@ if(TRUE){
     ##  
     doc <- dispatchResCal(doc)
   
-## uncertainty ...
-     ## ... fm3 related
-     doc <- fm3.uncertPfill(doc)
-     doc <- fm3.uncertDPfill(doc)
-     doc <- fm3.uncertDeltaV(doc)
-     doc <- fm3.uncertDeltaVDeltat(doc)
-     doc <- fm3.uncertDeltat(doc)
-     
-     doc <- fm3.uncertPres(doc)
-     doc <- fm3.uncertConstC(doc)
+    ## uncertainty ...
+    ## ... fm3 related
+    doc <- fm3.uncertPfill(doc)
+    doc <- fm3.uncertDPfill(doc)
+    doc <- fm3.uncertDeltaV(doc)
+    doc <- fm3.uncertDeltaVDeltat(doc)
+    doc <- fm3.uncertDeltat(doc)
+    
+    doc <- fm3.uncertPres(doc)
+    doc <- fm3.uncertConstC(doc)
          
-     doc <- fm3.uncertqpV(doc)
-     ##  ... ce3 related
-     doc <- ce3.uncertCx(doc)
-     doc <- ce3.uncertQsplit(doc)
-     doc <- ce3.uncertTfm(doc)
-     doc <- ce3.uncertTch(doc)
-     doc <- ce3.uncertF(doc)
-     doc <- ce3.uncertPcal(doc)
+    doc <- fm3.uncertqpV(doc)
+    ##  ... ce3 related
+    doc <- ce3.uncertCx(doc)
+    doc <- ce3.uncertQsplit(doc)
+    doc <- ce3.uncertTfm(doc)
+    doc <- ce3.uncertTch(doc)
+    doc <- ce3.uncertF(doc)
+    doc <- ce3.uncertPcal(doc)
   
     ## ... customer calibration object (cuco) related
     doc <- cuco.uncertDigit(doc)
@@ -79,8 +79,8 @@ if(TRUE){
     doc <- ce3.uncertTotal(doc)
     
     ## misc
-#    doc <- ce3.compareCDGs(doc)
-#    doc <- writeRes(doc)
+    doc <- ce3.compareCDGs(doc)
+    doc <- writeRes(doc)
 
 }
 #cdb$dataList <- doc
