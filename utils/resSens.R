@@ -2,6 +2,9 @@ resSens <- function(ccc){
     msg <- "calculated by resSens"
     a   <- abbrevList(ccc)
 
+    p.target <- as.numeric(a$cpt$Values$Pressure$Value)
+    maxdev   <- as.numeric(a$cpt$MaxDev)
+    k        <- 2 # Erweiterungsfaktor
 
     ##-------------##
     ## pcal

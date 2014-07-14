@@ -4,7 +4,9 @@ resError <- function(ccc){
     ## - round
 
     a <- abbrevList(ccc)
-
+    p.target <- as.numeric(a$cpt$Values$Pressure$Value)
+    maxdev   <- as.numeric(a$cpt$MaxDev)
+    k        <- 2 # Erweiterungsfaktor
 
     ##-------------##
     ## pcal

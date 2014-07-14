@@ -48,6 +48,9 @@ if(length(doc$Calibration) > 0){
     doc <- ce3.uncertTotal(doc)
 
     ## misc
-    doc <- ce3.compareCDGs(doc)
-    doc <- writeRes(doc)
+
+    doc <- dispatchResCal(doc)
+    doc <- dispatchResSum(doc)
+
+    doc <- ce3.compareCDGs(doc)   
 }

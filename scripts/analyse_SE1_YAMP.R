@@ -1,10 +1,7 @@
 if(length(doc$Calibration) > 0){
 
-<<<<<<< HEAD
-
-=======
     a   <- abbrevList(doc)
->>>>>>> b255d95c26625c18b8ba94c41eab7c0acac4713d
+
 
     doc <- se1.calTime(doc)
     doc <- se1.calT(doc)
@@ -32,25 +29,6 @@ if(length(doc$Calibration) > 0){
     doc <- se1.uncertPres(doc)
     doc <- se1.uncertRep(doc)
 
-<<<<<<< HEAD
-    a   <- abbrevList( doc )
-    
-   if(a$cs == "SE1" & a$cpt$Type == "srg_error"){
-       doc <- cuco.uncertVisc(doc)
-       doc <- cuco.uncertDigit(doc)
-       doc <- cuco.uncertPOffset(doc)
-       doc <- cuco.uncertOffsetDrift(doc)
-       doc <- cuco.uncertExpSd(doc)
-       doc <- cuco.uncertPrise(doc)
-   }
-
-#    doc <- se1.uncertPcal(doc)
-#    doc <- cuco.uncertPind(doc)
-#    
-#    doc <- se1.uncertTotal(doc)
-#    ## misc
-#    doc <- writeRes(doc)
-=======
     if(a$cs == "SE1" & a$cpt$Type == "srg_error"){
         doc <- cuco.uncertVisc(doc)
         doc <- cuco.uncertDigit(doc)
@@ -68,5 +46,5 @@ if(length(doc$Calibration) > 0){
     doc <- dispatchResCal(doc)
     doc <- dispatchResSum(doc)
 
->>>>>>> b255d95c26625c18b8ba94c41eab7c0acac4713d
+
 }

@@ -67,12 +67,11 @@ resSrgError <- function(ccc){
         td.pindcorr[i]  <- unlist(mean(pindcorr[i.take]))
     } #for
     
-    PCAL$Value      <- formatC(td.pcal, digits=4, format="E")
-    UT$Value        <- formatC(td.ut, digits=1, format="E")
-    
+    PCAL$Value      <- formatC(td.pcal,     digits=4, format="E")
+    UT$Value        <- formatC(td.ut,       digits=1, format="E")
     PINDcorr$Value  <- formatC(td.pindcorr, digits=4, format="E")
-    UT$Value        <- formatC(td.ut, digits=1, format="E")
-    RES$Value       <- formatC(td.result, digits=2, format="E")
+    UT$Value        <- formatC(td.ut,       digits=1, format="E")
+    RES$Value       <- formatC(td.result,   digits=1, format="E")
 
 
     
