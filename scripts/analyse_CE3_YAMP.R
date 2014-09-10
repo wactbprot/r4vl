@@ -51,6 +51,6 @@ if(length(doc$Calibration) > 0){
 
     doc <- dispatchResCal(doc)
     doc <- dispatchResSum(doc)
-
+#
     doc <- ce3.compareCDGs(doc)   
 }

@@ -6,7 +6,7 @@ abbrevList <- function(ccc){
   a$dataAvailable <- FALSE
 
   a$c        <- ccc$Calibration
-  a$cs       <- ccc$Calibration$Standard
+  a$cs       <- a$c$Standard
   a$ct       <- a$c$Type
   a$cy       <- a$c$Year
   a$csi      <- a$c$Sign
@@ -19,7 +19,7 @@ abbrevList <- function(ccc){
   a$cma      <- a$cm$AuxValues ## seit 4/11
   a$cmco     <- a$cm$CalibrationObject
   a$cmco1    <- a$cm$CalibrationObject[[1]] ## customer device
-  
+
 ### hier noch die Co[2...N] explizit trennen
 
 ### ce3-spezifisch
