@@ -10,37 +10,37 @@ ce3.calDeltaVDeltat <- function(ccc){
 
     
     if(a$cmscok == "opK1" |a$cmscok == "opK2"|a$cmscok == "opK3"){
-        L       <-  NULL
-        sdL     <-  NULL
-        lL      <-  NULL
-        gamma   <-  NULL
-        Mp      <-  NULL
-        meanMp  <-  NULL
-        sdMeanMp<-  NULL
-        gSlope  <-  NULL
-        minSlope<-  NULL
-        maxSlope<-  NULL
-        mSlope  <-  NULL
-        dcorr   <-  NULL
-        
-        DRIFT   <-  getSubList(a$cmv,"drift_slope_x")
-        drift   <-  getConstVal(NA,NA,DRIFT)
-
-        LWSTART <-  getSubList(a$cma,"start_lw")
-        lwstart <-  getConstVal(NA,NA,LWSTART)
-
-        cf      <- list()
-        cf$A    <-  getConstVal(a$cms, "fbv_A")
-        cf$B    <-  getConstVal(a$cms, "fbv_B")
-        cf$C    <-  getConstVal(a$cms, "fbv_C")
-
-
-        t2mm    <- getConstVal(a$cms,"turn_2_mm")
-        ms2s    <- getConstVal(a$cc,"ms_2_s")
-        vconv   <- getConvFactor(ccc,vUnit, "mm^3")
-
-        j       <- 0
-        noOfSZ  <-  length(lwstart)
+        L         <-  NULL
+        sdL       <-  NULL
+        lL        <-  NULL
+        gamma     <-  NULL
+        Mp        <-  NULL
+        meanMp    <-  NULL
+        sdMeanMp  <-  NULL
+        gSlope    <-  NULL
+        minSlope  <-  NULL
+        maxSlope  <-  NULL
+        mSlope    <-  NULL
+        dcorr     <-  NULL
+                  
+        DRIFT     <-  getSubList(a$cmv,"drift_slope_x")
+        drift     <-  getConstVal(NA,NA,DRIFT)
+                  
+        LWSTART   <-  getSubList(a$cma,"start_lw")
+        lwstart   <-  getConstVal(NA,NA,LWSTART)
+                  
+        cf        <- list()
+        cf$A      <-  getConstVal(a$cms, "fbv_A")
+        cf$B      <-  getConstVal(a$cms, "fbv_B")
+        cf$C      <-  getConstVal(a$cms, "fbv_C")
+                  
+                  
+        t2mm      <- getConstVal(a$cms,"turn_2_mm")
+        ms2s      <- getConstVal(a$cc,"ms_2_s")
+        vconv     <- getConvFactor(ccc,vUnit, "mm^3")
+                  
+        j         <- 0
+        noOfSZ    <-  length(lwstart)
 
         for(i in lwstart){
             j <- j+1
@@ -88,8 +88,6 @@ ce3.calDeltaVDeltat <- function(ccc){
             ##
             ## f(x) = ax^3/3+a*b*x^2+x*(a*b^2+c)
             ##
-            ## ist definiert in /map/_attachments/R/utils
-            ##
             ## A(f(x[2] - f(x1))/(x[2] - x[1]
 
             ## ------------------------------------##
@@ -102,9 +100,9 @@ ce3.calDeltaVDeltat <- function(ccc){
 
             ## Leitwert = dV/dt *(1- m.D/m.SZ)
             dVdt       <- deltaV / deltat * (1 - dcorr[j])
-            L[j]       <- mean(  dVdt )
-            sdL[j]     <- sd(    dVdt )
-            lL[j]      <- length(dVdt )
+            L[j]       <- mean(dVdt)
+            sdL[j]     <- sd(dVdt)
+            lL[j]      <- length(dVdt)
             ## ------------------------------------##
         }
 

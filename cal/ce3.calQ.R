@@ -70,8 +70,7 @@ ce3.calQ <- function(ccc){
   fdCorr <-  qSplitCorrA +
     qSplitCorrB * qpVFd +
       qSplitCorrC * qpVFd^2
-
-
+ 
   qpVCorr <-  qmol * T * R * fdCorr
 
   ccc$Calibration$Analysis$Values$Flow <-

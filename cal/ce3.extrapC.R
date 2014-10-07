@@ -15,7 +15,7 @@ ce3.extrapC <- function(ccc){
 
             ilw       <- getConductIndex(ccc)
             cf        <- list()
-            
+
             plw       <- getConstVal(a$cav, "lw")   ## zum Zeitpunkt der LW- Messung: p_l
             pfe       <- getConstVal(a$cav, "fill") ## zum Zeitpunkt Ende der Auslese: p_a
             pfill     <- (plw + pfe)/2              ## bei einem SRG ist das so: 
@@ -47,9 +47,9 @@ ce3.extrapC <- function(ccc){
                 ##' d.h.
                 ##' C(p_a) = C(p_l) * fn(p_a)/fn(pl)
                 ##'
-                
-                cfm3[ilw$iLw2]  <- cnom[ilw$iLw2] * fn.2162(cf,pfill[ilw$iLw2])/fn.2162(cf,plw[ilw$iLw2])
-                ##' ^^C(p_a)^^       ^^C(p_l)^^      ^^fn(p_a)^^                 ^^fn(pl)^^
+               
+                cfm3[ilw$iLw2]  <- cnom[ilw$iLw2] *  fn.2162(cf, pfill[ilw$iLw2])/fn.2162(cf, plw[ilw$iLw2])
+          
 
                 ##' Hier noch die Differenz zur Fitfunktion
                 dh[ilw$iLw2]    <- cnom[ilw$iLw2]/fn.2162(cf,plw[ilw$iLw2]) - 1
@@ -64,6 +64,7 @@ ce3.extrapC <- function(ccc){
                 ##'
                 ##' Verfahren wie beim kleinen Leitwert
                 ##'
+                
                 cfm3[ilw$iLw1]  <- cnom[ilw$iLw1]*fn.2162(cf,pfill[ilw$iLw1])/fn.2162(cf,plw[ilw$iLw1])
                 dh[ilw$iLw1]    <- cnom[ilw$iLw1]/fn.2162(cf,plw[ilw$iLw1]) - 1
             }
@@ -71,14 +72,16 @@ ce3.extrapC <- function(ccc){
             if(length(ilw$iLwC) > 0){
                 dv2MolCIntercept  <-  getConstVal(a$cms,"dv2MolCIntercept")
                 dv2MolCSlope      <-  getConstVal(a$cms,"dv2MolCSlope")
-                ##' In diesem Leitwertbereich wird Cdv gemessen
-                ##' aber molLw wird zur weiteren Berechnung benutzt
-                ##' Die Messung kann später zur Anpassung
-                ##' des molLw benutzt werden (s. QSE-FM3-13-1)
+                ##  ##' In diesem Leitwertbereich wird Cdv gemessen
+                ##  ##' aber molLw wird zur weiteren Berechnung benutzt
+                ##  ##' Die Messung kann später zur Anpassung
+                ##  ##' des molLw benutzt werden (s. QSE-FM3-13-1)
                 pfill          <- getConstVal(a$cav, "fill")
                 cmolecular     <- dv2MolCSlope *  pfill[ilw$iLwC] + dv2MolCIntercept
                 cfm3[ilw$iLwC] <- cmolecular
                 dh[ilw$iLwC]   <- cnom[ilw$iLwC]/ cmolecular - 1
+                print(cmolecular)
+                print(ilw)
             }
             
         } # gas
@@ -89,7 +92,12 @@ ce3.extrapC <- function(ccc){
                    "l/s",
                    cfm3,
                    msg)
-
+        ccc$Calibration$Analysis$Values$Conductance <-
+            setCcl(ccc$Calibration$Analysis$Values$Conductance,
+                   "diff_nom",
+                   "1",
+                   cfm3/cnom-1,
+                   msg)
         ccc$Calibration$Analysis$Values$Conductance <-
             setCcl(ccc$Calibration$Analysis$Values$Conductance,
                    "diff_hist",

@@ -80,8 +80,9 @@ if(TRUE){
     
     ## misc
     doc <- ce3.compareCDGs(doc)
-    doc <- writeRes(doc)
 
+    doc <- dispatchResCal(doc)
+    doc <- dispatchResSum(doc)
 }
 #cdb$dataList <- doc
 #res <- cdbUpdateDoc(cdb)$res

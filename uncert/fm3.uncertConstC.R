@@ -22,7 +22,7 @@ fm3.uncertConstC <- function(ccc){
         dv2MolCSlope     <- getConstVal(a$cms, "dv2MolCSlope")
         dv2MolCIntercept <- getConstVal(a$cms, "dv2MolCIntercept")
         usdRes           <- getConstVal(a$cms, "fm3ConstCsdRes_u6")
-        
+     
         uCabs <- sqrt((pfill[iLwC] * uslope)^2        +
                       (dv2MolCSlope * upfill[iLwC])^2 +
                       ( uintec)^2)
@@ -30,6 +30,7 @@ fm3.uncertConstC <- function(ccc){
         uncertRes[iLwC] <- sqrt((uCabs/cnom[iLwC])^2 + udeltat^2 + udeltaV^2 +  usdRes^2)
       
     }
+
     ccc$Calibration$Analysis$Values$Uncertainty <-
         setCcl(ccc$Calibration$Analysis$Values$Uncertainty,
                "uncertConstC",
